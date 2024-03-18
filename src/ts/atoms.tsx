@@ -2,6 +2,7 @@ import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 
 export const currentLabel = atom<any>("label_bottom_lime")
+export const currentTheme = atom<string>("label_bottom_lime")
 export const loc = atomWithStorage("location", "/")
 export const scrollEnabled = atomWithStorage<any>("scroll", false)
 export const backgroundColors = atom<string[]>(["#f6fff0", "#e5fcfc"])

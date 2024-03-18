@@ -4,13 +4,35 @@ Command: npx gltfjsx@6.2.16 public/thirdHeadMesh.glb --types --output src/head.t
 */
 
 import * as THREE from 'three'
-import React, { useRef } from 'react'
-import { Outlines, QuadraticBezierLine, useGLTF } from '@react-three/drei'
+import React, { useEffect, useRef, useState } from 'react'
+import { useGLTF } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 import { motion as motion3d } from "framer-motion-3d"
-import { Vector3, useFrame, useThree } from '@react-three/fiber'
-import Idea from './Idea'
+import { useThree } from '@react-three/fiber'
 import IdeaCloud from './IdeaCloud'
+import { useAnimation } from 'framer-motion'
+import router from 'next/router'
+
+const materialVariants = {
+  initial: { opacity: 0 },
+  enter: {
+    opacity: 0.4, transition: {
+      type: "spring", damping: 10, stiffness: 50, restDelta: 0.1
+    }
+  },
+  exit: { opacity: 0 },
+
+}
+
+const material2Variants = {
+  initial: { opacity: 0 },
+  enter: {
+    opacity: 1, transition: {
+      type: "spring", damping: 10, stiffness: 50, restDelta: 0.1
+    }
+  },
+  exit: { opacity: 0 },
+}
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -22,24 +44,64 @@ type GLTFResult = GLTF & {
   animations: any[]
 }
 
+interface HeadProps {
+  position: [number, number, number]
+  rotation: [number, number, number]
+}
+
 type ContextType = Record<string, React.ForwardRefExoticComponent<JSX.IntrinsicElements['mesh']>>
 
-export function Head(props: JSX.IntrinsicElements['group']) {
+export function Head(props: HeadProps) {
+  // refs
   const brain = useRef<any>(!null)
-  const mat = <meshStandardMaterial color="#A2FDFD" opacity={0.5} transparent toneMapped={true} />
-  const mat2 = <meshStandardMaterial color="#29A2A6" opacity={1} transparent toneMapped={true} />
+
+  // animation controls
+  const controls = useAnimation()
+
+  // materials
+  const mat = <motion3d.meshStandardMaterial initial="initial" animate={controls} variants={materialVariants} color="#A2FDFD" transparent toneMapped={true} />
+  const mat2 = <motion3d.meshStandardMaterial initial="initial" animate={controls} variants={material2Variants} color="#29A2A6" transparent toneMapped={true} />
+
+  // GLTF
   const { nodes, materials } = useGLTF('/thirdHeadMesh.glb') as GLTFResult
+
+  // THREE helpers
   const { viewport } = useThree();
 
-  const start: any = [0, 0, 0]
-  const end: any = [1, 1, 1]
+  // states
+  const [disposed, setDisposed] = useState(false);
+  const [isInPage, setIsInPage] = useState(false);
+
+  // UEF for mounting and visibility
+  useEffect(() => {
+    if (router.pathname === "/") {
+      setTimeout(() => {
+        setDisposed(false);
+        setIsInPage(true);
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        controls.start("exit").then(() => {
+          setIsInPage(false), setDisposed(true);
+        });
+      }, 800);
+    }
+  }, [router.pathname]);
+
+  useEffect(() => {
+    if (isInPage) {
+      controls.start("enter");
+
+    }
+  }, [isInPage]);
+
   return (
-    <group scale={Math.max(1, Math.min(.1 * viewport.width, 2))} {...props} dispose={null}>
+    <motion3d.group position={props.position} rotation={props.rotation} scale={Math.max(1, Math.min(.1 * viewport.width, 2))} dispose={null}>
       <motion3d.mesh ref={brain} renderOrder={0} geometry={nodes.Cube.geometry} material={nodes.Cube.material} position={[0.082, 3.899, 0]} >{mat2}</motion3d.mesh>
       <motion3d.mesh renderOrder={1} geometry={nodes.female_head.geometry} material={nodes.female_head.material} position={[-0.1, 2.675, 0.691]} >{mat}</motion3d.mesh>
       <motion3d.mesh renderOrder={1} geometry={nodes.female_head001.geometry} material={nodes.female_head001.material} position={[-0.1, 2.675, -0.692]} >{mat}</motion3d.mesh>
       <IdeaCloud centerPoint={[0.082, 3.899, 0]} />
-    </group>
+    </motion3d.group>
   )
 }
 

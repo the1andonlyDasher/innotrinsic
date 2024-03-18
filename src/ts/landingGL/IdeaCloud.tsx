@@ -1,6 +1,7 @@
 import { FunctionComponent } from "react";
 import Idea from "./Idea";
 import { Instances } from "@react-three/drei";
+import { motion as motion3d } from "framer-motion-3d"
 
 interface IdeaCloudProps {
     centerPoint: [number, number, number];
@@ -43,10 +44,15 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
         <group position={props.centerPoint}>
             <Instances>
                 <sphereGeometry args={[0.2, 30, 30]} />
-                <meshStandardMaterial color={"white"} />
+                <motion3d.meshStandardMaterial variants={
+                    {
+                        initial: { opacity: 0 }, enter: { opacity: 1 }, exit: { opacity: 0 }
+                    }
+                } color={"white"} />
                 {numIdeas.map((data: any, i: number) => {
                     var r = ((Math.PI * 2) / counter) * i;
                     return <Idea
+                        delayFactor={i + 1 / 10}
                         text={data.text}
                         colors={data.colors}
                         key={i}
@@ -58,7 +64,6 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
                 }
                 )}
             </Instances>
-
         </group>
     );
 };

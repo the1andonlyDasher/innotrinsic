@@ -15,6 +15,7 @@ import { Model } from "@/ts/landingGL/neuron";
 import { NeuronNet } from "./NeuronNet";
 import Human from "./landingGL/Human";
 import { BloomFilter } from "next/dist/shared/lib/bloom-filter";
+import Background from "./Background";
 
 
 
@@ -83,7 +84,6 @@ const GL = (props: glProps) => {
 
 
 
-
     const cameraPositions: any = {
         0: { y: 0, x: 10, z: 0, rotateX: 0 },
         1: { y: 50, x: 0, z: -15, rotateX: -1.5 },
@@ -96,8 +96,7 @@ const GL = (props: glProps) => {
 
 
     const [target, setTarget]: any = useAtom<any>(orbitTarget);
-    const [bgColors, setBGColors]: any = useAtom<any>(backgroundColors);
-    const cameraControls = useAnimation();
+    const cameraControls = useAnimation()
 
     const { scrollYProgress } = useScroll({ container: props.eventSource })
     useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -139,14 +138,15 @@ const GL = (props: glProps) => {
                     <Human />
                 </Float>
                 <Shadow
-                    color="#012828"
+                    color="#111"
                     scale={5}
                     colorStop={0}
                     position={[-.5, -6, -5]}
                     opacity={0.2}
-                    fog={false} // Reacts to fog (default=false)
+                    fog={false}
                 />
                 {/* </Bounds> */}
+                <Background />
             </Canvas>
         </div >
     );
