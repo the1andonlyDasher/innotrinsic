@@ -1,12 +1,13 @@
+import { Vector3 } from '@react-three/fiber'
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 
 export const currentLabel = atom<any>("label_bottom_lime")
-export const currentTheme = atom<string>("label_bottom_lime")
+export const currentDistance = atom<number>(1)
 export const loc = atomWithStorage("location", "/")
 export const scrollEnabled = atomWithStorage<any>("scroll", false)
 export const backgroundColors = atom<string[]>(["#f6fff0", "#e5fcfc"])
-export const orbitTarget = atomWithStorage<any>("currentTarget", [0, 0, -5])
+export const orbitTarget = atom<Vector3 | { x: number; y: number; z: number; }>({ x: 0, y: 1, z: 0 })
 type navType = {
     links: string[];
     home: boolean;

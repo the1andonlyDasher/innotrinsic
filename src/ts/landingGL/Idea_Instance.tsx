@@ -7,15 +7,14 @@ import {
     Text,
     useCursor,
 } from "@react-three/drei";
-import { Vector3, useFrame, useThree } from "@react-three/fiber";
+import { Vector3, useFrame } from "@react-three/fiber";
 import { animate, useAnimation } from "framer-motion";
 import { motion as motion3d } from "framer-motion-3d";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 import { useGesture } from "@use-gesture/react";
 import { useAtom } from "jotai";
-import { backgroundColors, currentDistance, orbitTarget } from "../atoms";
+import { backgroundColors, orbitTarget } from "../atoms";
 import { useRouter } from "next/router";
-import { Vector3 as V3 } from "@/ts/threeExport/math/Vector3"
 
 const materialVariants = {
     initial: { opacity: 0 },
@@ -46,6 +45,16 @@ interface IdeaProps {
 }
 
 const Idea: FunctionComponent<IdeaProps> = (props) => {
+    {
+        /*
+                const bind = useGesture({
+                        onTouchStartCapture: () => {
+                            setHover(!hovered), console.log("touch");
+                        },
+                    });
+                */
+    }
+
     // router
     const router = useRouter();
 
@@ -67,17 +76,12 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
     const subGroupControls = useAnimation();
     const circleControls = useAnimation();
     const controls = useAnimation();
-    const textMatControls = useAnimation();
-
-    //three helper
-    const { viewport } = useThree();
 
     // cursor state
     useCursor(hovered);
 
     // atoms
     const [orbTarget, setOrbitTarget] = useAtom(orbitTarget)
-    const [distance, setDistance] = useAtom(currentDistance)
 
     // random
     const rand =
@@ -94,10 +98,9 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
     // UEF for hover state
     useEffect(() => {
         sphereControls.start(hovered && clicked ? { scale: 1.5 } : clicked && !hovered ? { scale: 1.5 } : !clicked && hovered ? { scale: 1.5 } : { scale: 1 });
-        textControls.start(hovered && clicked ? { scale: 0.75, y: 0.4 } : clicked && !hovered ? { scale: 0.75, y: 0.4 } : !clicked && hovered ? { scale: 0.75, y: 0.4 } : { scale: 0.65, y: 0.3 });
+        textControls.start(hovered && clicked ? { scale: 0.75, y: 0.2 } : clicked && !hovered ? { scale: 0.75, y: 0.2 } : !clicked && hovered ? { scale: 0.75, y: 0.2 } : { scale: 0, y: 0 });
         circleControls.start(hovered && clicked ? { scale: 1, z: -102, } : clicked && !hovered ? { scale: 1, z: -102 } : !clicked && hovered ? { scale: 1 } : { scale: 0 });
         controls.start(hovered && clicked ? "enter" : clicked && !hovered ? "enter" : !clicked && hovered ? "enter" : "exit");
-        textMatControls.start(hovered && clicked ? "enter" : clicked && !hovered ? "enter" : !clicked && hovered ? "enter" : "exit");
         hovered && clicked
             ? subGroupControls.stop() :
             clicked && !hovered
@@ -132,7 +135,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
             groupControls.start("enter");
         }
     }, [isInPage]);
-    const p: any = new V3()
+    const p: any = useRef()
     return (
         <>
 
@@ -208,11 +211,12 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                             ref={instance}
                             // {...() => bind()}
                             // onPointerDown={(e) =>()}
-                            onClick={(e) => (e.stopPropagation(), setClicked(true), setDistance(2), setOrbitTarget(e.object.localToWorld(p.set(0, 0, 0))))}
-                            onPointerMissed={(e) => (setClicked(false), setDistance(1), setOrbitTarget({ x: 0, y: 1, z: 0 }))}
+                            onClick={(e) => (e.stopPropagation(), setClicked(true), p.current.updateWorldMatrix(true, true), setOrbitTarget(e.eventObject.localToWorld(p.current.position)))}
+                            onPointerMissed={(e) => (setClicked(false), setOrbitTarget({ x: 0, y: 1, z: 0 }))}
                             onPointerOver={(e) => (e.stopPropagation(), setHover(true))}
                             onPointerOut={(e) => setHover(false)}
                         >
+                            <mesh position={[0, 0, 0]} ref={p}></mesh>
                             {hovered ? (
                                 <Outlines
                                     angle={0}
@@ -231,24 +235,13 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 <motion3d.group animate={textControls}>
                                     <Text
                                         lookAt={() => [0, 0, -5]}
-                                        scale={Math.max(0.5, Math.min(viewport.width / 20, 0.75))}
                                         textAlign="center"
                                         anchorX="center"
                                         anchorY="bottom"
+                                        color={"white"}
                                         font="/fonts/montserrat-alternates-v17-latin-700.ttf"
                                     >
-                                        <motion3d.meshBasicMaterial
-
-                                            toneMapped={false}
-                                            initial="initial"
-
-                                            animate={textMatControls}
-                                            variants={{
-                                                initial: { color: "#3564A1" },
-                                                enter: { color: "#ffffff" },
-                                                exit: { color: "#3564A1" },
-                                            }}
-                                        />
+                                        <meshBasicMaterial toneMapped={false} />
                                         {`${props.text}`}
                                     </Text>
                                 </motion3d.group>
@@ -259,7 +252,6 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                 <QuadraticBezierLine
                     dashed
                     dashScale={10}
-                    lineWidth={3}
                     start={idea.current.position}
                     end={props.centerPoint}
                     ref={line}

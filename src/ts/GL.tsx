@@ -6,7 +6,7 @@ import { RoundedPlaneGeometry } from "maath/geometry";
 import * as geometry from "maath/geometry";
 import { CubicBezierCurve3, CatmullRomCurve3 } from "three";
 import CurveGL from "./FBO";
-import { backgroundColors, leftCardViewer, loc, orbitTarget, rightCardViewer, servicesViewer } from "./atoms";
+import { backgroundColors, currentDistance, leftCardViewer, loc, orbitTarget, rightCardViewer, servicesViewer } from "./atoms";
 import { useAtom } from "jotai";
 import { motion as motion3d } from "framer-motion-3d"
 import { useAnimate, useAnimation, useMotionValueEvent, useScroll, useSpring } from "framer-motion";
@@ -38,94 +38,32 @@ interface glProps {
 }
 
 const GL = (props: glProps) => {
-    const leftCards = useRef<any>()
-    const rightCards = useRef<any>()
-    const v: Vector3 = [0, 2, 20]
-    const [lCV, setLCV] = useAtom(leftCardViewer);
-    const [rCV, setRCV] = useAtom(rightCardViewer);
-
-    const setRightCoords = () => {
-        const { width, height, left, top } =
-            rightCards?.current.getBoundingClientRect();
-        setRCV({ width, height, left, top });
-    };
-
-    const setLeftCoords = () => {
-        const { width, height, left, top } =
-            leftCards?.current.getBoundingClientRect();
-        setLCV({ width, height, left, top });
-    };
-
-    function setCoords() {
-        setLeftCoords();
-        setRightCoords();
-    }
-
-    useEffect(() => {
-        setCoords();
-    }, []);
-
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            window.addEventListener('scroll', setCoords, false);
-        }
-        return () => {
-            window.removeEventListener('scroll', setCoords, false);
-        };
-
-    });
-
-    useEffect(() => {
-        window.addEventListener('resize', setCoords, false);
-        return () => {
-            window.removeEventListener('resize', setCoords, false);
-        };
-    });
-
-
-
-    const cameraPositions: any = {
-        0: { y: 0, x: 10, z: 0, rotateX: 0 },
-        1: { y: 50, x: 0, z: -15, rotateX: -1.5 },
-        2: { y: 2, x: 0, z: 0, rotateX: 0 },
-        3: { y: 2, x: 0, z: 0, rotateX: 0 },
-        4: { y: 2, x: 0, z: 0, rotateX: 0 },
-        5: { y: 2, x: 0, z: 0, rotateX: 0 },
-        6: { y: 2, x: 0, z: 0, rotateX: 0 },
-    }
-
 
     const [target, setTarget]: any = useAtom<any>(orbitTarget);
-    const cameraControls = useAnimation()
+    const cameraControls = useRef<CameraControls | null>(null);
+    useEffect(() => {
+        console.log(target)
+        cameraControls.current?.setTarget(target.x, target.y, target.z, true);
 
-    const { scrollYProgress } = useScroll({ container: props.eventSource })
-    useMotionValueEvent(scrollYProgress, "change", (latest) => {
-        const xFloor = Math.floor(latest * 6);
-        cameraControls.start(cameraPositions[xFloor]);
-        // console.log(latest);
-    })
+    }, [target])
+    const [distance, setDistance] = useAtom(currentDistance)
 
-
-
+    useEffect(() => {
+        cameraControls.current?.zoomTo(distance, true)
+    }, [distance]);
     return (
         <div className="canvas__wrapper">
-            <div className="fixed w-full h-full top-0 left-0 right-0 bottom-0 z-[-10]  content-grid">
-                <div className="targetC">
-                    <div ref={leftCards} className="flex flex-1 w-full"></div>
-                    <div ref={rightCards} className="flex flex-1 w-full"></div>
-                </div>
-            </div >
             <Canvas
-                // camera={{ position: [0, 4, 0], fov: 75, }}
+                camera={{ position: [0, 1.5, 30], fov: 45 }}
                 dpr={[1, 1.5]}
                 gl={{ antialias: true }}
                 eventSource={props.eventSource}
                 eventPrefix="client">
 
-                <OrbitControls makeDefault dampingFactor={0.05} minDistance={5} maxDistance={10} minPolarAngle={0} maxPolarAngle={Math.PI / 2} minAzimuthAngle={-Math.PI / 2} maxAzimuthAngle={Math.PI / 2} target={[0, 0, -5]} />
-                {/* <CameraControls maxDistance={10} minDistance={5} makeDefault minPolarAngle={0} maxPolarAngle={Math.PI / 2} minAzimuthAngle={-Math.PI / 2} maxAzimuthAngle={Math.PI / 2} />
-                <motion3d.mesh transition={{ type: "spring", stiffness: 50, damping: 15, restDelta: 0.001 }} initial={cameraPositions[0]} animate={cameraControls}
-                ><PerspectiveCamera makeDefault fov={45} /></motion3d.mesh> */}
+                <CameraControls onChange={(e) => { console.log("cahnge") }} smoothTime={0.5} ref={cameraControls} maxDistance={25} distance={25} minDistance={10} minPolarAngle={0} maxPolarAngle={Math.PI / 2} minAzimuthAngle={-Math.PI / 2} maxAzimuthAngle={Math.PI / 2} />
+                {/* <OrbitControls ref={cameraControlsRef} makeDefault dampingFactor={0.05} minDistance={5} maxDistance={10} minPolarAngle={0} maxPolarAngle={Math.PI / 2} minAzimuthAngle={-Math.PI / 2} maxAzimuthAngle={Math.PI / 2} /> */}
+                {/* <motion3d.mesh position={[0, 0, 0]} transition={{ type: "spring", stiffness: 50, damping: 15, restDelta: 0.001 }}
+                ><PerspectiveCamera makeDefault fov={75} /></motion3d.mesh> */}
                 {/* <color attach="background" args={["#F7FFF2"]}></color> */}
                 {/* <fog attach={"fog"} args={["#0B1123", 5, 10]}></fog> */}
                 <GradientTexture stops={[0, 1]} colors={["#f6fff0", "#e5fcfc"]} attach="background" size={1024} />
@@ -141,12 +79,12 @@ const GL = (props: glProps) => {
                     color="#111"
                     scale={5}
                     colorStop={0}
-                    position={[-.5, -6, -5]}
+                    position={[-.5, -7, 0]}
                     opacity={0.2}
                     fog={false}
                 />
                 {/* </Bounds> */}
-                <Background />
+                {/* <Background /> */}
             </Canvas>
         </div >
     );

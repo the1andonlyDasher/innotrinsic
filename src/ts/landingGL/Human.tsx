@@ -8,9 +8,11 @@ interface HumanProps {
 }
 
 const Human: FunctionComponent<HumanProps> = () => {
-    return (<motion3d.group>
-        <Head rotation={[0, Math.PI / 1.25, 0]} position={[0, -4, -5]} />
-    </motion3d.group>);
+    return (
+        <motion3d.group>
+            <Head rotation={[0, Math.PI / 1.25, 0]} position={[0, -5.5, 0]} />
+        </motion3d.group>
+    );
 }
 
 export default Human;

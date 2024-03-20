@@ -36,14 +36,14 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
     coneRotation = coneRotation === undefined ? Math.PI * 3 : coneRotation;
     var i = 0;
 
-    const radius = 4;
+    const radius = 3;
     const counter = 5;
     const r = ((Math.PI * 2) / counter) * i;
     const numIdeas = Array.from(IdeaData);
     return (
         <group position={props.centerPoint}>
             <Instances>
-                <sphereGeometry args={[0.3, 30, 30]} />
+                <sphereGeometry args={[0.2, 30, 30]} />
                 <motion3d.meshStandardMaterial variants={
                     {
                         initial: { opacity: 0 }, enter: { opacity: 1 }, exit: { opacity: 0 }
