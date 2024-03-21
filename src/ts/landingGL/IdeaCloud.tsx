@@ -1,7 +1,9 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
 import Idea from "./Idea";
 import { Instances } from "@react-three/drei";
 import { motion as motion3d } from "framer-motion-3d"
+import { useAnimation } from "framer-motion";
+import { useSearchParams } from "next/navigation";
 
 interface IdeaCloudProps {
     centerPoint: [number, number, number];
@@ -21,7 +23,7 @@ const IdeaData = [
         text: "GePoVe"
     },
     {
-        colors: ["#BDED4C", "#3564A1"],
+        colors: ["#F7FFF2", "#3564A1"],
         text: "Sport"
     },
     {
@@ -32,6 +34,9 @@ const IdeaData = [
 ]
 
 const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
+
+    const searchParams = useSearchParams();
+
     let coneRotation: any;
     coneRotation = coneRotation === undefined ? Math.PI * 3 : coneRotation;
     var i = 0;
@@ -40,15 +45,19 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
     const counter = 5;
     const r = ((Math.PI * 2) / counter) * i;
     const numIdeas = Array.from(IdeaData);
+    const sphereControls = useAnimation()
+
+
+    // useEffect(() => {
+    //     sphereControls.start(searchParams.get("neuron") === null ? "visible" : searchParams.get("neuron") !== "business" ? "hide" : "visible")
+    // }, [searchParams])
+
+
     return (
         <group position={props.centerPoint}>
             <Instances>
                 <sphereGeometry args={[0.3, 30, 30]} />
-                <motion3d.meshStandardMaterial variants={
-                    {
-                        initial: { opacity: 0 }, enter: { opacity: 1 }, exit: { opacity: 0 }
-                    }
-                } color={"white"} />
+                <motion3d.meshStandardMaterial color={"white"} />
                 {numIdeas.map((data: any, i: number) => {
                     var r = ((Math.PI * 2) / counter) * i;
                     // random
@@ -57,6 +66,7 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
                             ? +Math.max(0.1, Math.min(Math.random(), 0.4))
                             : -Math.max(0.1, Math.min(Math.random(), 0.4));
                     return <Idea
+                        active={searchParams.get("neuron") === data.text ? true : false}
                         delayFactor={i + 1 / 10}
                         text={data.text}
                         colors={data.colors}

@@ -16,6 +16,7 @@ import { NeuronNet } from "./NeuronNet";
 import Human from "./landingGL/Human";
 import { BloomFilter } from "next/dist/shared/lib/bloom-filter";
 import Background from "./Background";
+import { useRouter } from "next/router";
 
 
 
@@ -38,15 +39,21 @@ interface glProps {
 }
 
 const GL = (props: glProps) => {
-
+    const router = useRouter()
     const [target, setTarget]: any = useAtom<any>(orbitTarget);
     const cameraControls = useRef<CameraControls | null>(null);
+    const [distance, setDistance] = useAtom(currentDistance)
+
+    useEffect(() => {
+        setTarget(router.pathname !== "/" ? { x: 0, y: 1, z: 0 } : target)
+        cameraControls.current?.zoomTo(router.pathname !== "/" ? 1 : 1, true)
+    }, [router.pathname]);
+
     useEffect(() => {
         console.log(target)
         cameraControls.current?.setTarget(target.x, target.y, target.z, true);
 
     }, [target])
-    const [distance, setDistance] = useAtom(currentDistance)
 
     useEffect(() => {
         cameraControls.current?.zoomTo(distance, true)

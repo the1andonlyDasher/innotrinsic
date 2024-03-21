@@ -15,10 +15,12 @@ import { useGesture } from "@use-gesture/react";
 import { useAtom } from "jotai";
 import { backgroundColors, currentDistance, orbitTarget } from "../atoms";
 import { useRouter } from "next/router";
-import { Vector3 as V3 } from "@/ts/threeExport/math/Vector3"
+import { Vector3 as V3 } from "@/ts/threeExport/math/Vector3";
+import { useParams, useSearchParams } from "next/navigation";
 
 const materialVariants = {
     initial: { opacity: 0 },
+    hide: { opacity: 0.2 },
     enter: { opacity: 1 },
     exit: { opacity: 0 },
 };
@@ -43,11 +45,15 @@ interface IdeaProps {
     text: string;
     colors: string[];
     delayFactor: number;
+    active: boolean;
+
 }
 
 const Idea: FunctionComponent<IdeaProps> = (props) => {
     // router
     const router = useRouter();
+    const searchParams = useSearchParams();
+
 
     // refs
     const idea = useRef<any>(!null);
@@ -76,8 +82,8 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
     useCursor(hovered);
 
     // atoms
-    const [orbTarget, setOrbitTarget] = useAtom(orbitTarget)
-    const [distance, setDistance] = useAtom(currentDistance)
+    const [orbTarget, setOrbitTarget] = useAtom(orbitTarget);
+    const [distance, setDistance] = useAtom(currentDistance);
 
     // random
     const rand =
@@ -90,26 +96,81 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
         line.current.setPoints(props.centerPoint, idea.current.position)
     );
 
+    //uef for router state change
+    useEffect(() => {
+        if (router.pathname !== "/") {
+            setClicked(false);
+            setHover(false);
+        }
+    }, [router.pathname]);
 
     // UEF for hover state
     useEffect(() => {
-        sphereControls.start(hovered && clicked ? { scale: 1.5 } : clicked && !hovered ? { scale: 1.5 } : !clicked && hovered ? { scale: 1.5 } : { scale: 1 });
-        textControls.start(hovered && clicked ? { scale: 0.75, y: 0.4 } : clicked && !hovered ? { scale: 0.75, y: 0.4 } : !clicked && hovered ? { scale: 0.75, y: 0.4 } : { scale: 0.65, y: 0.3 });
-        circleControls.start(hovered && clicked ? { scale: 1, z: -102, } : clicked && !hovered ? { scale: 1, z: -102 } : !clicked && hovered ? { scale: 1 } : { scale: 0 });
-        controls.start(hovered && clicked ? "enter" : clicked && !hovered ? "enter" : !clicked && hovered ? "enter" : "exit");
-        textMatControls.start(hovered && clicked ? "enter" : clicked && !hovered ? "enter" : !clicked && hovered ? "enter" : "exit");
+        sphereControls.start(
+            hovered && clicked
+                ? { scale: 1.5 }
+                : clicked && !hovered
+                    ? { scale: 1.5 }
+                    : !clicked && hovered
+                        ? { scale: 1.5 }
+                        : { scale: 1 }
+        );
+        textControls.start(
+            hovered && clicked
+                ? { scale: 0.75, y: 0.5 }
+                : clicked && !hovered
+                    ? { scale: 0.75, y: 0.5 }
+                    : !clicked && hovered
+                        ? { scale: 0.75, y: 0.5 }
+                        : { scale: 0.65, y: 0.3 }
+        );
+        circleControls.start(
+            hovered && clicked
+                ? { scale: 1, z: -102 }
+                : clicked && !hovered
+                    ? { scale: 1, z: -102 }
+                    : !clicked && hovered
+                        ? { scale: 1 }
+                        : { scale: 0 }
+        );
+        controls.start(
+            hovered && clicked
+                ? "enter"
+                : clicked && !hovered
+                    ? "enter"
+                    : !clicked && hovered
+                        ? "enter"
+                        : "exit"
+        );
+        textMatControls.start(
+            hovered && clicked
+                ? "enter"
+                : clicked && !hovered
+                    ? "enter"
+                    : !clicked && hovered
+                        ? "enter"
+                        : "exit"
+        );
         hovered && clicked
-            ? subGroupControls.stop() :
-            clicked && !hovered
-                ? subGroupControls.stop() :
-                !clicked && hovered
-                    ? subGroupControls.stop() :
-                    subGroupControls.start({
+            ? subGroupControls.stop()
+            : clicked && !hovered
+                ? subGroupControls.stop()
+                : !clicked && hovered
+                    ? subGroupControls.stop()
+                    : subGroupControls.start({
                         x: props.position[0] + rand,
                         y: props.position[1] + rand,
                         z: props.position[2] + rand,
                     });
     }, [hovered, clicked]);
+
+
+    useEffect(() => {
+        textMatControls.start(searchParams.get("neuron") === null ? "visible" : searchParams.get("neuron") !== props.text ? "hide" : "visible")
+        sphereControls.start(searchParams.get("neuron") === null ? { scale: 1 } : searchParams.get("neuron") !== props.text ? { scale: 0 } : { scale: 1.5 })
+
+    }, [searchParams])
+
 
     // UEF for mounting and visibility
     useEffect(() => {
@@ -132,15 +193,15 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
             groupControls.start("enter");
         }
     }, [isInPage]);
-    const p: any = new V3()
+    const p: any = new V3();
     return (
         <>
-
             <motion3d.group
                 initial="initial"
                 variants={groupVariants}
                 visible={!disposed}
                 animate={groupControls}
+                transition={{ type: "spring", damping: 10, stifness: 60, restDetla: 0.001, delay: props.delayFactor / 10 }}
             >
                 <motion3d.group
                     ref={idea}
@@ -165,6 +226,32 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         type: "tween",
                     }}
                 >
+                    <Billboard>
+                        <motion3d.group animate={textControls} transition={{ type: "spring", damping: 10, stifness: 60, restDetla: 0.001 }}>
+                            <Text
+                                lookAt={() => [0, 0, -5]}
+                                scale={Math.max(0.5, Math.min(viewport.width / 20, 0.75))}
+                                textAlign="center"
+                                anchorX="center"
+                                anchorY="bottom"
+                                font="/fonts/montserrat-alternates-v17-latin-700.ttf"
+                            >
+                                <motion3d.meshBasicMaterial
+                                    toneMapped={false}
+                                    initial="initial"
+                                    animate={textMatControls}
+                                    variants={{
+                                        initial: { color: "#3564A1" },
+                                        hide: { opacity: 0.2 },
+                                        visible: { opacity: 1 },
+                                        enter: { color: "#ffffff" },
+                                        exit: { color: "#3564A1" },
+                                    }}
+                                />
+                                {`${props.text}`}
+                            </Text>
+                        </motion3d.group>
+                    </Billboard>
                     <motion3d.group
                         animate={sphereControls}
                         transition={{
@@ -205,11 +292,25 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                             </motion3d.mesh>
                         </Billboard>
                         <Instance
+                            renderOrder={1}
                             ref={instance}
                             // {...() => bind()}
                             // onPointerDown={(e) =>()}
-                            onClick={(e) => (e.stopPropagation(), setClicked(true), setDistance(2), setOrbitTarget(e.object.localToWorld(p.set(0, 0, 0))))}
-                            onPointerMissed={(e) => (setClicked(false), setDistance(1), setOrbitTarget({ x: 0, y: 1, z: 0 }))}
+                            onClick={(e) => (
+                                e.stopPropagation(),
+                                setClicked(true),
+                                setDistance(2),
+                                setOrbitTarget(e.object.localToWorld(p.set(0, 0, 0)))
+                                , router.push(router.pathname + `?view=true&neuron=${props.text}`, undefined, {
+                                    shallow: true,
+                                })
+                            )}
+                            onPointerMissed={(e) => (
+                                setClicked(false),
+                                setDistance(1),
+                                setOrbitTarget({ x: 0, y: 1, z: 0 })
+                                , router.replace(router.pathname, undefined, { shallow: true })
+                            )}
                             onPointerOver={(e) => (e.stopPropagation(), setHover(true))}
                             onPointerOut={(e) => setHover(false)}
                         >
@@ -220,39 +321,15 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                     thickness={0.02}
                                     toneMapped={false}
                                 />
-                            ) : clicked ?
+                            ) : searchParams.get("neuron") === props.text ? (
                                 <Outlines
                                     angle={0}
                                     color={"#ffffff"}
                                     thickness={0.03}
                                     toneMapped={false}
-                                /> : null}
-                            <Billboard>
-                                <motion3d.group animate={textControls}>
-                                    <Text
-                                        lookAt={() => [0, 0, -5]}
-                                        scale={Math.max(0.5, Math.min(viewport.width / 20, 0.75))}
-                                        textAlign="center"
-                                        anchorX="center"
-                                        anchorY="bottom"
-                                        font="/fonts/montserrat-alternates-v17-latin-700.ttf"
-                                    >
-                                        <motion3d.meshBasicMaterial
+                                />
+                            ) : null}
 
-                                            toneMapped={false}
-                                            initial="initial"
-
-                                            animate={textMatControls}
-                                            variants={{
-                                                initial: { color: "#3564A1" },
-                                                enter: { color: "#ffffff" },
-                                                exit: { color: "#3564A1" },
-                                            }}
-                                        />
-                                        {`${props.text}`}
-                                    </Text>
-                                </motion3d.group>
-                            </Billboard>
                         </Instance>
                     </motion3d.group>
                 </motion3d.group>
@@ -263,8 +340,13 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                     start={idea.current.position}
                     end={props.centerPoint}
                     ref={line}
-                    color={"white"}
-                />
+                    isMaterial
+                    opacity={
+                        searchParams.get("neuron") === null ? 1 : searchParams.get("neuron") !== props.text ? 0.2 : 1
+                    }
+                    transparent
+                >
+                </QuadraticBezierLine>
             </motion3d.group>
         </>
     );
