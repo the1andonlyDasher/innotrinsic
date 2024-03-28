@@ -124,7 +124,7 @@ h3,
 h4,
 h5 {
   text-align: left;
-  // margin: var(--space-xs) auto;
+  // margin: 0.1em auto;
   width: 100%;
 }
 
@@ -142,15 +142,16 @@ h1 {
   position: relative;
   font-family: var(--fonts-header);
   font-weight: 900;
-  color: rgb(7, 7, 48);
+  color: var(--clr-verdigris-main);
   line-height: 1.3;
 }
 
 h2 {
   font-size: var(--fs-sub-small);
+  color: var(--clr-blue-500);
   position: relative;
   font-weight: 900;
-  line-height: 1.3;
+  line-height: 1.5;
 }
 
 h3 {
@@ -226,17 +227,17 @@ a {
   @extend %trans;
   font-family: $ff-header;
   text-transform: uppercase;
-  margin: var(--space-m) auto;
-  border-radius: 3px;
+  margin: var(--space-m) 0;
+  border-radius: 5px;
   position: relative;
-  font-size: var(--fs-text-small);
-  font-family: var(--fonts-text);
+  font-size: var(--fs-text);
+  font-family: var(--fonts-sub);
+  box-shadow: 2px 2px 5px #11111111;
   font-weight: 900;
-  padding: var(--space-m) var(--space-l);
+  padding: 1rem var(--space-l);
   z-index: 5;
   overflow: hidden;
   @include mq(medium) {
-    margin-right: auto;
     max-width: 250px;
   }
   &::after,
@@ -251,54 +252,48 @@ a {
   background-color: transparent;
   border-color: transparent;
   border: none;
-  color: var(--clr-contrast-100);
+  color: var(--clr-ice-100);
   font-weight: 800;
   position: relative;
   &::after {
-    background-image: linear-gradient(-30deg, #4870ff 0, rgb(62, 197, 255) 90%);
+    width: 200%;
+    left: -100%;
+    background-image: linear-gradient(
+      -30deg,
+      var(--clr-ice-400),
+      var(--clr-ice-main)
+    );
     z-index: -1;
     transform-origin: center;
     opacity: 1;
-    width: 100%;
   }
   &:hover {
-    color: var(--clr-contrast-100);
+    color: var(--clr-blue-500);
   }
   &:hover::after,
   &:active::after {
-    width: 300%;
+    left: 0;
   }
 }
 
 .btn__outline {
-  background-color: transparent;
-  color: var(--clr-contrast-100);
+  background-color: rgb(172, 255, 248);
+  color: var(--clr-blue-main);
 
   position: relative;
   &::before {
-    background-image: linear-gradient(-75deg, hotpink, violet);
     z-index: -2;
   }
   &:hover {
-    color: var(--clr-contrast-100);
+    color: var(--clr-contrast-700);
   }
   &::after {
-    background-color: #000;
-    width: calc(100% - 4px);
-    height: calc(100% - 4px);
-    left: 2px;
-    top: 2px;
-    z-index: -1;
   }
   &:hover::after,
   :active::after {
-    z-index: -1;
-    scale: 3;
-    background-color: rgb(0, 0, 0);
   }
   &:hover::before,
   :active::before {
-    scale: 0;
   }
 }
 

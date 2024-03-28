@@ -153,7 +153,7 @@ a {
 .nav-items-mobile {
   @extend %flex-center;
   top: 0;
-  left: -1rem;
+  left: 0;
   width: 100vw;
   height: 100vh;
   height: 100dvh;
@@ -164,7 +164,7 @@ a {
   flex-direction: column;
   list-style-type: none;
   z-index: -1;
-  background-color: var(--clr-secondary-100);
+  background-color: var(--clr-white-main);
   @include mq(medium) {
     display: none;
   }

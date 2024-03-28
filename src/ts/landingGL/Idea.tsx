@@ -10,25 +10,25 @@ import {
 import { Vector3, useFrame, useThree } from "@react-three/fiber";
 import { animate, useAnimation } from "framer-motion";
 import { motion as motion3d } from "framer-motion-3d";
-import { FunctionComponent, useEffect, useRef, useState } from "react";
+import { FunctionComponent, Suspense, useEffect, useRef, useState } from "react";
 import { useGesture } from "@use-gesture/react";
 import { useAtom } from "jotai";
 import { backgroundColors, currentDistance, orbitTarget } from "../atoms";
 import { useRouter } from "next/router";
 import { Vector3 as V3 } from "@/ts/threeExport/math/Vector3";
 import { useParams, useSearchParams } from "next/navigation";
+import { ShakeHands } from "./ShakeHands";
+
 
 const materialVariants = {
-    initial: { opacity: 0 },
-    hide: { opacity: 0.2 },
-    enter: { opacity: 1 },
-    exit: { opacity: 0 },
+    visible: { opacity: 1 },
+    hidden: { opacity: 0, transition: { delay: 0.1 } },
 };
 
 const circleVariants = {
-    initial: { scale: 0 },
-    enter: { scale: 1 },
-    exit: { scale: 0 },
+    visible: { scale: 1 },
+    hidden: { scale: 0 },
+
 };
 
 const groupVariants = {
@@ -46,6 +46,7 @@ interface IdeaProps {
     colors: string[];
     delayFactor: number;
     active: boolean;
+    children?: any;
 
 }
 
@@ -71,7 +72,6 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
     const textControls = useAnimation();
     const groupControls = useAnimation();
     const subGroupControls = useAnimation();
-    const circleControls = useAnimation();
     const controls = useAnimation();
     const textMatControls = useAnimation();
 
@@ -117,22 +117,14 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
         );
         textControls.start(
             hovered && clicked
-                ? { scale: 0.75, y: 0.5 }
+                ? { scale: 0.75, y: 0.9, z: -0.2 }
                 : clicked && !hovered
-                    ? { scale: 0.75, y: 0.5 }
+                    ? { scale: Math.max(0.75, Math.min(viewport.width / 20, 0.9)), y: 0.9, z: -0.2 }
                     : !clicked && hovered
-                        ? { scale: 0.75, y: 0.5 }
-                        : { scale: 0.65, y: 0.3 }
+                        ? { scale: 0.75, y: 0.5, z: 0 }
+                        : { scale: 0.65, y: 0.3, z: 0 }
         );
-        circleControls.start(
-            hovered && clicked
-                ? { scale: 1, z: -102 }
-                : clicked && !hovered
-                    ? { scale: 1, z: -102 }
-                    : !clicked && hovered
-                        ? { scale: 1 }
-                        : { scale: 0 }
-        );
+
         controls.start(
             hovered && clicked
                 ? "enter"
@@ -166,10 +158,14 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
 
 
     useEffect(() => {
+        setClicked(searchParams.get("neuron") === props.text ? true : false)
         textMatControls.start(searchParams.get("neuron") === null ? "visible" : searchParams.get("neuron") !== props.text ? "hide" : "visible")
-        sphereControls.start(searchParams.get("neuron") === null ? { scale: 1 } : searchParams.get("neuron") !== props.text ? { scale: 0 } : { scale: 1.5 })
-
+        sphereControls.start(searchParams.get("neuron") === null ? { scale: 1 } : searchParams.get("neuron") !== props.text ? { scale: 1 } : { scale: 1.5 })
     }, [searchParams])
+
+    useEffect(() => {
+        setOrbitTarget
+    }, [])
 
 
     // UEF for mounting and visibility
@@ -193,6 +189,9 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
             groupControls.start("enter");
         }
     }, [isInPage]);
+
+
+
     const p: any = new V3();
     return (
         <>
@@ -201,7 +200,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                 variants={groupVariants}
                 visible={!disposed}
                 animate={groupControls}
-                transition={{ type: "spring", damping: 10, stifness: 60, restDetla: 0.001, delay: props.delayFactor / 10 }}
+                transition={{ type: "spring", duration: 0.5, damping: 20, stifness: 60, restDetla: 0.01, delay: props.delayFactor / 10 }}
             >
                 <motion3d.group
                     ref={idea}
@@ -226,6 +225,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         type: "tween",
                     }}
                 >
+
                     <Billboard>
                         <motion3d.group animate={textControls} transition={{ type: "spring", damping: 10, stifness: 60, restDetla: 0.001 }}>
                             <Text
@@ -233,19 +233,21 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 scale={Math.max(0.5, Math.min(viewport.width / 20, 0.75))}
                                 textAlign="center"
                                 anchorX="center"
+                                strokeWidth={0}
+                                renderOrder={4}
                                 anchorY="bottom"
-                                font="/fonts/montserrat-alternates-v17-latin-700.ttf"
+                                font="/fonts/montserrat-alternates-v17-latin-800.ttf"
                             >
                                 <motion3d.meshBasicMaterial
                                     toneMapped={false}
                                     initial="initial"
                                     animate={textMatControls}
                                     variants={{
-                                        initial: { color: "#3564A1" },
+                                        initial: { color: "#2b5182" },
                                         hide: { opacity: 0.2 },
                                         visible: { opacity: 1 },
                                         enter: { color: "#ffffff" },
-                                        exit: { color: "#3564A1" },
+                                        exit: { color: "#2b5182" },
                                     }}
                                 />
                                 {`${props.text}`}
@@ -261,12 +263,20 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                             restDelta: 0.001,
                         }}
                     >
-                        <Billboard renderOrder={clicked ? 2 : 0}>
+
+                        <Billboard >
                             <motion3d.mesh
+                                renderOrder={clicked ? 0 : -1}
                                 variants={circleVariants}
-                                initial="initial"
-                                animate={circleControls}
-                                exit="exit"
+                                animate={
+                                    hovered && clicked
+                                        ? "visible"
+                                        : clicked && !hovered
+                                            ? "visible"
+                                            : !clicked && hovered
+                                                ? "visible"
+                                                : "hidden"
+                                }
                                 transition={{
                                     type: "spring",
                                     damping: 20,
@@ -277,9 +287,8 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                             >
                                 <circleGeometry args={[200, 50]} />
                                 <motion3d.meshStandardMaterial
+                                    toneMapped
                                     transparent
-                                    initial="initial"
-                                    animate={controls}
                                     variants={materialVariants}
                                 >
                                     <GradientTexture
@@ -292,26 +301,27 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                             </motion3d.mesh>
                         </Billboard>
                         <Instance
-                            renderOrder={1}
+                            name={props.text}
                             ref={instance}
                             // {...() => bind()}
                             // onPointerDown={(e) =>()}
                             onClick={(e) => (
                                 e.stopPropagation(),
-                                setClicked(true),
-                                setDistance(2),
-                                setOrbitTarget(e.object.localToWorld(p.set(0, 0, 0)))
-                                , router.push(router.pathname + `?view=true&neuron=${props.text}`, undefined, {
+                                // setClicked(true),
+                                // setDistance(3),
+                                // setOrbitTarget(e.object.localToWorld(p.set(0, 0, 0))),
+                                router.push(router.pathname + `?view=true&neuron=${props.text}`, undefined, {
                                     shallow: true,
                                 })
                             )}
+
                             onPointerMissed={(e) => (
-                                setClicked(false),
-                                setDistance(1),
-                                setOrbitTarget({ x: 0, y: 1, z: 0 })
-                                , router.replace(router.pathname, undefined, { shallow: true })
+                                // setClicked(false),
+                                // setDistance(1),
+                                // setOrbitTarget({ x: 0, y: 1, z: 0 }),
+                                router.replace(router.pathname, undefined, { shallow: true })
                             )}
-                            onPointerOver={(e) => (e.stopPropagation(), setHover(true))}
+                            onPointerOver={(e) => (e.stopPropagation(), setHover(searchParams.get("view") !== null ? false : true))}
                             onPointerOut={(e) => setHover(false)}
                         >
                             {hovered ? (
@@ -319,25 +329,39 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                     angle={0}
                                     color={"#ffffff"}
                                     thickness={0.02}
+                                    transparent
+                                    opacity={clicked ? 0.2 : 1}
                                     toneMapped={false}
                                 />
                             ) : searchParams.get("neuron") === props.text ? (
                                 <Outlines
                                     angle={0}
+                                    transparent
                                     color={"#ffffff"}
+                                    opacity={clicked ? 0.2 : 1}
                                     thickness={0.03}
                                     toneMapped={false}
+
                                 />
                             ) : null}
 
                         </Instance>
+                        <Suspense fallback={null}>
+                            <motion3d.group
+                                initial={{ scale: 0 }}
+                                animate={clicked ? { scale: 1, transition: { type: "spring", damping: 10, stiffness: 50, restDelta: 0.01, delay: 0.5 } } : { scale: 0 }}
+
+                            >
+                                {props.children}
+                            </motion3d.group>
+                        </Suspense>
                     </motion3d.group>
                 </motion3d.group>
-                <QuadraticBezierLine
+                {idea && <QuadraticBezierLine
                     dashed
                     dashScale={10}
                     lineWidth={3}
-                    start={idea.current.position}
+                    start={idea.current?.position}
                     end={props.centerPoint}
                     ref={line}
                     isMaterial
@@ -346,7 +370,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                     }
                     transparent
                 >
-                </QuadraticBezierLine>
+                </QuadraticBezierLine>}
             </motion3d.group>
         </>
     );

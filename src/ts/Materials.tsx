@@ -1,0 +1,1 @@
+export const mat = <meshStandardMaterial color="white" />

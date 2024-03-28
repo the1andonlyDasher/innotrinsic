@@ -13,6 +13,7 @@ import IdeaCloud from "./IdeaCloud";
 import { useAnimation } from "framer-motion";
 import router from "next/router";
 import { useSearchParams } from "next/navigation";
+import { Hand } from "@/Hand";
 
 const materialVariants = {
   initial: { opacity: 0 },
@@ -26,14 +27,36 @@ const materialVariants = {
       restDelta: 0.1,
     },
   },
-  exit: { opacity: 0 },
+  exit: {
+    opacity: 0, transition: {
+      type: "spring",
+      damping: 10,
+      stiffness: 50,
+      restDelta: 0.1, delay: 0.25
+    }
+  },
 };
 
 const material2Variants = {
   initial: { opacity: 0 },
   hide: { opacity: 0.1 },
-  enter: { opacity: 1, },
-  exit: { opacity: 0 },
+  enter: {
+    opacity: 1,
+    transition: {
+      type: "spring",
+      damping: 10,
+      stiffness: 50,
+      restDelta: 0.1,
+    }
+  },
+  exit: {
+    opacity: 0, transition: {
+      type: "spring",
+      damping: 10,
+      stiffness: 50,
+      restDelta: 0.1, delay: 0.25
+    }
+  },
 };
 
 type GLTFResult = GLTF & {
@@ -65,28 +88,7 @@ export function Head(props: HeadProps) {
 
   // animation controls
   const controls = useAnimation();
-
-  // materials
-  const mat = (
-    <motion3d.meshStandardMaterial
-      initial="initial"
-      animate={controls}
-      variants={materialVariants}
-      color="#A2FDFD"
-      transparent
-      toneMapped
-    />
-  );
-  const mat2 = (
-    <motion3d.meshStandardMaterial
-      initial="initial"
-      animate={controls}
-      variants={material2Variants}
-      color="#29A2A6"
-      transparent
-      toneMapped
-    />
-  );
+  const controls2 = useAnimation();
 
   // GLTF
   const { nodes, materials } = useGLTF("/thirdHeadMesh.glb") as GLTFResult;
@@ -98,6 +100,32 @@ export function Head(props: HeadProps) {
   const [disposed, setDisposed] = useState(false);
   const [isInPage, setIsInPage] = useState(false);
 
+  // materials
+  const mat = (
+    <motion3d.meshStandardMaterial
+      initial="initial"
+      animate={controls}
+      exit="exit"
+      variants={materialVariants}
+      color="#A2FDFD"
+
+      transparent
+      toneMapped
+    />
+  );
+  const mat2 = (
+    <motion3d.meshStandardMaterial
+      initial="initial"
+      animate={controls}
+      exit="exit"
+      variants={material2Variants}
+      color="#29A2A6"
+
+      transparent
+      toneMapped
+    />
+  );
+
   // UEF for mounting and visibility
   useEffect(() => {
     if (router.pathname === "/") {
@@ -107,52 +135,55 @@ export function Head(props: HeadProps) {
       }, 1000);
     } else {
       setTimeout(() => {
+        controls2.start("exit")
         controls.start("exit").then(() => {
           setIsInPage(false), setDisposed(true);
         });
-      }, 800);
+      }, 800)
+
     }
   }, [router.pathname]);
 
   useEffect(() => {
     if (isInPage) {
-      controls.start("enter");
+      controls.start("enter")
+      controls2.start("enter")
     }
   }, [isInPage]);
 
   //searchParams
   useEffect(() => {
-    controls.start(searchParams.get("view") ? "hide" : "enter");
-    console.log(searchParams.get("view"));
+    if (isInPage) {
+      controls.start(searchParams.get("view") !== null ? "hide" : "enter");
+      controls2.start(searchParams.get("view") !== null ? "hide" : "enter");
+    }
   }, [searchParams]);
+
   return (
     <motion3d.group
       position={props.position}
       rotation={props.rotation}
-      scale={Math.max(1, Math.min(0.1 * viewport.width, 2))}
+      scale={Math.max(0.6, Math.min(0.125 * viewport.width, 1.5))}
       dispose={null}
     >
       <motion3d.mesh
         ref={brain}
-        renderOrder={0}
+        renderOrder={4}
         geometry={nodes.Cube.geometry}
-        material={nodes.Cube.material}
         position={[0.082, 3.899, 0]}
       >
         {mat2}
       </motion3d.mesh>
       <motion3d.mesh
-        renderOrder={1}
+        renderOrder={5}
         geometry={nodes.female_head.geometry}
-        material={nodes.female_head.material}
         position={[-0.1, 2.675, 0.691]}
       >
         {mat}
       </motion3d.mesh>
       <motion3d.mesh
-        renderOrder={1}
+        renderOrder={5}
         geometry={nodes.female_head001.geometry}
-        material={nodes.female_head001.material}
         position={[-0.1, 2.675, -0.692]}
       >
         {mat}

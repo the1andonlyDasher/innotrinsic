@@ -1,41 +1,60 @@
-import { FunctionComponent, useEffect } from "react";
+import { FunctionComponent, useEffect, useRef } from "react";
 import Idea from "./Idea";
 import { Instances } from "@react-three/drei";
-import { motion as motion3d } from "framer-motion-3d"
+import { motion as motion3d } from "framer-motion-3d";
 import { useAnimation } from "framer-motion";
 import { useSearchParams } from "next/navigation";
+import { useAtom } from "jotai";
+import { orbitTarget, currentDistance } from "../atoms";
+import { Vector3 as V3 } from "@/ts/threeExport/math/Vector3";
+import { ShakeHands } from "./ShakeHands";
+import { Business } from "@/Business";
+import { Private } from "@/Private";
+import { GePoVe } from "@/GePoVe";
+import { Public } from "@/Public";
+import { Sport } from "@/Sport";
+import { useThree } from "@react-three/fiber";
 
 interface IdeaCloudProps {
     centerPoint: [number, number, number];
 }
 
-const IdeaData = [
+export const IdeaData = [
     {
         colors: ["#A2FDFD", "#3564A1"],
-        text: "Business"
+        text: "Business",
+        model: <Business scale={0.05} rotation={[0, Math.PI / 4, 0]} />
     },
     {
-        colors: ["#BDED4C", "#F7FFF2"],
-        text: "Private"
+        colors: ["#BDED4C", "#25b4d1"],
+        text: "Private",
+        model: <Private scale={0.05} />
     },
     {
-        colors: ["#29A2A6", "#F7FFF2"],
-        text: "GePoVe"
+        colors: ["#37f2fc", "#37fc90"],
+        text: "GePoVe",
+        model: <GePoVe scale={0.05} />
     },
     {
-        colors: ["#F7FFF2", "#3564A1"],
-        text: "Sport"
+        colors: ["#05f0f0", "#3564A1"],
+        text: "Sport",
+        model: <Sport scale={0.05} />
     },
     {
-        colors: ["#A2FDFD", "#F7FFF2"],
-        text: "PLP"
-    }
-
-]
+        colors: ["#A2FDFD", "#abe91c"],
+        text: "PLP",
+        model: <Public scale={0.05} />
+    },
+];
 
 const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
-
     const searchParams = useSearchParams();
+    const { viewport } = useThree();
+    const group = useRef<any>();
+
+    // atoms
+    const [orbTarget, setOrbitTarget] = useAtom(orbitTarget);
+    const [distance, setDistance] = useAtom(currentDistance);
 
     let coneRotation: any;
     coneRotation = coneRotation === undefined ? Math.PI * 3 : coneRotation;
@@ -45,19 +64,53 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
     const counter = 5;
     const r = ((Math.PI * 2) / counter) * i;
     const numIdeas = Array.from(IdeaData);
-    const sphereControls = useAnimation()
+    const sphereControls = useAnimation();
+    const p: any = new V3();
+
+    function setTarget() {
+        searchParams.get("view")
+            ? setOrbitTarget(
+                group.current
+                    .getObjectByName(`${searchParams.get("neuron")}`)
+                    .localToWorld(p.set(0, 0.2, 0))
+            )
+            : setOrbitTarget({ x: 0, y: 1, z: 0 });
+    }
+
+    useEffect(() => {
+        if (typeof window !== undefined) {
+            window.addEventListener('resize', setTarget, false);
+            return () => {
+                window.removeEventListener('resize', setTarget, false);
+            };
+        }
+    });
 
 
-    // useEffect(() => {
-    //     sphereControls.start(searchParams.get("neuron") === null ? "visible" : searchParams.get("neuron") !== "business" ? "hide" : "visible")
-    // }, [searchParams])
-
+    useEffect(() => {
+        searchParams.get("neuron")
+            ? setOrbitTarget(
+                group.current
+                    .getObjectByName(`${searchParams.get("neuron")}`)
+                    .localToWorld(p.set(0, 0.2, 0))
+            )
+            : setOrbitTarget({ x: 0, y: 1, z: 0 });
+        sphereControls.start(searchParams.get("view") ? "hide" : "visible");
+    }, [searchParams]);
 
     return (
-        <group position={props.centerPoint}>
-            <Instances>
+        <group ref={group} position={props.centerPoint}>
+            <Instances renderOrder={3}>
                 <sphereGeometry args={[0.3, 30, 30]} />
-                <motion3d.meshStandardMaterial color={"white"} />
+                <motion3d.meshStandardMaterial
+                    transparent
+                    toneMapped
+                    animate={sphereControls}
+                    variants={{
+                        hide: { opacity: 0.2, color: "#fff" },
+                        visible: { opacity: 1, color: "#fff" },
+                    }}
+                />
                 {numIdeas.map((data: any, i: number) => {
                     var r = ((Math.PI * 2) / counter) * i;
                     // random
@@ -65,19 +118,27 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
                         Math.round(Math.random()) === 1
                             ? +Math.max(0.1, Math.min(Math.random(), 0.4))
                             : -Math.max(0.1, Math.min(Math.random(), 0.4));
-                    return <Idea
-                        active={searchParams.get("neuron") === data.text ? true : false}
-                        delayFactor={i + 1 / 10}
-                        text={data.text}
-                        colors={data.colors}
-                        key={i}
-                        centerPoint={[0, 0, 0]}
-                        position={[Math.cos(r) * radius, 0 + rand, Math.sin(r) * radius]}
-                        rotation={[0, coneRotation, 0]}
-                        duration={3 + Math.random() * 2 + (i * Math.random())}
-                    />
-                }
-                )}
+                    return (
+                        <group key={i}>
+                            <Idea
+                                active={searchParams.get("neuron") === data.text ? true : false}
+                                delayFactor={i + 1 / 10}
+                                text={data.text}
+                                colors={data.colors}
+                                centerPoint={[0, 0, 0]}
+                                position={[
+                                    Math.cos(r) * radius,
+                                    0 + rand,
+                                    Math.sin(r) * radius,
+                                ]}
+                                rotation={[0, coneRotation, 0]}
+                                duration={3 + Math.random() * 2 + i * Math.random()}
+                            >
+                                {data.model}
+                            </Idea>
+                        </group>
+                    );
+                })}
             </Instances>
         </group>
     );

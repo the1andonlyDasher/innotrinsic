@@ -74,11 +74,10 @@ export default function MainLayout({ preview, children, navbar, legals, t }: any
                     initial={true}
                 >
                     <motion.div
-
-                        key={`${router.query.slug}`}
+                        key={router.route}
                         variants={variants}
                         initial="initial"
-                        animate={"enter"}
+                        animate="enter"
                         exit="exit"
                         className="content-grid"
                     >

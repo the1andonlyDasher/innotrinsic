@@ -50,7 +50,7 @@ const Navbar = ({ logo, alt, navbar, legals }: any) => {
   }
 
   const [isOpen, toggleOpen] = useCycle(false, true);
-  const hrefs = ["/", "/portfolio", "/moreinfo", "/contact"];
+  const hrefs = ["/", "/portfolio", "/kontakt"];
   const legal_hrefs = ["/datapolicy", "/imprint"]
 
   return (
