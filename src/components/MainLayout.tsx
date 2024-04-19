@@ -1,22 +1,21 @@
 
 import { useRouter } from "next/router";
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { AnimatePresence, motion, useAnimate, useAnimation } from "framer-motion";
+import { AbstractView, SyntheticEvent, UIEventHandler, useEffect, useRef, useState } from "react";
 import WebGL from "@/ts/GL";
 import { useAtom } from "jotai";
-import { currentNavigation, load, scrollEnabled } from "@/ts/atoms";
+import { currentNavigation, globalScroll, load, scrollEnabled } from "@/ts/atoms";
 import Navbar from "./Navbar/navbar";
 
 
 
 export default function MainLayout({ preview, children, navbar, legals, t }: any) {
-    const [loaded, setLoaded] = useAtom(load)
+    const [gScroll, setGScroll] = useAtom(globalScroll)
     const [nav, setNav] = useAtom(currentNavigation)
     const router = useRouter()
     const ref = useRef<any>(!null)
     const scrollContainer = useRef<any>(!null)
-    const [scroll, setScroll] = useAtom(scrollEnabled)
-
+    const scroll = useRef(0)
     const variants = {
         initial: { opacity: 0 },
         enter: {
@@ -64,34 +63,48 @@ export default function MainLayout({ preview, children, navbar, legals, t }: any
         }
     };
 
-    return (
-        <><div className="top-0 left-0 h-[100px] content-grid">
+    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        const target = e.currentTarget;
+        if (e.currentTarget instanceof HTMLDivElement) {
+            // console.log(scroll.current.toFixed(1))
+            scroll.current = target.scrollTop / (target.scrollHeight - window.innerHeight)
+            setGScroll(scroll.current)
+        }
+    }
+
+
+
+    return (<motion.div
+        variants={variants}
+
+        className="w-full absolute h-full bg-white z-50"
+    >
+        <div className="top-0 left-0 h-[100px] content-grid">
             <Navbar className="navbar" navbar={navbar} legals={legals} />
         </div>
-            <div ref={ref} className="main">
-                <AnimatePresence
-                    mode="wait"
-                    initial={true}
+        <div ref={ref} className="main"
+            onScroll={handleScroll}
+        >
+            <AnimatePresence
+                mode="wait"
+                initial={true}
+            >
+                <motion.div
+                    key={router.route}
+                    variants={variants}
+                    initial="initial"
+                    animate={"enter"}
+                    exit="exit"
+                    className="content-grid"
                 >
-                    <motion.div
-                        key={router.route}
-                        variants={variants}
-                        initial="initial"
-                        animate="enter"
-                        exit="exit"
-                        className="content-grid"
-                    >
+                    {children}
+                </motion.div>
+            </AnimatePresence>
+        </div>
+        <WebGL scroll={scroll} eventSource={ref} />
 
-                        {children}
+    </motion.div>
 
-                    </motion.div>
-
-                </AnimatePresence>
-            </div>
-            <WebGL eventSource={ref} />
-
-
-        </>
     );
 }
 

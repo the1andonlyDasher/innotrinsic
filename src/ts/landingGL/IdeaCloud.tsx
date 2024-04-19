@@ -21,28 +21,28 @@ interface IdeaCloudProps {
 
 export const IdeaData = [
     {
-        colors: ["#A2FDFD", "#3564A1"],
+        colors: ["#e5fcfc", "#3564A1"],
         text: "Business",
         model: <Business scale={0.05} rotation={[0, Math.PI / 4, 0]} />
     },
     {
-        colors: ["#BDED4C", "#25b4d1"],
+        colors: ["#e5fcfc", "#25b4d1"],
         text: "Private",
         model: <Private scale={0.05} />
     },
     {
-        colors: ["#37f2fc", "#37fc90"],
-        text: "GePoVe",
+        colors: ["#e5fcfc", "#32689C"],
+        text: "Gesellschaft",
         model: <GePoVe scale={0.05} />
     },
     {
-        colors: ["#05f0f0", "#3564A1"],
+        colors: ["#32689C", "#abe91c"],
         text: "Sport",
         model: <Sport scale={0.05} />
     },
     {
-        colors: ["#A2FDFD", "#abe91c"],
-        text: "PLP",
+        colors: ["#e5fcfc", "#abe91c"],
+        text: "Public Life",
         model: <Public scale={0.05} />
     },
 ];
@@ -60,7 +60,7 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
     coneRotation = coneRotation === undefined ? Math.PI * 3 : coneRotation;
     var i = 0;
 
-    const radius = 4;
+    const radius = Math.max(3, Math.min(viewport.width / 10, 4));
     const counter = 5;
     const r = ((Math.PI * 2) / counter) * i;
     const numIdeas = Array.from(IdeaData);
@@ -96,6 +96,7 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
             )
             : setOrbitTarget({ x: 0, y: 1, z: 0 });
         sphereControls.start(searchParams.get("view") ? "hide" : "visible");
+        searchParams.get("view") === null || false && sphereControls.start(searchParams.get("test") ? "hide" : "visible");
     }, [searchParams]);
 
     return (

@@ -74,7 +74,7 @@ const Navbar = ({ logo, alt, navbar, legals }: any) => {
         </motion.a>
         <Navigation>
           {navbar.map((i: any, index: number) => (
-            <NavItem clickLink={null} key={i} name={i} href={hrefs[index]} />
+            <NavItem clickLink={null} key={i} name={i} href={index === 0 ? `/` : `${i.toLowerCase()}`} />
           ))}
         </Navigation>
         <MobileNav>

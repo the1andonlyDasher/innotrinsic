@@ -4,6 +4,7 @@ import { atomWithStorage } from 'jotai/utils'
 
 export const currentLabel = atom<any>("label_bottom_lime")
 export const currentDistance = atom<number>(1)
+export const globalScroll = atom<number>(0)
 export const loc = atomWithStorage("location", "/")
 export const scrollEnabled = atomWithStorage<any>("scroll", false)
 export const backgroundColors = atom<string[]>(["#f6fff0", "#e5fcfc"])

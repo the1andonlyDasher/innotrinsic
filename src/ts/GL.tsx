@@ -4,6 +4,7 @@ import {
     Bvh,
     CameraControls,
     ContactShadows,
+    Environment,
     Float,
     GradientTexture,
     Grid,
@@ -59,6 +60,11 @@ import { Model as Stacy } from "./landingGL/ShakeHands2";
 import { Business } from "@/Business";
 import { Input } from "./contactGL/ControlledInput";
 import { Hand } from "@/Hand";
+import { Model_Hands } from "@/Hands";
+import { Orbit } from "next/font/google";
+import { Mountain } from "@/Mountain";
+import ContactGL from "./contactGL/ContactGL";
+
 
 declare global {
     namespace JSX {
@@ -73,16 +79,19 @@ declare global {
 
 extend(geometry);
 
-interface glProps {
+type glProps = {
     eventSource?: any;
+    scroll: any
 }
 
 const GL = (props: glProps) => {
     const router = useRouter();
     const [target, setTarget]: any = useAtom<any>(orbitTarget);
-    const cameraControls = useRef<CameraControls | null>(null);
+    const cameraControls: any = useRef<CameraControls | any>(null);
     const [distance, setDistance] = useAtom(currentDistance);
     const searchParams = useSearchParams();
+    const controls = useAnimation();
+    const primitiveRef = useRef<any>(!null);
 
     useEffect(() => {
 
@@ -90,11 +99,11 @@ const GL = (props: glProps) => {
             searchParams.get("view") !== null ? 3 : 1,
             true
         );
-
     }, [searchParams]);
 
     useEffect(() => {
         cameraControls.current?.setTarget(target.x, target.y, target.z, true);
+        // controls.start({ x: target.x, y: target.y, z: target.z })
     }, [target]);
 
     let coneRotation: any;
@@ -114,12 +123,30 @@ const GL = (props: glProps) => {
                 eventSource={props.eventSource}
                 eventPrefix="client"
             >
+                {/* <motion3d.mesh initial={{ x: target.x, y: target.y, z: target.z }} ref={primitiveRef} animate={controls}>
+                    <boxGeometry args={[3, 3, 3]} />
+                    <meshStandardMaterial color="beige" />
+                </motion3d.mesh> */}
                 <Stats />
-                <CameraControls
-                    boundaryEnclosesCamera
-                    smoothTime={0.5}
+                {/* <OrbitControls
+                    // makeDefault={}
                     ref={cameraControls}
                     maxDistance={25}
+                    enableZoom={false}
+                    minDistance={10}
+                    minPolarAngle={0}
+                    maxPolarAngle={Math.PI / 2}
+                    minAzimuthAngle={-Math.PI / 2}
+                    maxAzimuthAngle={Math.PI / 2}
+                /> */}
+                <CameraControls
+                    infinityDolly={false}
+                    smoothTime={0.5}
+                    ref={cameraControls}
+                    // makeDefault={}
+                    maxDistance={25}
+                    enabled={searchParams.get("test") ? false : true}
+
                     distance={25}
                     minDistance={10}
                     minPolarAngle={0}
@@ -129,16 +156,31 @@ const GL = (props: glProps) => {
                 />
                 <GradientTexture
                     stops={[0, 1]}
-                    colors={["#f6fff0", "#e5fcfc"]}
+                    // colors={["#f6fff0", "#e5fcfc"]}
+                    // colors={["#e5fcfc", "#E5F9A9"]}
+                    // colors={["#e5fcfc", "#F8F3E0"]}
+                    // colors={["#C8E99B", "#B0E431"]}
+                    // colors={["#e5fcfc", "#96c972"]}
+                    colors={["#EDDFAB", "#96c972"]}
+                    rotation={0.2}
                     attach="background"
                     size={1024}
                 />
-                <ambientLight intensity={1.5} />
-                <directionalLight intensity={10.5} color={"green"} />
+                <Environment preset="apartment" blur={0} />
+                {/* <ambientLight intensity={1.5} />
+                <directionalLight intensity={2.5} color={"#BDED4C"} /> */}
 
+                {/* <Model_Hands scroll={props.scroll}  /> */}
+
+                {/* <mesh>
+                    <boxGeometry args={[3, 3, 3]} />
+                    <meshStandardMaterial color="beige" />
+                </mesh> */}
                 <Suspense>
                     <Float floatIntensity={0.1} rotationIntensity={0.5}>
-                        <Human />
+                        <Human scroll={props.scroll} />
+
+                        {/* <Mountain scroll={props.scroll} /> */}
                         <Shadow
                             color="#111"
                             scale={5}
@@ -150,17 +192,16 @@ const GL = (props: glProps) => {
                     </Float>
                 </Suspense>
 
-                {router.pathname === "/kontakt" && <>
-                    <Hand scale={2} rotation={[0, Math.PI / 1.25, 0]} position={[0, -2, -2]} />
-                    <Input scale={2} position={[0.4, 0.25, -1]} />
-                </>}
+
+                <ContactGL />
+
             </Canvas>
         </div>
     );
 };
 
 const WebGL = forwardRef<any, glProps>((props, ref) => (
-    <GL eventSource={props.eventSource}></GL>
+    <GL scroll={props.scroll} eventSource={props.eventSource}></GL>
 ));
 WebGL.displayName = "WebGL";
 

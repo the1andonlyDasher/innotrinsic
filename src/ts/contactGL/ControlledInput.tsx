@@ -25,18 +25,21 @@ const ControlledInput = (props: any) => {
 
 interface InputProps {
     props: any
+    x?: number,
+    y?: number,
+    placeholder: string;
 }
 
 export function Input(props: any) {
-    const [text, set]: any = useState('hello world ...')
+    const [text, set]: any = useState(props.placeholder)
     const { viewport } = useThree();
     return (
         <group {...props}>
-            <Text position={[-3.1, -0.022, 0.1]} anchorX={0} font="/fonts/didact-gothic-v20-latin-regular.ttf" fontSize={0.335} letterSpacing={-0.0}>
+            <Text position={[-3.1, 0.2 * props.y, 0.1]} anchorY={"top"} anchorX={0} font="/fonts/didact-gothic-v20-latin-regular.ttf" fontSize={0.335} letterSpacing={-0.0}>
                 {text}
                 <meshBasicMaterial color="white" toneMapped={false} />
             </Text>
-            <mesh position={[0, -0.022, 0]} scale={[6.5, 0.6, 1]}>
+            <mesh position={[0, -0.022, 0]} scale={[6.5 * props.x, 0.6 * props.y, 1]}>
                 <planeGeometry />
                 <meshBasicMaterial color={"#A2FDFD"} opacity={1} depthWrite={true} />
             </mesh>

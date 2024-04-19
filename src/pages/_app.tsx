@@ -5,7 +5,7 @@ import type { AppProps } from "next/app";
 
 export default function App({ Component, pageProps }: AppProps) {
 
-  const names = ["Home", "Portfolio", "Kontakt"];
+  const names = ["Home", "Kontakt"];
   const legals_names = ["Datenschutz", "Impressum"]
   return (
     <MainLayout navbar={names} legals={legals_names}>

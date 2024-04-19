@@ -4,22 +4,25 @@ Command: npx gltfjsx@6.2.16 public/thirdHeadMesh.glb --types --output src/head.t
 */
 
 import * as THREE from "three";
-import React, { useEffect, useRef, useState } from "react";
-import { useGLTF } from "@react-three/drei";
+import React, { LegacyRef, RefObject, useEffect, useRef, useState } from "react";
+import { MeshTransmissionMaterial, useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { motion as motion3d } from "framer-motion-3d";
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import IdeaCloud from "./IdeaCloud";
 import { useAnimation } from "framer-motion";
 import router from "next/router";
 import { useSearchParams } from "next/navigation";
 import { Hand } from "@/Hand";
+import { lerp } from "../threeExport/math/MathUtils";
+import { useAtom } from "jotai";
+import { load } from "../atoms";
 
 const materialVariants = {
   initial: { opacity: 0 },
   hide: { opacity: 0.1 },
   enter: {
-    opacity: 0.4,
+    opacity: 0.5,
     transition: {
       type: "spring",
       damping: 10,
@@ -80,6 +83,9 @@ type ContextType = Record<
 >;
 
 export function Head(props: HeadProps) {
+  //gloabl loader
+  const [loaded, setLoaded] = useAtom(load)
+
   //searchParams
   const searchParams = useSearchParams();
 
@@ -91,24 +97,29 @@ export function Head(props: HeadProps) {
   const controls2 = useAnimation();
 
   // GLTF
-  const { nodes, materials } = useGLTF("/thirdHeadMesh.glb") as GLTFResult;
+  const { nodes, materials } = useGLTF("/head_three.glb") as GLTFResult;
 
   // THREE helpers
   const { viewport } = useThree();
 
   // states
   const [disposed, setDisposed] = useState(false);
+  const [brainDisposed, setBDisposed] = useState(false);
   const [isInPage, setIsInPage] = useState(false);
 
   // materials
   const mat = (
-    <motion3d.meshStandardMaterial
+    <motion3d.meshPhysicalMaterial
       initial="initial"
       animate={controls}
       exit="exit"
+      roughness={0}
+      clearcoat={1}
+      ior={1}
+      iridescence={0.2}
+      reflectivity={1}
       variants={materialVariants}
-      color="#A2FDFD"
-
+      color="#F7FFF2"
       transparent
       toneMapped
     />
@@ -119,8 +130,7 @@ export function Head(props: HeadProps) {
       animate={controls}
       exit="exit"
       variants={material2Variants}
-      color="#29A2A6"
-
+      color="#87e727"
       transparent
       toneMapped
     />
@@ -128,7 +138,7 @@ export function Head(props: HeadProps) {
 
   // UEF for mounting and visibility
   useEffect(() => {
-    if (router.pathname === "/") {
+    if (router.pathname === "/" && searchParams.get("test") === null || false) {
       setTimeout(() => {
         setDisposed(false);
         setIsInPage(true);
@@ -142,12 +152,12 @@ export function Head(props: HeadProps) {
       }, 800)
 
     }
-  }, [router.pathname]);
+  }, [router.pathname, searchParams]);
 
   useEffect(() => {
     if (isInPage) {
-      controls.start("enter")
-      controls2.start("enter")
+      loaded && controls.start("enter")
+      loaded && controls2.start("enter")
     }
   }, [isInPage]);
 
@@ -157,40 +167,75 @@ export function Head(props: HeadProps) {
       controls.start(searchParams.get("view") !== null ? "hide" : "enter");
       controls2.start(searchParams.get("view") !== null ? "hide" : "enter");
     }
+    if (searchParams.get("test") === null) {
+      setTimeout(() => {
+        setDisposed(false);
+        setIsInPage(true);
+      }, 500);
+    } else {
+      setTimeout(() => {
+        controls2.start("exit")
+        controls.start("exit").then(() => {
+          setIsInPage(false), setDisposed(true);
+        });
+      }, 200)
+
+    }
   }, [searchParams]);
+
+  const glassMat: any = useRef()
+  const glass = <MeshTransmissionMaterial
+    ref={glassMat}
+    samples={16}
+    reflectivity={1}
+    sheenRoughness={0.2}
+    anisotropicBlur={0.1}
+    iridescence={1}
+    iridescenceIOR={1}
+    resolution={2048}
+    thickness={0.1}
+    roughness={0.1}
+    clearcoat={1}
+    transparent
+    color="#E5F9A9"
+    anisotropy={1}
+    chromaticAberration={0.5} />
+
+
+  useFrame(() => {
+    glassMat.current.roughness = lerp(glassMat.current.roughness, searchParams.get("view") ? 1 : 0, 0.5);
+    glassMat.current.opacity = lerp(glassMat.current.opacity, searchParams.get("view") ? 0.1 : router.pathname !== "/" || searchParams.get("test") !== null ? 0 : 1,
+      router.pathname !== "/" || searchParams.get("test") !== null ? 0.03 : 0.05);
+  })
+
 
   return (
     <motion3d.group
       position={props.position}
       rotation={props.rotation}
       scale={Math.max(0.6, Math.min(0.125 * viewport.width, 1.5))}
-      dispose={null}
+
     >
       <motion3d.mesh
         ref={brain}
         renderOrder={4}
         geometry={nodes.Cube.geometry}
-        position={[0.082, 3.899, 0]}
+        position={[0.082, -0.248, 0]}
+        visible={!brainDisposed}
       >
         {mat2}
       </motion3d.mesh>
       <motion3d.mesh
-        renderOrder={5}
-        geometry={nodes.female_head.geometry}
-        position={[-0.1, 2.675, 0.691]}
-      >
-        {mat}
-      </motion3d.mesh>
-      <motion3d.mesh
-        renderOrder={5}
+        // renderOrder={5}
         geometry={nodes.female_head001.geometry}
-        position={[-0.1, 2.675, -0.692]}
+        position={[0.084, -0.248, -0.004]}
+        visible={!disposed}
       >
-        {mat}
+        {glass}
       </motion3d.mesh>
       <IdeaCloud centerPoint={[0.082, 3.899, 0]} />
     </motion3d.group>
   );
 }
 
-useGLTF.preload("/thirdHeadMesh.glb");
+useGLTF.preload("/head_three.glb'");

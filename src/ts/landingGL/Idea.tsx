@@ -7,17 +7,15 @@ import {
     Text,
     useCursor,
 } from "@react-three/drei";
-import { Vector3, useFrame, useThree } from "@react-three/fiber";
-import { animate, useAnimation } from "framer-motion";
+import { useFrame, useThree } from "@react-three/fiber";
+import { useAnimation } from "framer-motion";
 import { motion as motion3d } from "framer-motion-3d";
 import { FunctionComponent, Suspense, useEffect, useRef, useState } from "react";
-import { useGesture } from "@use-gesture/react";
 import { useAtom } from "jotai";
-import { backgroundColors, currentDistance, orbitTarget } from "../atoms";
+import { currentDistance, orbitTarget } from "../atoms";
 import { useRouter } from "next/router";
 import { Vector3 as V3 } from "@/ts/threeExport/math/Vector3";
-import { useParams, useSearchParams } from "next/navigation";
-import { ShakeHands } from "./ShakeHands";
+import { useSearchParams } from "next/navigation";
 
 
 const materialVariants = {
@@ -158,6 +156,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
 
 
     useEffect(() => {
+        groupControls.start(searchParams.get("test") ? "exit" : "enter");
         setClicked(searchParams.get("neuron") === props.text ? true : false)
         textMatControls.start(searchParams.get("neuron") === null ? "visible" : searchParams.get("neuron") !== props.text ? "hide" : "visible")
         sphereControls.start(searchParams.get("neuron") === null ? { scale: 1 } : searchParams.get("neuron") !== props.text ? { scale: 1 } : { scale: 1.5 })
@@ -230,11 +229,11 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         <motion3d.group animate={textControls} transition={{ type: "spring", damping: 10, stifness: 60, restDetla: 0.001 }}>
                             <Text
                                 lookAt={() => [0, 0, -5]}
-                                scale={Math.max(0.5, Math.min(viewport.width / 20, 0.75))}
+                                scale={Math.max(0.65, Math.min(viewport.width / 20, 0.75))}
                                 textAlign="center"
                                 anchorX="center"
                                 strokeWidth={0}
-                                renderOrder={4}
+                                renderOrder={5}
                                 anchorY="bottom"
                                 font="/fonts/montserrat-alternates-v17-latin-800.ttf"
                             >
@@ -243,11 +242,11 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                     initial="initial"
                                     animate={textMatControls}
                                     variants={{
-                                        initial: { color: "#2b5182" },
+                                        initial: { color: "#061C32" },
                                         hide: { opacity: 0.2 },
                                         visible: { opacity: 1 },
                                         enter: { color: "#ffffff" },
-                                        exit: { color: "#2b5182" },
+                                        exit: { color: "#061C32" },
                                     }}
                                 />
                                 {`${props.text}`}
@@ -319,7 +318,8 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 // setClicked(false),
                                 // setDistance(1),
                                 // setOrbitTarget({ x: 0, y: 1, z: 0 }),
-                                router.replace(router.pathname, undefined, { shallow: true })
+
+                                searchParams.get("view") !== null && router.replace(router.pathname, undefined, { shallow: true })
                             )}
                             onPointerOver={(e) => (e.stopPropagation(), setHover(searchParams.get("view") !== null ? false : true))}
                             onPointerOut={(e) => setHover(false)}
