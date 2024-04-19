@@ -25,7 +25,7 @@ type ContextType = Record<string, React.ForwardRefExoticComponent<JSX.IntrinsicE
 
 export function Public(props: JSX.IntrinsicElements['group']) {
   const group: any = useRef<THREE.Group>()
-  const { nodes, materials, animations } = useGLTF('/public.glb') as GLTFResult
+  const { nodes, materials, animations } = useGLTF('/Public.glb') as GLTFResult
   const { actions } = useAnimations(animations, group)
   const mat = <meshStandardMaterial color="white" toneMapped />
   useEffect(() => {
@@ -43,4 +43,4 @@ export function Public(props: JSX.IntrinsicElements['group']) {
   )
 }
 
-useGLTF.preload('/public.glb')
+useGLTF.preload('/Public.glb')
