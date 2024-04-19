@@ -14,7 +14,7 @@ type GLTFResult = GLTF & {
     female_head001: THREE.Mesh
   }
   materials: {}
-  animations: GLTFAction[]
+  animations: any[]
 }
 
 type ContextType = Record<string, React.ForwardRefExoticComponent<JSX.IntrinsicElements['mesh']>>
