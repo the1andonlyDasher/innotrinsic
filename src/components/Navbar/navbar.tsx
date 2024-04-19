@@ -66,11 +66,14 @@ const Navbar = ({ logo, alt, navbar, legals }: any) => {
         <motion.a
           aria-label="Home"
           aria-current="page"
-          className="navbar__logo active"
+          className=" active flex justify-center items-center py-4 gap-2"
           href="/"
           variants={image_variants} initial="hidden" animate="enter" exit="exit"
         >
-          <Image src={"/logo.svg"} width={500} height={500} alt={"website logo"} />
+          <Image src={"/logo.svg"} width={50} height={50} alt={"website logo"} />
+          <motion.h4 className="">
+            <strong className="text-[#83AA06]">My</strong>Inno<strong className="text-[#32689C]">Trinsic</strong>
+          </motion.h4>
         </motion.a>
         <Navigation>
           {navbar.map((i: any, index: number) => (

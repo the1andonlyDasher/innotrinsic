@@ -127,7 +127,7 @@ const GL = (props: glProps) => {
                     <boxGeometry args={[3, 3, 3]} />
                     <meshStandardMaterial color="beige" />
                 </motion3d.mesh> */}
-                <Stats />
+                {/* <Stats /> */}
                 {/* <OrbitControls
                     // makeDefault={}
                     ref={cameraControls}
