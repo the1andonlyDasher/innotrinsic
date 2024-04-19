@@ -24,7 +24,7 @@ interface GLTFAction extends THREE.AnimationClip {
 type ContextType = Record<string, React.ForwardRefExoticComponent<JSX.IntrinsicElements['skinnedMesh'] | JSX.IntrinsicElements['bone']>>
 
 export function Model(props: JSX.IntrinsicElements['group']) {
-  const group = useRef<THREE.Group>()
+  const group: any = useRef<THREE.Group>()
   const { nodes, materials, animations } = useGLTF('/shakeHands.glb') as GLTFResult
   const { actions } = useAnimations(animations, group)
   return (
