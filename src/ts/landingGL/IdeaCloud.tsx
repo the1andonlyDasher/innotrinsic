@@ -21,27 +21,32 @@ interface IdeaCloudProps {
 
 export const IdeaData = [
     {
-        colors: ["#e5fcfc", "#3564A1"],
+        // colors: ["#42c46d", "#3561A1"],
+        colors: ["#D8DBDF", "#3561A1"],
         text: "Business",
         model: <Business scale={0.05} rotation={[0, Math.PI / 4, 0]} />
     },
     {
-        colors: ["#e5fcfc", "#25b4d1"],
+        // colors: ["#3564A1", "#33e3d4"],
+        colors: ["#3564A1", "#33e3d4"],
         text: "Private",
         model: <Private scale={0.05} />
     },
     {
-        colors: ["#e5fcfc", "#32689C"],
+        // colors: ["#5bff4f", "#bf95fa"],
+        colors: ["#e8e9a9", "#317a7f"],
         text: "Gesellschaft",
         model: <GePoVe scale={0.05} />
     },
     {
-        colors: ["#32689C", "#abe91c"],
+        // colors: ["#B0E431", "#EDDFAB"],
+        colors: ["#1e71ba", "#b050ff"],
         text: "Sport",
         model: <Sport scale={0.05} />
     },
     {
-        colors: ["#e5fcfc", "#abe91c"],
+        // colors: ["#297dad", "#e054c0"],
+        colors: ["#2572bf", "#daff61"],
         text: "Public Life",
         model: <Public scale={0.05} />
     },

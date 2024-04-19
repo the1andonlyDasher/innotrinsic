@@ -94,6 +94,16 @@ const GL = (props: glProps) => {
     const primitiveRef = useRef<any>(!null);
 
     useEffect(() => {
+        const handleResize = () => {
+            cameraControls.current?.setTarget(target.x, target.y, target.z, true);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    useEffect(() => {
 
         cameraControls.current?.zoomTo(
             searchParams.get("view") !== null ? 3 : 1,
@@ -143,7 +153,7 @@ const GL = (props: glProps) => {
                     infinityDolly={false}
                     smoothTime={0.5}
                     ref={cameraControls}
-                    // makeDefault={}
+                    makeDefault
                     maxDistance={25}
                     enabled={searchParams.get("test") ? false : true}
 

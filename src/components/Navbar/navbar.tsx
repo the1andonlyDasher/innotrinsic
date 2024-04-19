@@ -71,9 +71,9 @@ const Navbar = ({ logo, alt, navbar, legals }: any) => {
           variants={image_variants} initial="hidden" animate="enter" exit="exit"
         >
           <Image src={"/logo.svg"} width={50} height={50} alt={"website logo"} />
-          <motion.h4 className="">
+          <motion.dd className="font-header">
             <strong className="text-[#83AA06]">My</strong>Inno<strong className="text-[#32689C]">Trinsic</strong>
-          </motion.h4>
+          </motion.dd>
         </motion.a>
         <Navigation>
           {navbar.map((i: any, index: number) => (
@@ -82,10 +82,10 @@ const Navbar = ({ logo, alt, navbar, legals }: any) => {
         </Navigation>
         <MobileNav>
           {navbar.map((i: any, index: number) => (
-            <Mnav toggle={() => toggleOpen()} key={i} name={i} href={hrefs[index]} />
+            <Mnav toggle={() => toggleOpen()} key={i} name={i} href={index === 0 ? `/` : `${i.toLowerCase()}`} />
           ))}
           {legals.map((i: any, index: number) => (
-            <Mnav secondary toggle={() => toggleOpen()} key={i} name={i} href={"/datapolicy"} />
+            <Mnav secondary toggle={() => toggleOpen()} key={i} name={i} href={`${i.toLowerCase()}`} />
           ))}
         </MobileNav>
         <NavbarToggle toggle={() => toggleOpen()} />

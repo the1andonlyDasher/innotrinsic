@@ -29,6 +29,7 @@ const circleVariants = {
 
 };
 
+
 const groupVariants = {
     initial: { scale: 0 },
     enter: { scale: 1 },
@@ -291,7 +292,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                     variants={materialVariants}
                                 >
                                     <GradientTexture
-                                        stops={[0, 1]}
+                                        stops={[0.3, 0.7]}
                                         colors={props.colors}
                                         attach="map"
                                         size={1024}

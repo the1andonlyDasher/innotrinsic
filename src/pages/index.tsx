@@ -37,8 +37,9 @@ export default function Home() {
               Neuro<strong className="text-[#32689C]">Loyal</strong>
             </motion.h1>
           </motion.div>
-          <motion.h2 variants={variants}>Mach etwas Neues. <strong className="font-black drop-shadow-sm">Besser. <strong className="text-[#32689C]">Jetzt.</strong></strong></motion.h2>
-          <motion.p variants={variants} className="text-zinc-900">
+          <motion.h2 variants={variants}>Mach etwas Neues. <strong className="font-black drop-shadow-sm ">Besser. <strong className="text-[#32689C]">Jetzt.</strong></strong></motion.h2>
+
+          <motion.p variants={variants} className="text-zinc-900 hidden md:flex">
             Wir tragen ein uraltes Gehirn in einer modernen Welt. Seine Aufgabe? Überleben. Deine Aufgabe? Dich leistungsfähig, effizient, flexibel, kreativ, konstruktiv, handlungsstark, lösungsorientiert oder glücklich zu machen.
           </motion.p>
           <motion.div variants={variants} className="flex flex-wrap gap-4">
@@ -58,7 +59,7 @@ export default function Home() {
             enter: { opacity: 1, display: "flex", filter: "blur(0px)", transition: { staggerChildren: 0.1, when: "beforeChildren" } },
             exit: { opacity: 0, transitionEnd: { display: "none" }, transition: { staggerChildren: 0.1, when: "afterChildren" } },
           }}
-          className="absolute py-10 flex flex-col gap-2 items-start justify-start text-white">
+          className="absolute py-10 flex flex-col gap-2 items-start justify-start text-white ">
           <motion.h3 variants={variants}>{item.text}</motion.h3>
           <motion.p variants={variants}>
             Quo usque tandem abutere, Catilina, patientia nostra? quam diu etiam
