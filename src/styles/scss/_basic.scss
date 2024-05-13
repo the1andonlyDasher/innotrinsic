@@ -164,10 +164,11 @@ h2 {
 h3 {
   font-size: var(--fs-sub-big);
   font-family: var(--fonts-header);
-  font-weight: inherit;
-  color: var(--clr-primary-main);
 
-  line-height: 1.3;
+  line-height: 1.5;
+  strong {
+    font-weight: 900;
+  }
 }
 
 h4 {
@@ -200,7 +201,7 @@ a {
   text-decoration: none;
   color: inherit;
   font-weight: 900;
-  font-family: var(--fonts-text);
+  // font-family: var(--fonts-text);
   @include mq(medium) {
     max-width: 300px;
   }
@@ -239,11 +240,10 @@ a {
   font-family: $ff-header;
   text-transform: uppercase;
   margin: var(--space-m) 0;
-  border-radius: 5px;
+  border-radius: 999px;
   position: relative;
   font-size: var(--fs-text);
   font-family: var(--fonts-text);
-  box-shadow: 2px 2px 5px #11111111;
   font-weight: 900;
   padding: 1rem var(--space-l);
   z-index: 5;
@@ -255,7 +255,7 @@ a {
   &::before {
     @extend %flex-center, %absolute-full, %trans;
     position: absolute;
-    border-radius: 5px;
+    border-radius: 999px;
     content: "";
   }
 }
@@ -270,37 +270,48 @@ a {
   &::after {
     width: 200%;
     left: -100%;
-    background-color: var(--clr-contrast-800);
+    background-color: #222d1b;
     z-index: -1;
     transform-origin: center;
     opacity: 1;
   }
   &:hover {
-    color: var(--clr-blue-500);
+    color: var(--clr-ice-100);
   }
   &:hover::after,
   &:active::after {
     left: 0;
+    background-color: #091501;
   }
 }
 
 .btn__outline {
-  color: var(--clr-contrast-100);
+  color: #59684e;
   position: relative;
   &::before {
     z-index: -2;
+    background-color: #59684e;
+    clip-path: circle(50% at 50% 50%);
+    scale: 0;
+    opacity: 0;
+    transform-origin: center;
   }
   &:hover {
-    color: var(--clr-contrast-700);
+    color: var(--clr-ice-100);
   }
   &::after {
-    border: 2px solid var(--clr-blue-600);
+    border: 2px solid #59684e;
   }
   &:hover::after,
   :active::after {
+    border-color: #5d9b31;
   }
   &:hover::before,
   :active::before {
+    scale: 2;
+    left: 0;
+    opacity: 1;
+    background-color: #5d9b31;
   }
 }
 

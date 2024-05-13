@@ -164,6 +164,7 @@ a {
   flex-direction: column;
   list-style-type: none;
   z-index: -1;
+  gap: clamp(2rem, 10vw, 3rem);
   background-color: var(--clr-white-main);
   @include mq(medium) {
     display: none;
@@ -188,7 +189,7 @@ a {
   list-style-type: none;
   left: 0;
   top: 0;
-
+  gap: var(--space-l);
   @include mq(medium) {
     position: relative;
     justify-content: space-evenly;
@@ -206,21 +207,6 @@ a {
 :is(.nav-items-desktop, .nav-items-mobile) li {
   display: flex;
   align-items: center;
-  margin: 1rem auto;
-  padding-left: 1em;
-  @include mq(medium) {
-    padding-left: 1.5em;
-  }
-
-  @include mq(large) {
-    padding-left: 2em;
-  }
-  // &:first-of-type a{
-  //   padding-left: 0
-  // }
-  // &:last-of-type a{
-  //   padding-right: 0;
-  // }
 }
 
 :is(.nav-items-desktop, .nav-items-mobile) li .nav-link {
@@ -229,15 +215,20 @@ a {
   position: relative;
   display: flex;
   align-items: center;
-  padding: 0;
   color: var(--clr-contrast-800);
   text-decoration: none;
   font-size: clamp(1rem, 15vw, 2rem);
   font-weight: 500;
-  font-family: var(--fonts-header);
-  text-transform: uppercase;
+  font-family: var(--fonts-sub);
   overflow: hidden;
-  padding: 0.2em;
+  padding: 0.2rem 0.4rem;
+  border-radius: 999px;
+  &[data-name="Kontakt"] {
+    padding: 0.3rem 1.2rem;
+    background-color: #2d3f21;
+
+    color: white;
+  }
 
   &::after {
     @extend %trans;

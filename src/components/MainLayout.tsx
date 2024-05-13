@@ -1,17 +1,15 @@
 
 import { useRouter } from "next/router";
-import { AnimatePresence, motion, useAnimate, useAnimation } from "framer-motion";
-import { AbstractView, SyntheticEvent, UIEventHandler, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useRef } from "react";
 import WebGL from "@/ts/GL";
 import { useAtom } from "jotai";
-import { currentNavigation, globalScroll, load, scrollEnabled } from "@/ts/atoms";
+import { globalScroll } from "@/ts/atoms";
 import Navbar from "./Navbar/navbar";
-
 
 
 export default function MainLayout({ preview, children, navbar, legals, t }: any) {
     const [gScroll, setGScroll] = useAtom(globalScroll)
-    const [nav, setNav] = useAtom(currentNavigation)
     const router = useRouter()
     const ref = useRef<any>(!null)
     const scrollContainer = useRef<any>(!null)
@@ -74,13 +72,9 @@ export default function MainLayout({ preview, children, navbar, legals, t }: any
 
 
 
-    return (<motion.div
-        variants={variants}
-
-        className="w-full absolute h-full bg-white z-50"
-    >
+    return (<>
         <div className="top-0 left-0 h-[100px] content-grid">
-            <Navbar className="navbar" navbar={navbar} legals={legals} />
+            <Navbar className={`navbar`} navbar={navbar} legals={legals} />
         </div>
         <div ref={ref} className="main"
             onScroll={handleScroll}
@@ -103,7 +97,7 @@ export default function MainLayout({ preview, children, navbar, legals, t }: any
         </div>
         <WebGL scroll={scroll} eventSource={ref} />
 
-    </motion.div>
+    </>
 
     );
 }

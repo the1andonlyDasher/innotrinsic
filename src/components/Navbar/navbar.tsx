@@ -77,12 +77,12 @@ const Navbar = ({ logo, alt, navbar, legals }: any) => {
         </motion.a>
         <Navigation>
           {navbar.map((i: any, index: number) => (
-            <NavItem clickLink={null} key={i} name={i} href={index === 0 ? `/` : `${i.toLowerCase()}`} />
+            <NavItem icon={i[1]} clickLink={null} key={i[0]} name={i[0]} href={index === 0 ? `/` : `${i[0].toLowerCase()}`} />
           ))}
         </Navigation>
         <MobileNav>
           {navbar.map((i: any, index: number) => (
-            <Mnav toggle={() => toggleOpen()} key={i} name={i} href={index === 0 ? `/` : `${i.toLowerCase()}`} />
+            <Mnav toggle={() => toggleOpen()} icon={i[1]} clickLink={null} key={i[0]} name={i[0]} href={index === 0 ? `/` : `${i[0].toLowerCase()}`} />
           ))}
           {legals.map((i: any, index: number) => (
             <Mnav secondary toggle={() => toggleOpen()} key={i} name={i} href={`${i.toLowerCase()}`} />

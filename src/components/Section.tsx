@@ -45,6 +45,7 @@ interface sectionProps {
   sectionName?: string;
   ref?: any;
   id?: string;
+  left: boolean;
   header?: string | number;
   subheader?: string | number;
   text?: string;
@@ -78,24 +79,7 @@ function Section(props: sectionProps) {
       variants={section_variants}
     >
       {props.single ? (
-        <motion.div variants={header_variants} className="lr__wrapper">
-          <motion.div variants={header_variants} className="left-wrapper">
-            {props.header ? (
-              <motion.h2 variants={header_variants}>{props.header}</motion.h2>
-            ) : null}
-            {props.subheader ? (
-              <motion.h3 variants={header_variants}>
-                {props.subheader}
-              </motion.h3>
-            ) : null}
-            {props.text ? (
-              <motion.p variants={text_variants}>{props.text}</motion.p>
-            ) : null}
-            <>{props.children}</>
-          </motion.div>
-          <motion.div className="right-wrapper"></motion.div>
-        </motion.div>
-      ) : (
+
         <>
           {props.header ? (
             <motion.h2 variants={header_variants}>{props.header}</motion.h2>
@@ -108,6 +92,41 @@ function Section(props: sectionProps) {
           ) : null}
           <>{props.children}</>
         </>
+      ) : (
+        <motion.div variants={header_variants} className="lr__wrapper">
+          {props.left ? <>
+            <motion.div variants={header_variants} className="left-wrapper">
+              {props.header ? (
+                <motion.h2 variants={header_variants}>{props.header}</motion.h2>
+              ) : null}
+              {props.subheader ? (
+                <motion.h3 variants={header_variants}>
+                  {props.subheader}
+                </motion.h3>
+              ) : null}
+              {props.text ? (
+                <motion.p variants={text_variants}>{props.text}</motion.p>
+              ) : null}
+              <>{props.children}</>
+            </motion.div>
+            <motion.div className="right-wrapper"></motion.div> </> : <>
+            <motion.div variants={header_variants} className="left-wrapper">
+            </motion.div>
+            <motion.div className="right-wrapper">
+              {props.header ? (
+                <motion.h2 variants={header_variants}>{props.header}</motion.h2>
+              ) : null}
+              {props.subheader ? (
+                <motion.h3 variants={header_variants}>
+                  {props.subheader}
+                </motion.h3>
+              ) : null}
+              {props.text ? (
+                <motion.p variants={text_variants}>{props.text}</motion.p>
+              ) : null}
+              <>{props.children}</></motion.div></>}
+
+        </motion.div>
       )}
     </motion.section>
   );

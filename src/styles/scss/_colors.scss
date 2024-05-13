@@ -46,6 +46,17 @@ $colors: (
     700: hsl(0, 0%, 18%),
     750: hsl(0, 0%, 10%),
     800: hsl(212, 57%, 9%),
-    900: hsl(210, 78%, 7%) // 800: hsl(0, 0%, 5%),,
+    900: hsl(210, 78%, 7%) // 800: hsl(0, 0%, 5%),,,,
+  ),
+
+  palette: (
+    dark: #041220,
+    lightgrey: #d8dbdf,
+    darkgrey: #a6bdcc,
+    blue: #32689c,
+    darkgreen: #83aa06,
+    lightgreen: #b0e431,
+    beige: #eddfab,
+    white: #f8f3e0,
   ),
 );

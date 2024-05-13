@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { motion } from "framer-motion";
 import Link from 'next/link';
 import { Work_Sans } from "next/font/google";
-const ws = Work_Sans({ subsets: ["latin"], weight: "900" })
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+
+
 
 const variants = {
   initial: {
@@ -24,9 +27,10 @@ type NavItemProps = {
   href?: string;
   name?: string;
   clickLink?: any;
+  icon: IconProp;
 }
 
-export const NavItem = ({ href, name, clickLink }: NavItemProps, ...props: any) => {
+export const NavItem = ({ href, name, clickLink, icon }: NavItemProps, ...props: any) => {
   const [isShrunk, setShrunk] = useState(false);
   useEffect(() => {
     const handler = () => {
@@ -64,7 +68,8 @@ export const NavItem = ({ href, name, clickLink }: NavItemProps, ...props: any) 
           duration: 0.75
         }}
       >
-        <Link aria-label={name} scroll={false} className={isShrunk ? `nav-link black` : `nav-link`} href={`${href}`} onClick={clickLink}>{name}</Link>
+        <Link aria-label={name} data-name={name} scroll={false} className={isShrunk ? `nav-link black` : `nav-link`} href={`${href}`} onClick={clickLink}>{name}{icon && <FontAwesomeIcon
+          className='ml-2 text-sm' icon={icon} />}</Link>
       </motion.li>
     </>
   );

@@ -27,6 +27,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/three": "^0.163.0",
     "@use-gesture/react": "^10.3.0",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",

@@ -10,13 +10,18 @@ import {
 import { useFrame, useThree } from "@react-three/fiber";
 import { useAnimation } from "framer-motion";
 import { motion as motion3d } from "framer-motion-3d";
-import { FunctionComponent, Suspense, useEffect, useRef, useState } from "react";
+import {
+    FunctionComponent,
+    Suspense,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import { useAtom } from "jotai";
-import { currentDistance, orbitTarget } from "../atoms";
+import { currentDistance, globalTarget, orbitTarget } from "../atoms";
 import { useRouter } from "next/router";
 import { Vector3 as V3 } from "@/ts/threeExport/math/Vector3";
 import { useSearchParams } from "next/navigation";
-
 
 const materialVariants = {
     visible: { opacity: 1 },
@@ -26,9 +31,7 @@ const materialVariants = {
 const circleVariants = {
     visible: { scale: 1 },
     hidden: { scale: 0 },
-
 };
-
 
 const groupVariants = {
     initial: { scale: 0 },
@@ -38,7 +41,7 @@ const groupVariants = {
 
 interface IdeaProps {
     centerPoint: [number, number, number];
-    position: [number, number, number];
+    r: number;
     rotation: [number, number, number];
     duration: number;
     text: string;
@@ -46,7 +49,7 @@ interface IdeaProps {
     delayFactor: number;
     active: boolean;
     children?: any;
-
+    index: number;
 }
 
 const Idea: FunctionComponent<IdeaProps> = (props) => {
@@ -54,17 +57,26 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-
     // refs
     const idea = useRef<any>(!null);
     const instance = useRef<any>(!null);
     const line = useRef<any>(!null);
+
+    //three helper
+    const { viewport } = useThree();
+    const radius = Math.max(2.25, Math.min(viewport.width / 10, 2.5));
 
     // states
     const [hovered, setHover] = useState(false);
     const [clicked, setClicked] = useState(false);
     const [disposed, setDisposed] = useState(false);
     const [isInPage, setIsInPage] = useState(false);
+    const [r, setR] = useState(((Math.PI * 1.15) / props.r) * props.index);
+    const [position, setPosition] = useState<number[]>([
+        Math.cos(r) * radius,
+        Math.sin(r) * (radius / 1.45),
+        0,
+    ]);
 
     // framer controls
     const sphereControls = useAnimation();
@@ -74,35 +86,37 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
     const controls = useAnimation();
     const textMatControls = useAnimation();
 
-    //three helper
-    const { viewport } = useThree();
-
     // cursor state
     useCursor(hovered);
 
     // atoms
-    const [orbTarget, setOrbitTarget] = useAtom(orbitTarget);
+    const [orbTarget, setOrbitTarget] = useAtom(globalTarget);
     const [distance, setDistance] = useAtom(currentDistance);
 
     // random
     const rand =
         Math.round(Math.random()) === 1
-            ? +Math.max(0.1, Math.min(Math.random(), 0.4))
-            : -Math.max(0.1, Math.min(Math.random(), 0.4));
+            ? +Math.max(0.1, 0.1 + Math.random() * 0.1)
+            : -Math.max(0.1, 0.1 + Math.random() * 0.1);
 
     // render loop
-    useFrame((state) =>
-        line.current.setPoints(props.centerPoint, idea.current.position)
-    );
+    useFrame((state) => {
+        line.current.setPoints(props.centerPoint, idea.current.position);
+    });
 
     //uef for router state change
     useEffect(() => {
-        if (router.pathname !== "/") {
+        if (router.pathname === "/einsatzgebiete" || router.pathname === "/" &&
+            searchParams.get("view") === null) {
             setClicked(false);
             setHover(false);
+            // console.log(line.current);
         }
-    }, [router.pathname]);
+    }, [router.pathname, searchParams]);
 
+    useEffect(() => {
+        console.log(clicked, hovered)
+    }, [clicked, hovered]);
     // UEF for hover state
     useEffect(() => {
         sphereControls.start(
@@ -118,7 +132,11 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
             hovered && clicked
                 ? { scale: 0.75, y: 0.9, z: -0.2 }
                 : clicked && !hovered
-                    ? { scale: Math.max(0.75, Math.min(viewport.width / 20, 0.9)), y: 0.9, z: -0.2 }
+                    ? {
+                        scale: Math.max(0.75, Math.min(viewport.width / 20, 0.9)),
+                        y: 0.9,
+                        z: -0.2,
+                    }
                     : !clicked && hovered
                         ? { scale: 0.75, y: 0.5, z: 0 }
                         : { scale: 0.65, y: 0.3, z: 0 }
@@ -140,47 +158,73 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                     ? "enter"
                     : !clicked && hovered
                         ? "enter"
-                        : "exit"
+                        : "initial"
         );
-        hovered && clicked
-            ? subGroupControls.stop()
-            : clicked && !hovered
-                ? subGroupControls.stop()
-                : !clicked && hovered
-                    ? subGroupControls.stop()
-                    : subGroupControls.start({
-                        x: props.position[0] + rand,
-                        y: props.position[1] + rand,
-                        z: props.position[2] + rand,
-                    });
+        // hovered && clicked
+        //     ? subGroupControls.stop()
+        //     : clicked && !hovered
+        //         ? subGroupControls.stop()
+        //         : !clicked && hovered
+        //             ? subGroupControls.stop()
+        //             : subGroupControls.start({
+        //                 x: position[0] + rand,
+        //                 y: position[1] + rand,
+        //                 z: position[2] + rand,
+        //             });
     }, [hovered, clicked]);
 
 
     useEffect(() => {
-        groupControls.start(searchParams.get("test") ? "exit" : "enter");
-        setClicked(searchParams.get("neuron") === props.text ? true : false)
-        textMatControls.start(searchParams.get("neuron") === null ? "visible" : searchParams.get("neuron") !== props.text ? "hide" : "visible")
-        sphereControls.start(searchParams.get("neuron") === null ? { scale: 1 } : searchParams.get("neuron") !== props.text ? { scale: 1 } : { scale: 1.5 })
-    }, [searchParams])
+        // set positions of sphere in circle or in curve above head
+        if (router.pathname === "/") {
+
+            subGroupControls.start({
+                x: Math.cos(((Math.PI * 1.15) / props.r) * props.index) * radius,
+                y: Math.sin(((Math.PI * 1.15) / props.r) * props.index) * radius / 1.45,
+                z: 0
+            });
+
+        } else {
+            subGroupControls.start({
+                x: Math.sin(((Math.PI * 2) / props.r) * props.index) * radius,
+                y: 0,
+                z: Math.cos(((Math.PI * 2) / props.r) * props.index) * radius
+            })
+            groupControls.start(searchParams.get("test") ? "exit" : "enter");
+            setClicked(searchParams.get("neuron") === props.text ? true : false);
+        };
+        sphereControls.start(
+            !clicked
+                ? { scale: 1 }
+                : searchParams.get("neuron") !== props.text
+                    ? { scale: 1 }
+                    : { scale: 1.5 }
+        );
+        if (clicked) {
+            textMatControls.start("hide")
+        } else if (searchParams.get("neuron") === props.text) {
+            textMatControls.start("enter")
+        } else textMatControls.start("initial")
+
+    }, [searchParams]);
 
     useEffect(() => {
-        setOrbitTarget
-    }, [])
-
+        setOrbitTarget;
+    }, []);
 
     // UEF for mounting and visibility
     useEffect(() => {
-        if (router.pathname === "/") {
+        if ((router.pathname === "/einsatzgebiete" || router.pathname === "/")) {
             setTimeout(() => {
                 setDisposed(false);
                 setIsInPage(true);
-            }, 1000);
+            }, 800);
         } else {
             setTimeout(() => {
                 groupControls.start("exit").then(() => {
                     setIsInPage(false), setDisposed(true);
                 });
-            }, 800);
+            }, 100);
         }
     }, [router.pathname]);
 
@@ -190,8 +234,6 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
         }
     }, [isInPage]);
 
-
-
     const p: any = new V3();
     return (
         <>
@@ -200,37 +242,47 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                 variants={groupVariants}
                 visible={!disposed}
                 animate={groupControls}
-                transition={{ type: "spring", duration: 0.5, damping: 20, stifness: 60, restDetla: 0.01, delay: props.delayFactor / 10 }}
+                transition={{
+                    type: "spring",
+                    duration: 0.5,
+                    damping: 20,
+                    stifness: 60,
+                    restDetla: 0.01,
+                    delay: props.delayFactor / 10,
+                }}
             >
                 <motion3d.group
                     ref={idea}
                     initial={{
-                        x: props.position[0],
-                        y: props.position[1],
-                        z: props.position[2],
-                        // rotateY: props.rotation[0],
-                        // rotateZ: props.rotation[1],
-                        // rotateX: props.rotation[2],
+                        x: position[0],
+                        y: position[1],
+                        z: position[2],
+
                     }}
                     animate={
                         subGroupControls
-                        // rotateY: props.rotation[0] + rand,
-                        // rotateZ: props.rotation[1] + rand,
-                        // rotateX: props.rotation[2] + rand,
+
                     }
                     transition={{
-                        repeat: Infinity,
-                        repeatType: "mirror",
-                        duration: props.duration,
-                        type: "tween",
+                        type: "spring",
+                        damping: 10,
+                        stiffness: 40,
+                        restDelta: 0.001
                     }}
                 >
-
                     <Billboard>
-                        <motion3d.group animate={textControls} transition={{ type: "spring", damping: 10, stifness: 60, restDetla: 0.001 }}>
+                        <motion3d.group
+                            animate={textControls}
+                            transition={{
+                                type: "spring",
+                                damping: 10,
+                                stifness: 60,
+                                restDetla: 0.001,
+                            }}
+                        >
                             <Text
                                 lookAt={() => [0, 0, -5]}
-                                scale={Math.max(0.65, Math.min(viewport.width / 20, 0.75))}
+                                scale={Math.max(0.35, Math.min(viewport.width / 20, 0.45))}
                                 textAlign="center"
                                 anchorX="center"
                                 strokeWidth={0}
@@ -243,11 +295,10 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                     initial="initial"
                                     animate={textMatControls}
                                     variants={{
-                                        initial: { color: "#061C32" },
-                                        hide: { opacity: 0.2 },
-                                        visible: { opacity: 1 },
-                                        enter: { color: "#ffffff" },
-                                        exit: { color: "#061C32" },
+                                        initial: { opacity: 1, color: "#4e5c68" },
+                                        hide: { opacity: 0.2, color: "#4e5c68" },
+                                        enter: { opacity: 1, color: "#ffffff" },
+                                        exit: { opacity: 0.2, color: "#4e5c68" },
                                     }}
                                 />
                                 {`${props.text}`}
@@ -263,8 +314,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                             restDelta: 0.001,
                         }}
                     >
-
-                        <Billboard >
+                        <Billboard>
                             <motion3d.mesh
                                 renderOrder={clicked ? 0 : -1}
                                 variants={circleVariants}
@@ -303,26 +353,35 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         <Instance
                             name={props.text}
                             ref={instance}
-                            // {...() => bind()}
-                            // onPointerDown={(e) =>()}
+
                             onClick={(e) => (
                                 e.stopPropagation(),
-                                // setClicked(true),
-                                // setDistance(3),
-                                // setOrbitTarget(e.object.localToWorld(p.set(0, 0, 0))),
-                                router.push(router.pathname + `?view=true&neuron=${props.text}`, undefined, {
-                                    shallow: true,
-                                })
-                            )}
 
-                            onPointerMissed={(e) => (
+                                router.push(
+                                    router.pathname === "/" ?
+                                        router.pathname :
+                                        router.pathname + `?view=true&neuron=${props.text}`
+                                    ,
+                                    undefined,
+                                    {
+                                        shallow: true,
+                                    }
+                                )
+                            )}
+                            onPointerMissed={(e) =>
                                 // setClicked(false),
                                 // setDistance(1),
                                 // setOrbitTarget({ x: 0, y: 1, z: 0 }),
 
-                                searchParams.get("view") !== null && router.replace(router.pathname, undefined, { shallow: true })
+                                searchParams.get("view") !== null &&
+                                router.replace(router.pathname === "/" ?
+                                    "/" :
+                                    router.pathname, undefined, { shallow: true })
+                            }
+                            onPointerOver={(e) => (
+                                e.stopPropagation(),
+                                setHover(searchParams.get("view") !== null ? false : true)
                             )}
-                            onPointerOver={(e) => (e.stopPropagation(), setHover(searchParams.get("view") !== null ? false : true))}
                             onPointerOut={(e) => setHover(false)}
                         >
                             {hovered ? (
@@ -342,36 +401,51 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                     opacity={clicked ? 0.2 : 1}
                                     thickness={0.03}
                                     toneMapped={false}
-
                                 />
                             ) : null}
-
                         </Instance>
                         <Suspense fallback={null}>
                             <motion3d.group
                                 initial={{ scale: 0 }}
-                                animate={clicked ? { scale: 1, transition: { type: "spring", damping: 10, stiffness: 50, restDelta: 0.01, delay: 0.5 } } : { scale: 0 }}
-
+                                animate={
+                                    clicked
+                                        ? {
+                                            scale: 1,
+                                            transition: {
+                                                type: "spring",
+                                                damping: 10,
+                                                stiffness: 50,
+                                                restDelta: 0.01,
+                                                delay: 0.5,
+                                            },
+                                        }
+                                        : { scale: 0 }
+                                }
                             >
                                 {props.children}
                             </motion3d.group>
                         </Suspense>
                     </motion3d.group>
                 </motion3d.group>
-                {idea && <QuadraticBezierLine
-                    dashed
-                    dashScale={10}
-                    lineWidth={3}
-                    start={idea.current?.position}
-                    end={props.centerPoint}
-                    ref={line}
-                    isMaterial
-                    opacity={
-                        searchParams.get("neuron") === null ? 1 : searchParams.get("neuron") !== props.text ? 0.2 : 1
-                    }
-                    transparent
-                >
-                </QuadraticBezierLine>}
+                {idea && (
+                    <QuadraticBezierLine
+                        dashed
+                        dashScale={10}
+                        lineWidth={3}
+                        start={idea.current?.position}
+                        end={props.centerPoint}
+                        ref={line}
+                        isMaterial
+                        opacity={
+                            searchParams.get("neuron") === null
+                                ? 1
+                                : searchParams.get("neuron") !== props.text
+                                    ? 0.2
+                                    : 1
+                        }
+                        transparent
+                    ></QuadraticBezierLine>
+                )}
             </motion3d.group>
         </>
     );
