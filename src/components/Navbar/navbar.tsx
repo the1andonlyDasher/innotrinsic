@@ -9,6 +9,7 @@ import NavbarToggle from "./NavbarToggle";
 import { useAtom } from "jotai";
 import { loc } from "@/ts/atoms";
 import Link from "next/link";
+import { propagateServerField } from "next/dist/server/lib/render-server";
 
 
 const Navbar = ({ logo, alt, navbar, legals }: any) => {
@@ -128,12 +129,12 @@ const Navbar = ({ logo, alt, navbar, legals }: any) => {
         </motion.div>
         <Navigation>
           {navbar.map((i: any, index: number) => (
-            <NavItem icon={i[1]} clickLink={null} key={i[0]} name={i[0]} href={`#${i[0].toLowerCase()}`} />
+            <NavItem icon={i[1]} clickLink={null} key={i[0]} name={i[0]} href={index === 0 ? "/" : `#${i[0].toLowerCase()}`} />
           ))}
         </Navigation>
         <MobileNav>
           {navbar.map((i: any, index: number) => (
-            <Mnav toggle={() => toggleOpen()} icon={i[1]} clickLink={null} key={i[0]} name={i[0]} href={`#${i[0].toLowerCase()}`} />
+            <Mnav toggle={() => toggleOpen()} icon={i[1]} clickLink={null} key={i[0]} name={i[0]} href={index === 0 ? "/" : `#${i[0].toLowerCase()}`} />
           ))}
           {legals.map((i: any, index: number) => (
             <Mnav secondary toggle={() => toggleOpen()} key={i} name={i} href={`${i.toLowerCase()}`} />

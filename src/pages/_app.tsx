@@ -7,7 +7,7 @@ import type { AppProps } from "next/app";
 export default function App({ Component, pageProps }: AppProps) {
 
   const names = [
-
+    ["Home", null],
     ["Kontakt", faCalendar]
   ];
   const legals_names = ["Impressum"]
