@@ -3,43 +3,30 @@ import { motion, useAnimation } from "framer-motion";
 import { useAtom } from "jotai";
 import { load, loc } from "@/ts/atoms";
 
-const section_variants = {
-  initial: {},
-  enter: {
-    transition: { staggerChildren: 0.2 },
-  },
-  exit: {
-    transition: { staggerChildren: 0.2 },
-  },
+const variants = {
+  initial: { y: 20, filter: "blur(20px)", opacity: 0 },
+  animate: { y: 0, filter: "blur(0px)", opacity: 1, },
+  exit: { y: 20, filter: "blur(20px)", opacity: 0 },
 };
 
-const text_variants = {
-  initial: { opacity: 0, rotate: "5deg" },
-  enter: {
+const blurVariants = {
+  initial: { opacity: 1 },
+  animate: {
     opacity: 1,
-    rotate: "0deg",
-    transition: { ease: "easeIn", duration: 0.5 },
+    display: "flex",
+    filter: "blur(0px)",
+    transition: {
+      staggerChildren: 0.125,
+      when: "beforeChildren",
+      delay: 0.25,
+    },
   },
   exit: {
     opacity: 0,
-    rotate: "0deg",
-    transition: { ease: "easeOut", duration: 0.5 },
+    transitionEnd: { display: "none" },
+    transition: { staggerChildren: 0.1, when: "afterChildren" },
   },
-};
-
-const header_variants = {
-  initial: { opacity: 0, x: 100 },
-  enter: {
-    opacity: 1,
-    x: 0,
-    transition: { ease: "easeIn", duration: 0.5 },
-  },
-  exit: {
-    opacity: 0,
-    x: -100,
-    transition: { ease: "easeOut", duration: 0.5 },
-  },
-};
+}
 
 interface sectionProps {
   sectionName?: string;
@@ -63,7 +50,7 @@ function Section(props: sectionProps) {
   const controls = useAnimation();
   return (
     <motion.section
-      viewport={{ margin: "100px", amount: 0.375, once: false }}
+      viewport={{ margin: "0px", amount: 0.125, once: false }}
       onViewportEnter={(entry) => {
         // controls.start("enter")
         entry?.isIntersecting
@@ -72,62 +59,64 @@ function Section(props: sectionProps) {
       }}
       data-section-name={props.sectionName}
       initial="initial"
-      whileInView={"enter"}
+      whileInView="animate"
       exit="exit"
       ref={props.ref}
       id={props.id}
-      variants={section_variants}
+      variants={blurVariants}
+      className="overflow-hidden"
     >
       {props.single ? (
 
         <>
           {props.header ? (
-            <motion.h2 variants={header_variants}>{props.header}</motion.h2>
+            <motion.h2 className="text-[#98d06d] font-bold" variants={variants}>{props.header}</motion.h2>
           ) : null}
           {props.subheader ? (
-            <motion.h3 variants={header_variants}>{props.subheader}</motion.h3>
+            <motion.h3 variants={variants}>{props.subheader}</motion.h3>
           ) : null}
           {props.text ? (
-            <motion.p variants={text_variants}>{props.text}</motion.p>
+            <motion.p variants={variants}>{props.text}</motion.p>
           ) : null}
           <>{props.children}</>
         </>
       ) : (
-        <motion.div variants={header_variants} className="lr__wrapper">
+        <motion.div variants={variants} className="lr__wrapper">
           {props.left ? <>
-            <motion.div variants={header_variants} className="left-wrapper">
+            <motion.div variants={variants} className="left-wrapper">
               {props.header ? (
-                <motion.h2 variants={header_variants}>{props.header}</motion.h2>
+                <motion.h2 className="text-[#98d06d] font-bold" variants={variants}>{props.header}</motion.h2>
               ) : null}
               {props.subheader ? (
-                <motion.h3 variants={header_variants}>
+                <motion.h3 variants={variants}>
                   {props.subheader}
                 </motion.h3>
               ) : null}
               {props.text ? (
-                <motion.p variants={text_variants}>{props.text}</motion.p>
+                <motion.p variants={variants}>{props.text}</motion.p>
               ) : null}
               <>{props.children}</>
             </motion.div>
             <motion.div className="right-wrapper"></motion.div> </> : <>
-            <motion.div variants={header_variants} className="left-wrapper">
+            <motion.div variants={variants} className="left-wrapper">
             </motion.div>
             <motion.div className="right-wrapper">
               {props.header ? (
-                <motion.h2 variants={header_variants}>{props.header}</motion.h2>
+                <motion.h2 className="text-[#98d06d] font-bold" variants={variants}>{props.header}</motion.h2>
               ) : null}
               {props.subheader ? (
-                <motion.h3 variants={header_variants}>
+                <motion.h3 variants={variants}>
                   {props.subheader}
                 </motion.h3>
               ) : null}
               {props.text ? (
-                <motion.p variants={text_variants}>{props.text}</motion.p>
+                <motion.p variants={variants}>{props.text}</motion.p>
               ) : null}
               <>{props.children}</></motion.div></>}
 
         </motion.div>
       )}
+
     </motion.section>
   );
 }

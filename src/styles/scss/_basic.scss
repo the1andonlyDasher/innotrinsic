@@ -154,7 +154,6 @@ h2 {
   font-size: var(--fs-sub-small);
   font-family: var(--fonts-sub);
   position: relative;
-  // text-transform: uppercase;
   line-height: 1.5;
   strong {
     font-weight: 900;
@@ -264,7 +263,7 @@ a {
   background-color: transparent;
   border-color: transparent;
   border: none;
-  color: var(--clr-ice-100);
+  color: #fff;
   font-weight: 800;
   position: relative;
   &::after {
@@ -276,7 +275,7 @@ a {
     opacity: 1;
   }
   &:hover {
-    color: var(--clr-ice-100);
+    color: #fff;
   }
   &:hover::after,
   &:active::after {
@@ -286,11 +285,11 @@ a {
 }
 
 .btn__outline {
-  color: #59684e;
+  color: #f0ffe6;
   position: relative;
   &::before {
     z-index: -2;
-    background-color: #59684e;
+    background-color: #f0ffe6;
     clip-path: circle(50% at 50% 50%);
     scale: 0;
     opacity: 0;
@@ -300,7 +299,7 @@ a {
     color: var(--clr-ice-100);
   }
   &::after {
-    border: 2px solid #59684e;
+    border: 2px solid #f0ffe6;
   }
   &:hover::after,
   :active::after {
@@ -435,7 +434,7 @@ a {
   position: relative;
   display: grid;
   grid-template-columns:
-    [full-widht-start] minmax(var(--padding-inline), 1fr)
+    [full-width-start] minmax(var(--padding-inline), 1fr)
     [breakout-start] minmax(0, var(--breakout-size))
     [content-start] min(
       100% - (var(--padding-inline) * 2),
@@ -443,7 +442,7 @@ a {
     )
     [content-end]
     minmax(0, var(--breakout-size)) [breakout-end]
-    minmax(var(--padding-inline), 1fr) [full-widht-end];
+    minmax(var(--padding-inline), 1fr) [full-width-end];
   width: 100vw;
   width: 100dvw;
   margin: 0 auto;
@@ -467,7 +466,7 @@ a {
   @extend %flex-center;
   justify-content: flex-end;
   align-items: flex-start;
-  overflow-x: hidden;
+
   scroll-snap-align: end;
   min-height: calc(100vh - 100px);
   min-height: calc(100dvh - 100px);

@@ -72,17 +72,20 @@ const palette: any =
 
 
 const targetColors: any = {
-    landing: ["#fffcef", "#97e070"],
-    "/": ["#fffcef", "#97e070"],
-    science: ["#fff5e1", "#f8ffe1"],
-    symbols: ["#fff5e1", "#f8ffe1"],
-    perspective: ["#fff5e1", "#fefff8"],
-    braincare: ["#fff5e1", "#fcffe1"],
-    universal: ["#fff5e1", "#ebffe1"],
-    architekt: ["#fff5e1", "#cffdb8"],
-    freund: ["#fff5e1", "#b8e4ff"],
-    head: ["#fffcef", "#97e070"],
-    different: ["#fff5e1", "#b8e4ff"],
+    landing: ["#698151", "#A5C791"],
+    "/": ["#ffffff", "#fffde1"],
+    science: ["#ffffff", "#fffde1"],
+    symbols: ["#ffffff", "#fffde1"],
+    perspective: ["#ffffff", "#fffde1"],
+    braincare: ["#ffffff", "#fffde1"],
+    universal: ["#ffffff", "#fffde1"],
+    architekt: ["#ffffff", "#fffde1"],
+    freund: ["#ffffff", "#fffde1"],
+    head: ["#ffffff", "#fffde1"],
+    services: ["#ffffff", "#fffde1"],
+    faq: ["#ffffff", "#fffde1"],
+    different: ["#ffffff", "#fffde1"],
+    mountain: ["#ffffff", "#fffde1"],
 }
 
 
@@ -225,8 +228,8 @@ const GL = (props: glProps) => {
                     />}
 
 
-                <Neuron
-                    scroll={props.scroll} />
+                {/* <Neuron
+                    scroll={props.scroll} /> */}
 
 
 
@@ -238,7 +241,7 @@ const GL = (props: glProps) => {
                     // colors={["#C8E99B", "#B0E431"]}
                     // colors={["#e5fcfc", "#96c972"]}
                     colors={[currentColor1, currentColor2]}
-                    rotation={-0.3}
+                    rotation={-0.95}
                     attach="background"
                     size={1024}
                 />
@@ -252,13 +255,14 @@ const GL = (props: glProps) => {
                     <boxGeometry args={[3, 3, 3]} />
                     <meshStandardMaterial color="beige" />
                 </mesh> */}
-                <Suspense>
+                {/* <Mountain scroll={props.scroll} /> */}
+                {/* <Suspense>
                     <Float floatIntensity={0.1} rotationIntensity={0.5}>
                         <Human scroll={props.scroll} />
-                        {/* <Mountain scroll={props.scroll} /> */}
+                       
 
                     </Float>
-                </Suspense>
+                </Suspense> */}
                 {/* <BGText /> */}
 
                 {/* <ContactGL /> */}

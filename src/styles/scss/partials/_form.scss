@@ -114,6 +114,7 @@ form {
   margin: 0 auto 0 0;
   padding: 1rem 0;
   flex-direction: column;
+  align-items: flex-start;
   width: 100%;
   margin: 0;
   min-width: 250px;
@@ -159,7 +160,7 @@ form .input {
 form label {
   padding-bottom: var(--space-xs);
   font-size: clamp(0.75rem, 10vw, 1.35rem);
-  color: var(--clr-contrast-100);
+  color: var(--clr-contrast-700);
   font-weight: 600;
   font-family: var(--fonts-text);
 }
@@ -167,21 +168,23 @@ form label {
 form :is(input, select, textarea) {
   padding: var(--space-xs) var(--space-s);
   font-size: var(--fs-text);
-  background-color: hsl(0, 0%, 2%);
-  border: 1px solid hsl(0, 0%, 9%);
+  min-height: 3rem;
+  background-color: hsl(0, 0%, 100%);
+  border: 1px solid hsl(48, 37%, 90%);
+
   color: var(--clr-contrast-400);
   font-weight: 500;
   border-radius: 6px;
 }
 
 form input:active {
-  background-color: #0a0b0c;
+  background-color: #041220;
 }
 
 form input:focus-visible,
 textarea:focus-visible {
   border: 1px solid var(--clr-contrast-700);
-  background-color: #0a0b0c;
+  background-color: #041220;
   color: var(--clr-contrast-100);
 }
 
