@@ -34,12 +34,12 @@ const ContactForm = ({ props }: contactProps) => {
         initial: { opacity: 0 },
         enter: {
             opacity: 1,
-            display: "flex",
+
             transition: { staggerChildren: 0.1, when: "beforeChildren", duration: 0.125 },
         },
         exit: {
             opacity: 0,
-            transitionEnd: { display: "none" },
+
             transition: { staggerChildren: 0.1, when: "afterChildren" },
         },
     };
@@ -126,13 +126,13 @@ const ContactForm = ({ props }: contactProps) => {
                     >
                         <h4>Vielen Dank!</h4>
                         <p>Wir werden Ihre Anfrage schnellstmöglich bearbeiten und uns bei Ihnen melden.</p>
-                        <button className="btn__small py-2" onClick={bringBackform}>
+                        <button className="btn__alt py-2" onClick={bringBackform}>
                             Weitere Email
                         </button>
                     </motion.div>
                     <motion.form
                         ref={form}
-                        onSubmit={testMail}
+                        onSubmit={sendEmail}
                         variants={formVariants}
                         initial="initial"
                         animate={controlsForm}
