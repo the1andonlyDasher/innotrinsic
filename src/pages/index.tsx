@@ -249,15 +249,15 @@ export default function Home() {
         <motion.h3 className="w-full text-center text-[#506C00] font-black">Unsere Angebote</motion.h3>
         <motion.div className="flex justify-center items-center flex-col lg:flex-row w-full  gap-12">
           <motion.div className="flex flex-col justify-center items-center gap-8 py-12 max-h-[600px] max-w-[400px] w-full shadow-sm rounded-xl bg-[#F8F3E0] p-6">
-            <Image className="w-full max-w-48 mix-blend-darken" width={200} height={200} src={"/images/brain_as_mic.png"} alt={"A brain as a microphone"} />
+            <Image className="w-full max-w-48 mix-blend-darken" width={200} height={200} src={"/images/brain_as_mic.webp"} alt={"A brain as a microphone"} />
             <motion.h4 className="text-center w-auto text-[#506C00]">Vortrag</motion.h4>
           </motion.div>
           <motion.div className="flex flex-col justify-center items-center gap-8 py-12 max-h-[600px] max-w-[400px] w-full shadow-sm rounded-xl bg-[#F8F3E0] p-6">
-            <Image className="w-full max-w-48 mix-blend-darken" width={200} height={200} src={"/images/business_meeting.png"} alt={"A brain as a microphone"} />
+            <Image className="w-full max-w-48 mix-blend-darken" width={200} height={200} src={"/images/business_meeting.webp"} alt={"A brain as a microphone"} />
             <motion.h4 className="text-center w-auto text-[#506C00]">Gruppenscouting</motion.h4>
           </motion.div>
           <motion.div className="flex flex-col justify-center items-center gap-8 py-12 max-h-[600px] max-w-[400px] w-full shadow-sm rounded-xl bg-[#F8F3E0] p-6">
-            <Image className="w-full max-w-48 mix-blend-darken" width={200} height={200} src={"/images/person.png"} alt={"A brain as a microphone"} />
+            <Image className="w-full max-w-48 mix-blend-darken" width={200} height={200} src={"/images/person.webp"} alt={"A brain as a microphone"} />
             <motion.h4 className="text-center w-auto text-[#506C00]">Einzelscouting</motion.h4>
           </motion.div>
         </motion.div>
@@ -301,7 +301,7 @@ export default function Home() {
             </motion.ul>
           </motion.div>
           <motion.div className="flex flex-col justify-center items-center w-full">
-            <Image width={500} height={300} alt="Ein Gehirn das Berge versetzt" src="/images/brain_and_mountain.png" />
+            <Image width={500} height={300} alt="Ein Gehirn das Berge versetzt" src="/images/brain_and_mountain.webp" />
           </motion.div>
         </motion.div>
       </Sec>
