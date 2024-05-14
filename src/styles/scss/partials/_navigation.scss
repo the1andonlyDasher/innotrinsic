@@ -56,6 +56,13 @@
   top: 0;
   left: 0;
   opacity: 0;
+  /* Layer_1 */
+
+  position: absolute;
+  width: 108px;
+  height: 130px;
+  left: 468px;
+  top: 1045px;
 
   & img {
     position: relative;
@@ -73,6 +80,9 @@
   height: 100%;
   justify-content: space-between;
   width: 100%;
+  svg {
+    min-width: 2rem;
+  }
 }
 
 .navbar__logo {

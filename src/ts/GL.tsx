@@ -72,18 +72,20 @@ const palette: any =
 
 
 const targetColors: any = {
-    landing: ["#f1f8de", "#5a7237"],
-    "/": ["#fffcef", "#97e070"],
-    science: ["#fefaf1", "#fbffee"],
-    symbols: ["#fff5e1", "#f8ffe1"],
-    perspective: ["#fff5e1", "#fefff8"],
-    braincare: ["#fff5e1", "#fcffe1"],
-    universal: ["#fff5e1", "#ebffe1"],
-    architekt: ["#fff5e1", "#cffdb8"],
-    freund: ["#fff5e1", "#b8e4ff"],
-    head: ["#fffcef", "#97e070"],
-    faq: ["#ffffff", "#ecf8e6"],
-    different: ["#fff5e1", "#b8e4ff"],
+    landing: ["#698151", "#A5C791"],
+    "/": ["#ffffff", "#fffde1"],
+    science: ["#ffffff", "#fffde1"],
+    symbols: ["#ffffff", "#fffde1"],
+    perspective: ["#ffffff", "#fffde1"],
+    braincare: ["#ffffff", "#fffde1"],
+    universal: ["#ffffff", "#fffde1"],
+    architekt: ["#ffffff", "#fffde1"],
+    freund: ["#ffffff", "#fffde1"],
+    head: ["#ffffff", "#fffde1"],
+    services: ["#ffffff", "#fffde1"],
+    faq: ["#ffffff", "#fffde1"],
+    different: ["#ffffff", "#fffde1"],
+    mountain: ["#ffffff", "#fffde1"],
 }
 
 
@@ -239,7 +241,7 @@ const GL = (props: glProps) => {
                     // colors={["#C8E99B", "#B0E431"]}
                     // colors={["#e5fcfc", "#96c972"]}
                     colors={[currentColor1, currentColor2]}
-                    rotation={-0.76}
+                    rotation={-0.95}
                     attach="background"
                     size={1024}
                 />

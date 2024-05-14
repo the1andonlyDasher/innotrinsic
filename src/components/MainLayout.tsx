@@ -6,6 +6,7 @@ import WebGL from "@/ts/GL";
 import { useAtom } from "jotai";
 import { globalScroll } from "@/ts/atoms";
 import Navbar from "./Navbar/navbar";
+import Link from "next/link";
 
 
 export default function MainLayout({ preview, children, navbar, legals, t }: any) {

@@ -34,17 +34,19 @@ const ContactForm = ({ props }: contactProps) => {
         initial: { opacity: 0 },
         enter: {
             opacity: 1,
+            display: "flex",
             transition: { staggerChildren: 0.1, when: "beforeChildren", duration: 0.125 },
         },
         exit: {
             opacity: 0,
+            transitionEnd: { display: "none" },
             transition: { staggerChildren: 0.1, when: "afterChildren" },
         },
     };
     const messageVariants = {
         initial: { opacity: 0 },
         enter: { opacity: 1, display: "flex" },
-        exit: { opacity: 0, display: "none" },
+        exit: { opacity: 0, transitionEnd: { display: "none" } },
     };
     const sequence = async () => {
         await controlsForm.start("exit");
@@ -111,7 +113,7 @@ const ContactForm = ({ props }: contactProps) => {
 
     return (
         <>
-            <section className="form-section">
+            <section className="form-section" id={props.id}>
                 <div className="form-wrapper">
                     <h3 data-before={props.title}>{props.title}</h3>
                     <p>{props.subtitle}</p>
@@ -130,7 +132,7 @@ const ContactForm = ({ props }: contactProps) => {
                     </motion.div>
                     <motion.form
                         ref={form}
-                        onSubmit={sendEmail}
+                        onSubmit={testMail}
                         variants={formVariants}
                         initial="initial"
                         animate={controlsForm}
