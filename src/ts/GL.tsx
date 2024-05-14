@@ -72,9 +72,9 @@ const palette: any =
 
 
 const targetColors: any = {
-    landing: ["#fffcef", "#97e070"],
+    landing: ["#f1f8de", "#5a7237"],
     "/": ["#fffcef", "#97e070"],
-    science: ["#fff5e1", "#f8ffe1"],
+    science: ["#fefaf1", "#fbffee"],
     symbols: ["#fff5e1", "#f8ffe1"],
     perspective: ["#fff5e1", "#fefff8"],
     braincare: ["#fff5e1", "#fcffe1"],
@@ -82,6 +82,7 @@ const targetColors: any = {
     architekt: ["#fff5e1", "#cffdb8"],
     freund: ["#fff5e1", "#b8e4ff"],
     head: ["#fffcef", "#97e070"],
+    faq: ["#ffffff", "#ecf8e6"],
     different: ["#fff5e1", "#b8e4ff"],
 }
 
@@ -225,8 +226,8 @@ const GL = (props: glProps) => {
                     />}
 
 
-                <Neuron
-                    scroll={props.scroll} />
+                {/* <Neuron
+                    scroll={props.scroll} /> */}
 
 
 
@@ -238,7 +239,7 @@ const GL = (props: glProps) => {
                     // colors={["#C8E99B", "#B0E431"]}
                     // colors={["#e5fcfc", "#96c972"]}
                     colors={[currentColor1, currentColor2]}
-                    rotation={-0.3}
+                    rotation={-0.76}
                     attach="background"
                     size={1024}
                 />
@@ -252,13 +253,14 @@ const GL = (props: glProps) => {
                     <boxGeometry args={[3, 3, 3]} />
                     <meshStandardMaterial color="beige" />
                 </mesh> */}
-                <Suspense>
+                {/* <Mountain scroll={props.scroll} /> */}
+                {/* <Suspense>
                     <Float floatIntensity={0.1} rotationIntensity={0.5}>
                         <Human scroll={props.scroll} />
-                        {/* <Mountain scroll={props.scroll} /> */}
+                       
 
                     </Float>
-                </Suspense>
+                </Suspense> */}
                 {/* <BGText /> */}
 
                 {/* <ContactGL /> */}

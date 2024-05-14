@@ -17,6 +17,8 @@ import WomenSVG from "@/components/svgs/Women";
 import ManipulateSVG from "@/components/svgs/Manipulate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowRightArrowLeft, faAtom, faCalendar, faContactBook, faContactCard, faPerson, faPhone, faPieChart } from "@fortawesome/free-solid-svg-icons";
+import ContactForm from "@/components/ContactForm";
+import FAQuestion from "@/components/FAQuestion";
 
 const variants = {
   initial: { y: 20, filter: "blur(20px)", opacity: 0 },
@@ -30,7 +32,7 @@ const blurVariants = {
     y: 0,
     filter: "blur(0px)",
     opacity: 1,
-    transition: { staggerChildren: 0.1375, when: "beforeChildren" },
+    transition: { staggerChildren: 0.1, when: "beforeChildren", duration: 0.125 },
   },
   exit: {
     y: 20,
@@ -40,11 +42,6 @@ const blurVariants = {
   },
 };
 
-const variantsTest = {
-  initial: { y: 20, filter: "blur(20px)", opacity: 0 },
-  animate: { y: 0, filter: "blur(0px)", opacity: 1, delay: 1 },
-  exit: { y: 20, filter: "blur(20px)", opacity: 0 },
-};
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -68,7 +65,7 @@ export default function Home() {
 
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== undefined) {
       document.body.childNodes[0].childNodes[1].addEventListener('scroll', setCoords, false);
     }
     return () => {
@@ -117,7 +114,7 @@ export default function Home() {
           <motion.div className="w-full h-full py-5 md:py-10 flex flex-col gap-2 items-start justify-center md:justify-center">
             <motion.div variants={variants}>
               <motion.dd className="text-4xl text-[#59684e]">
-                Dein bester Freund: dein Hirn.
+                Mehrwert durch BrainCare:
               </motion.dd>
               <motion.h1 className="text-[#222d1b]">
                 Neuro<strong className="text-[#93c152]">Loyal</strong>
@@ -127,16 +124,12 @@ export default function Home() {
               variants={variants}
               className=" max-w-[60ch] text-zinc-900 hidden md:flex"
             >
-              Pragmatische Wege, Strukturen und Prozesse, die das Wissen der
-              Neurowissenschaften für jeden nutzbar machen.
+              MY InnoTrinsic eröffnet neuroloyale Perspektiven und bietet „Do-it-Lösungen“ für Menschen, Unternehmen und Organisationen.
               {/* Unser Gehirn gestaltet unseren Alltag. Wir sollten aktiv damit arbeiten, als wäre es unser bester Freund. MY InnoTrinsic bietet einen neuen Blick auf das Gehirn und seine Potenziale. Wir schaffen Mehrwert durch neuroloyales Handeln und BrainCare für Menschen und Organisationen. Dafür haben wir umsetzungsorientierte Wege, Strukturen, Instrumente und Prozesse entwickelt. */}
             </motion.p>
             <motion.div variants={variants} className="flex flex-wrap gap-4">
               <Link href={"/kontakt"} className="btn__primary">
                 Erstgespräch <FontAwesomeIcon className="ml-2" icon={faCalendar} />
-              </Link>
-              <Link href={"/einsatzgebiete"} className="btn__outline ">
-                Einsatzgebiete <FontAwesomeIcon className="ml-2" icon={faPieChart} />
               </Link>
             </motion.div>
           </motion.div>
@@ -144,278 +137,10 @@ export default function Home() {
           {/* HERO SECTION ENDE */}
           {/* RUBRIKEN ANFANG */}
 
-          {/* TEST ANFANG */}
 
-          <motion.div
-            animate={searchParams.get("test") ? "enter" : "exit"}
-            initial="initial"
-            variants={{
-              initial: { opacity: 0 },
-              enter: {
-                opacity: 1,
-                display: "flex",
-                filter: "blur(0px)",
-                transition: { staggerChildren: 0.1, when: "beforeChildren" },
-              },
-              exit: {
-                opacity: 0,
-                transitionEnd: { display: "none" },
-                transition: { staggerChildren: 0.1, when: "afterChildren" },
-              },
-            }}
-            className="my-auto absolute py-5 md:py-10 flex flex-col gap-2 items-start justify-start text-black"
-          >
-            <motion.h3
-              variants={variants}
-              className="text-[#141d34] font-black"
-            >
-              Machen Sie mit uns den Selbsttest
-            </motion.h3>
-            <motion.div variants={variants} className="flex flex-wrap gap-4">
-              <Link replace href={"#second"} shallow className="btn__primary">
-                Weiter
-              </Link>
-              <Link href={"/"} shallow className="btn__outline">
-                Zurück
-              </Link>
-            </motion.div>
-          </motion.div>
         </motion.div>
       </Sec >
-      <motion.section
-        initial={{ opacity: 0, display: "none" }}
-        animate={
-          searchParams.get("test")
-            ? { opacity: 1, display: "flex" }
-            : { opacity: 0, transitionEnd: { display: "none" } }
-        }
-        id="second"
-      >
-        <motion.div
-          initial="initial"
-          whileInView={"animate"}
-          viewport={{ once: false, margin: "100px", amount: "some" }}
-          variants={{
-            initial: { opacity: 0 },
-            animate: {
-              opacity: 1,
-              display: "flex",
-              filter: "blur(0px)",
-              transition: {
-                staggerChildren: 0.1,
-                when: "beforeChildren",
-                delay: 0.25,
-              },
-            },
-            exit: {
-              opacity: 0,
-              transitionEnd: { display: "none" },
-              transition: { staggerChildren: 0.1, when: "afterChildren" },
-            },
-          }}
-          className="absolute  py-5 md:py-10 flex flex-col gap-2 items-start justify-start text-black"
-        >
-          <motion.p variants={variantsTest} className="text-zinc-900">
-            Falten Sie bitte Ihre Hände
-          </motion.p>
-          <motion.div variants={variantsTest} className="flex flex-wrap gap-4">
-            <Link replace href={"#third"} shallow className="btn__primary">
-              Weiter
-            </Link>
-            <Link replace href={"#first"} className="btn__outline">
-              Zurück
-            </Link>
-          </motion.div>
-        </motion.div>
-      </motion.section>
-      <motion.section
-        id="third"
-        animate={
-          searchParams.get("test")
-            ? { opacity: 1, display: "flex" }
-            : { opacity: 0, transitionEnd: { display: "none" } }
-        }
-      >
-        <motion.div
-          initial="initial"
-          whileInView={"animate"}
-          viewport={{ once: false, margin: "100px", amount: "some" }}
-          variants={{
-            initial: { opacity: 0 },
-            animate: {
-              opacity: 1,
-              display: "flex",
-              filter: "blur(0px)",
-              transition: {
-                staggerChildren: 0.1,
-                when: "beforeChildren",
-                delay: 0.25,
-              },
-            },
-            exit: {
-              opacity: 0,
-              transitionEnd: { display: "none" },
-              transition: { staggerChildren: 0.1, when: "afterChildren" },
-            },
-          }}
-          className="absolute  py-5 md:py-10 flex flex-col gap-2 items-start justify-start text-black"
-        >
-          <motion.p variants={variantsTest} className="text-zinc-900">
-            Beobachten Sie welcher Daumen oben liegt, ist es der Rechte? Der
-            Linke?
-          </motion.p>
-          <motion.div variants={variantsTest} className="flex flex-wrap gap-4">
-            <Link replace href={"#fourth"} shallow className="btn__primary">
-              Weiter
-            </Link>
-            <Link replace href={"#second"} className="btn__outline">
-              Zurück
-            </Link>
-          </motion.div>
-        </motion.div>
-      </motion.section>
-      <motion.section
-        id="fourth"
-        animate={
-          searchParams.get("test")
-            ? { opacity: 1, display: "flex" }
-            : { opacity: 0, transitionEnd: { display: "none" } }
-        }
-      >
-        <motion.div
-          initial="initial"
-          whileInView={"animate"}
-          viewport={{ once: false, margin: "100px", amount: "some" }}
-          variants={{
-            initial: { opacity: 0 },
-            animate: {
-              opacity: 1,
-              display: "flex",
-              filter: "blur(0px)",
-              transition: {
-                staggerChildren: 0.1,
-                when: "beforeChildren",
-                delay: 0.25,
-              },
-            },
-            exit: {
-              opacity: 0,
-              transitionEnd: { display: "none" },
-              transition: { staggerChildren: 0.1, when: "afterChildren" },
-            },
-          }}
-          className="absolute  py-5 md:py-10 flex flex-col gap-2 items-start justify-start text-black"
-        >
-          <motion.p variants={variantsTest} className="text-zinc-900">
-            Und jetzt lösen Sie bitte Ihre Hände…
-          </motion.p>
-          <motion.div variants={variantsTest} className="flex flex-wrap gap-4">
-            <Link replace href={"#fifth"} shallow className="btn__primary">
-              Weiter
-            </Link>
-            <Link replace href={"#third"} className="btn__outline">
-              Zurück
-            </Link>
-          </motion.div>
-        </motion.div>
-      </motion.section>
-      <motion.section
-        id="fifth"
-        animate={
-          searchParams.get("test")
-            ? { opacity: 1, display: "flex" }
-            : { opacity: 0, transitionEnd: { display: "none" } }
-        }
-      >
-        <motion.div
-          initial="initial"
-          whileInView={"animate"}
-          viewport={{ once: false, margin: "100px", amount: "some" }}
-          variants={{
-            initial: { opacity: 0 },
-            animate: {
-              opacity: 1,
-              display: "flex",
-              filter: "blur(0px)",
-              transition: {
-                staggerChildren: 0.1,
-                when: "beforeChildren",
-                delay: 0.25,
-              },
-            },
-            exit: {
-              opacity: 0,
-              transitionEnd: { display: "none" },
-              transition: { staggerChildren: 0.1, when: "afterChildren" },
-            },
-          }}
-          className="absolute  py-5 md:py-10 flex flex-col gap-2 items-start justify-start text-black"
-        >
-          <motion.p variants={variantsTest} className="text-zinc-900 test-desc">
-            Falten Sie Ihre Hände nun erneut, aber sodass der andere Daumen oben
-            liegt.
-          </motion.p>
-          <motion.div variants={variantsTest} className="flex flex-wrap gap-4">
-            <Link replace href={"#sixth"} shallow className="btn__primary">
-              Weiter
-            </Link>
-            <Link replace href={"#fourth"} className="btn__outline">
-              Zurück
-            </Link>
-          </motion.div>
-        </motion.div>
-      </motion.section>
-      <motion.section
-        id="sixth"
-        animate={
-          searchParams.get("test")
-            ? { opacity: 1, display: "flex" }
-            : { opacity: 0, transitionEnd: { display: "none" } }
-        }
-      >
-        <motion.div
-          initial="initial"
-          whileInView={"animate"}
-          viewport={{ once: false, margin: "100px", amount: "some" }}
-          variants={{
-            initial: { opacity: 0 },
-            animate: {
-              opacity: 1,
-              display: "flex",
-              filter: "blur(0px)",
-              transition: {
-                staggerChildren: 0.1,
-                when: "beforeChildren",
-                delay: 0.25,
-              },
-            },
-            exit: {
-              opacity: 0,
-              transitionEnd: { display: "none" },
-              transition: { staggerChildren: 0.1, when: "afterChildren" },
-            },
-          }}
-          className="absolute  py-5 md:py-10 flex flex-col gap-2 items-start justify-start text-black"
-        >
-          <motion.p variants={variantsTest} className="text-zinc-900 test-desc">
-            Und, war es einfach, oder hat es sie irritiert? Wenn es Sie
-            irritiert hat, dann haben sie die Aktivität Ihrer neuronalen Netze
-            live erlebt.
-          </motion.p>
-          <motion.div variants={variantsTest} className="flex flex-wrap gap-4">
-            <Link replace href={"#first"} shallow className="btn__primary">
-              Nochmal
-            </Link>
-            <Link replace href={"#fifth"} className="btn__outline">
-              Zurück
-            </Link>
-            <Link href={"/"} className="btn__outline">
-              Test beenden
-            </Link>
-          </motion.div>
-        </motion.div>
-      </motion.section>
-      {/* TEST ENDE */}
+
       {/* SYMBOLE ANFANG */}
 
       <motion.div
@@ -499,36 +224,6 @@ export default function Home() {
           </div>
         </motion.div>
       </motion.div>
-      <motion.div
-        style={{ scrollSnapAlign: "start", height: "200vh" }}
-        viewport={{ margin: "0px", amount: 0.25, once: false }}
-        onViewportEnter={(entry) => {
-          entry?.isIntersecting && setLocation("braincare");
-        }}
-        className="h-full w-full "
-      />
-      {/* <motion.div
-          viewport={{ margin: "0px", amount: 0.25, once: false }}
-          onViewportEnter={(entry) => {
-            entry?.isIntersecting && setLocation("universal");
-          }}
-          className="h-full w-full "
-        />
-        <motion.div
-          viewport={{ margin: "0px", amount: 0.25, once: false }}
-          onViewportEnter={(entry) => {
-            entry?.isIntersecting && setLocation("empowering");
-          }}
-          className="h-full w-full "
-        />
-        <motion.div
-          viewport={{ margin: "0px", amount: 0.25, once: false }}
-          onViewportEnter={(entry) => {
-            entry?.isIntersecting && setLocation("authentisch");
-          }}
-          className="h-full w-full "
-        /> */}
-
       {/* SYMBOLE ENDE */}
       <Sec left single={false} sectionName="perspective" header="Neuroloyaler Perspektiven-Wechsel" text="Wir verändern Perspektiven, basierend auf
 der Leitidee des &quot;Respekts vor dem Menschen&quot; und der Kooperation und
@@ -558,6 +253,85 @@ Komplexität zu sensibilisieren und neuroloyales Handeln mit BrainCare zu
 ermöglichen. Unsere pragmatischen Strukturen und Bausteine sind bedarfsgerecht,
 zielgenau, flexibel und leicht erlernbar - für jeden nutzbar und anwendbar.">
       </Sec>
+      <Sec left={false} single sectionName="faq">
+        <motion.div
+          initial="initial"
+          whileInView={"animate"}
+          viewport={{ once: false, margin: "100px", amount: 0.1 }}
+          variants={{
+            initial: { opacity: 1 },
+            animate: {
+              opacity: 1,
+              display: "flex",
+              filter: "blur(0px)",
+              transition: {
+                staggerChildren: 0.1,
+                when: "beforeChildren",
+                delay: 0.25,
+              },
+            },
+            exit: {
+              opacity: 0,
+              transitionEnd: { display: "none" },
+              transition: { staggerChildren: 0.1, when: "afterChildren" },
+            },
+          }}
+          className=" flex my-auto justify-center items-start flex-col top-0 gap-4 md:gap-8 w-full h-auto"
+        >
+          <motion.h3 variants={blurVariants} className="m-0 w-auto text-[#32689C]">FAQ</motion.h3>
+          <FAQuestion title="Was bedeutet „neuroloyal“?" description="Wortwörtlich bedeutet es gehirngerecht. Doch loyal bedeutet nach unserem
+Verständnis noch viel mehr, nämlich respektierend, innerlich verbunden, schützend,
+wohlwollend und achtsam. Neuroloyal zu handeln heißt also, stets im Einklang mit
+seinem Gehirn zu agieren. Es heißt, die jeweils individuellen Zufriedenheitsantriebe
+zu kennen und in sein zukünftiges Handeln miteinzubeziehen. So fällt es leichter zu
+starten und durchzuhalten."/>
+          <FAQuestion title="Was ist BrainCare?" description="Nicht ohne Grund verwenden wir das Bild vom Gehirn, dem eine schützende Hand
+hinzugefügt ist. Unser Ziel ist es, das Gehirn als Freund zu verstehen, das
+entsprechend gepflegt werden muss, um sein optimales Potenzial zu entfalten.
+Daher helfen wir, Brain-Brakes zu erkennen und zu umgehen sowie Brain-Booster zu
+entdecken und gezielt zu fördern."/>
+          <FAQuestion title="Ein Programm, unterschiedliche Einsatzbereiche - wie kann das funktionieren?" description="Weil es letztlich immer um den Menschen geht, auch im Business. Denn obwohl
+stets von „dem Unternehmen“ die Rede ist - am Ende sind es Menschen, die dort
+agieren und mit ihren Handlungen im besten Fall für Wachstum, Fortschritt und
+Gewinn sorgen. Und die sind keine Maschinen, sondern agieren nach den
+Spielregeln der menschlichen Natur. Wenn wir anfangen, diese Spielregeln und
+Rahmenbedingungen der NeuroPhysis nicht nur zu akzeptieren, sondern konstruktiv
+in den Alltag zu integrieren, erreichen wir Mehr-Wert durch optimale, intrinsisch
+motivierte Ressourcennutzung. Das gelingt ebenso im Einzelscouting für
+Privatpersonen wie im Business-Scouting für Unternehmen. Mehr noch: MY
+InnoTrinsic ist die erste Methodik, die dank des modularen Systems
+neurowissenschaftliche Erkenntnisse management- und prozessfähig umsetzt."/>
+          <FAQuestion title="Wie lange dauert ein Scouting?" description="Das hängt von der jeweiligen Fragestellung ab: Im Durchschnitt reichen beim Impuls-
+Scouting 4 Stunden für kleinere, individuelle Fragestellungen. Ein klassisches
+Einzelscouting dauert 3 Tage. Eine umfassende, individuell abgestimmte
+Projektbegleitung im Unternehmen nimmt erfahrungsgemäß mehr Zeit in Anspruch."/>
+          <FAQuestion title="Warum nennen wir es Scouting und nicht Coaching oder Beratung?" description="Wir sind BrainScouts, die neurophysisch-unternehmensrelevante Zusammenhänge
+sowie ihre teils weitreichenden Folgen aufzeigen und Handlungsoptionen skizzieren.
+Wenn die Entscheidung fällt, mit uns gemeinsam dieses Neuland erkunden, beraten
+wir nicht, sondern sind dabei: Wir packen gemeinsam einen Rucksack mit
+neuroloyalem Background-Wissen und wichtigen Werkzeugen. Wir zeigen Wege und
+Alternativwege und entdecken gemeinsam neue Möglichkeiten für den Einzelnen
+und/oder das Unternehmen. Denn darauf legen wir größten Wert: Dass es konkrete
+Ergebnisse und Ideen gibt. Und: Dass wir irgendwann nicht mehr benötigt werden."/>
+          <FAQuestion title="Was heißt „Selbstbestimmt“?" description="Das Steuer hat immer der Scoutie in der Hand. Mit MY InnoTrinsic ist keine
+Manipulation möglich. MY InnoTrinsic funktioniert nur, wenn der Einzelne das
+Basiswissen über die neuronalen Zusammenhänge verstanden hat und sich
+ausdrücklich für seinen ganz eigenen, individuellen neuroloyalen Weg entschieden
+hat. Denn neuroloyales Wachstum entsteht aus den Antrieben des Einzelnen - und
+nicht aus einem fertigen Glaubenssystem."/>
+          <FAQuestion title="Was unterscheidet MY InnoTrinsic von anderen Angeboten?" description="MY InnoTrinsic ist Methodenrebellion mit Win-Win-Dynamik. Es ist ein tief gehender
+neurowissenschaftlich verankerter Prozess, der den Menschen bzw. den Menschen
+mit seinen neurophysischen Besonderheiten in den Mittelpunkt stellt. Durch
+neuroloyales BrainCare werden für Privatpersonen Umbrüche zu Durchbrüchen und
+in Unternehmen Mitarbeitende zu MitWirkern, die motiviert Neues entwickeln und
+vorantreiben. Wir arbeiten transparent und legen jederzeit alle Karten auf den Tisch,
+indem wir unsere neuroloyalen Werkzeuge zur eigenen Verwendung zur Verfügung
+stellen. MY InnoTrinsic ist zudem die erste Methodik, die auf Basis eines modularen
+Systems neurowissenschaftliche Erkenntnisse und konkreter neuroloyaler
+Instrumente, management- und prozessfähig umsetzt.."/>
+        </motion.div>
+      </Sec>
+      <ContactForm props={{ title: "Kontakt", subtitle: "Teilen Sie uns mit was wir für Sie tun können." }} />
     </>
   );
 }
