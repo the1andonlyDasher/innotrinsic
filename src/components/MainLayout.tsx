@@ -7,6 +7,8 @@ import { useAtom } from "jotai";
 import { globalScroll } from "@/ts/atoms";
 import Navbar from "./Navbar/navbar";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBuilding, faPersonDigging } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function MainLayout({ preview, children, navbar, legals, t }: any) {
@@ -74,6 +76,16 @@ export default function MainLayout({ preview, children, navbar, legals, t }: any
 
 
     return (<>
+        <div className="content-grid bg-[#04070e] text-sm">
+            <div className="hidden lg:flex flex-col lg:flex-row items-center justify-start h-auto p-6 w-full  text-white gap-2">
+                Unsere Webseite befindet sich im Aufbau <FontAwesomeIcon className="mx-4 text-[#e0dd70]" icon={faPersonDigging} />
+                Mehr Inormationen zu MY InnoTrinsic folgen in Kürze. Wer nicht warten möchte kann uns gerne kontaktieren.
+            </div>
+            <div className="flex lg:hidden flex-row lg:flex-row items-center justify-center h-auto p-6 w-full  text-white gap-2">
+                Unsere Webseite befindet sich im Aufbau <FontAwesomeIcon className="mx-4 text-[#e0dd70]" icon={faPersonDigging} />
+
+            </div>
+        </div>
         <div className="top-0 left-0 h-[100px] content-grid">
             <Navbar className={`navbar`} navbar={navbar} legals={legals} />
         </div>
