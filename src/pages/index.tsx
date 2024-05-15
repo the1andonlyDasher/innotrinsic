@@ -388,8 +388,8 @@ Instrumente, management- und prozessfähig umsetzt.."/>
         </motion.div>
       </Sec>
       <ContactForm props={{ id: "kontakt", title: "Kontakt", subtitle: "Teilen Sie uns mit was wir für Sie tun können." }} />
-      <motion.div className=" rounded-2xl bg-[#A4C57B] w-full flex justify-center items-center p-12 my-12">
-        <h5 className="text-[#32689C] font-bold">MY InnoTrinsic | © {year}</h5>
+      <motion.div className=" rounded-2xl bg-[#A4C57B] w-full flex flex-col md:flex-row justify-center items-center gap-6 p-6 sm:p-8 md:p-12 my-12">
+        <h5 className="text-[#32689C] font-bold text-center w-auto">MY InnoTrinsic | © {year}</h5>
         <Link href={"/impressum"}><h5 className="text-[#32689C] font-bold">Impressum</h5></Link>
       </motion.div>
     </>

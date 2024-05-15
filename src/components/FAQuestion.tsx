@@ -62,7 +62,7 @@ const FAQuestion = (props: serviceType) => {
                             <FontAwesomeIcon className="text-[#32689C] origin-center" icon={faPlus} scale={5} />
 
                         </motion.div>
-                        <dl className="m-0 w-auto text-[#32689C] font-bold text-2xl">
+                        <dl className="m-0 w-auto text-[#32689C] font-bold text-xl md:text-2xl">
                             {props.title}
                         </dl>
 
