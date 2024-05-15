@@ -69,7 +69,7 @@ export const NavItem = ({ href, name, clickLink, icon }: NavItemProps, ...props:
         }}
       >
         <Link aria-label={name} data-name={name} scroll={false} className={isShrunk ? `nav-link black` : `nav-link`} href={`${href}`} onClick={clickLink}>{name}{icon && <FontAwesomeIcon
-          className='ml-2 text-sm' icon={icon} />}</Link>
+          className='ml-2 text-sm max-h-4' icon={icon} />}</Link>
       </motion.li>
     </>
   );
