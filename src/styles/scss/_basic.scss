@@ -247,8 +247,7 @@ a {
   padding: 1rem var(--space-l);
   z-index: 5;
   overflow: hidden;
-  justify-content: center;
-  flex-direction: row;
+
   display: flex;
   flex: 1 1 100%;
   @include mq(small) {

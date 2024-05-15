@@ -59,7 +59,7 @@ const FAQuestion = (props: serviceType) => {
                             variants={arrow_variants}
                             animate={clicked ? "open" : "closed"}>
 
-                            <FontAwesomeIcon className="text-[#32689C] origin-center" icon={faPlus} scale={5} />
+                            <FontAwesomeIcon className="text-[#32689C] text-xl origin-center" icon={faPlus} scale={5} />
 
                         </motion.div>
                         <dl className="m-0 w-auto text-[#32689C] font-bold text-xl md:text-2xl">

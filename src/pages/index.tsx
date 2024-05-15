@@ -130,7 +130,7 @@ export default function Home() {
             >Mehrwert durch BrainCare: MY InnoTrinsic eröffnet neuroloyale Perspektiven und bietet „Do-it-Lösungen“ für Menschen, Unternehmen und Organisationen.
               {/* Unser Gehirn gestaltet unseren Alltag. Wir sollten aktiv damit arbeiten, als wäre es unser bester Freund. MY InnoTrinsic bietet einen neuen Blick auf das Gehirn und seine Potenziale. Wir schaffen Mehrwert durch neuroloyales Handeln und BrainCare für Menschen und Organisationen. Dafür haben wir umsetzungsorientierte Wege, Strukturen, Instrumente und Prozesse entwickelt. */}
             </motion.p>
-            <motion.div variants={variants} className="flex flex-wrap gap-4">
+            <motion.div variants={variants} className="flex  flex-wrap gap-4">
               <Link href={"/#kontakt"} className="btn__primary">
                 Erfahre mehr <FontAwesomeIcon className="ml-2" icon={faArrowDown} />
               </Link>
@@ -140,7 +140,7 @@ export default function Home() {
             </motion.div>
           </motion.div>
           <motion.div variants={variants} ref={lpViewer} className=" md:py-10 w-full  flex flex-col gap-2 items-start justify-center">
-            <Image priority className="m-auto w-[300px] sm:w-[400px] md:w-[500px]  " src="/images/landing_braincare_transparent.webp" width={600} height={300} alt=" Gehirn in einem Glaskopf wird von einer Hand gehalten" />
+            <Image className="m-auto w-[300px] sm:w-[400px] md:w-[500px]  " src="/images/landing_braincare_transparent.webp" width={600} height={300} alt=" Gehirn in einem Glaskopf wird von einer Hand gehalten" />
           </motion.div>
           {/* HERO SECTION ENDE */}
           {/* RUBRIKEN ANFANG */}
