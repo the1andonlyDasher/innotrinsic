@@ -27,7 +27,7 @@ export const NavItem = ({ href, name, toggle, secondary, icon }: any) => {
         variants={variants}
       >
         <Link scroll={false} data-name={name} onClick={toggle} aria-label={name} className={secondary ? "nav-link-secondary" : "nav-link black"} href={`${href}`}>{name}{icon && <FontAwesomeIcon
-          className='ml-2 text-sm' icon={icon} />}</Link>
+          className='ml-2 text-sm max-h-4' icon={icon} />}</Link>
       </motion.li>
     </>
   );
