@@ -247,8 +247,8 @@ a {
   padding: 1rem var(--space-l);
   z-index: 5;
   overflow: hidden;
-
   display: flex;
+  justify-content: center;
   flex: 1 1 100%;
   @include mq(small) {
     flex: unset;

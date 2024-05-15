@@ -113,7 +113,7 @@ const ContactForm = ({ props }: contactProps) => {
         <>
             <section className="form-section" id={props.id}>
                 <div className="form-wrapper">
-                    <h3 data-before={props.title}>{props.title}</h3>
+                    <h3 data-before={props.title} className="font-bold">{props.title}</h3>
                     <p>{props.subtitle}</p>
                     <motion.div
                         className="thanks__message"

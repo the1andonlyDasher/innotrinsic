@@ -131,10 +131,10 @@ export default function Home() {
               {/* Unser Gehirn gestaltet unseren Alltag. Wir sollten aktiv damit arbeiten, als wäre es unser bester Freund. MY InnoTrinsic bietet einen neuen Blick auf das Gehirn und seine Potenziale. Wir schaffen Mehrwert durch neuroloyales Handeln und BrainCare für Menschen und Organisationen. Dafür haben wir umsetzungsorientierte Wege, Strukturen, Instrumente und Prozesse entwickelt. */}
             </motion.p>
             <motion.div variants={variants} className="flex  flex-wrap gap-4">
-              <Link href={"/#kontakt"} className="btn__primary">
+              <Link href={"/#mehr"} className="btn__primary">
                 Erfahre mehr <FontAwesomeIcon className="ml-2" icon={faArrowDown} />
               </Link>
-              <Link href={"/#myinnotrinsic"} className="btn__outline">
+              <Link href={"/#kontakt"} className="btn__outline">
                 Erstgespräch <FontAwesomeIcon className="ml-2" icon={faCalendar} />
               </Link>
             </motion.div>
@@ -152,6 +152,7 @@ export default function Home() {
       {/* SYMBOLE ANFANG */}
 
       <motion.div
+        id="mehr"
         viewport={{ amount: 0.1, once: false, margin: "0px" }}
         initial="initial"
         whileInView="enter"
@@ -182,10 +183,10 @@ export default function Home() {
             <BraincareSVG />
           </Card>
           <Card header={"Alltags-\nkompatibel"}>
-            <ManipulateSVG />
+            <JederSVG />
           </Card>
           <Card header={"Leicht zu \nlernen"}>
-            <JederSVG />
+            <ManipulateSVG />
           </Card>
           <Card header={`Selbst-\nbestimmt`}>
             <WomenSVG />

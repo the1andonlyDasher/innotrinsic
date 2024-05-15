@@ -1,34 +1,34 @@
-/* montserrat-alternates-700 - latin */
+/* poppins-700 - latin */
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: "Montserrat Alternates";
+  font-family: "Poppins";
   font-style: normal;
   font-weight: 700;
-  src: url("/fonts/montserrat-alternates-v17-latin-700.woff2") format("woff2"),
+  src: url("/fonts/poppins-v21-latin-700.woff2") format("woff2"),
     /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-      url("/fonts/montserrat-alternates-v17-latin-700.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
+      url("/fonts/poppins-v21-latin-700.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
 }
 
-/* montserrat-alternates-800 - latin */
+/* poppins-800 - latin */
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: "Montserrat Alternates";
+  font-family: "Poppins";
   font-style: normal;
   font-weight: 800;
-  src: url("/fonts/montserrat-alternates-v17-latin-800.woff2") format("woff2"),
+  src: url("/fonts/poppins-v21-latin-800.woff2") format("woff2"),
     /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-      url("/fonts/montserrat-alternates-v17-latin-800.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
+      url("/fonts/poppins-v21-latin-800.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
 }
 
-/* montserrat-alternates-900 - latin */
+/* poppins-900 - latin */
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: "Montserrat Alternates";
+  font-family: "Poppins";
   font-style: normal;
   font-weight: 900;
-  src: url("/fonts/montserrat-alternates-v17-latin-900.woff2") format("woff2"),
+  src: url("/fonts/poppins-v21-latin-900.woff2") format("woff2"),
     /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-      url("/fonts/montserrat-alternates-v17-latin-900.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
+      url("/fonts/poppins-v21-latin-900.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
 }
 
 /* didact-gothic-regular - latin */
@@ -52,7 +52,7 @@
 }
 
 $fonts: (
-  header: "Montserrat Alternates",
+  header: "Poppins",
   sub: "Telex",
   text: "Didact Gothic",
 );
