@@ -207,16 +207,7 @@ export default function Home() {
             wechselseitigen Mehrwert zu schaffen, Wachstum zu fördern und Durchbrüche für
             Menschen, Organisationen, Umwelt und Gesellschaft zu erreichen.</motion.p>
         </motion.div>
-        <motion.div variants={variants} className="flex w-auto m-auto justify-center flex-col items-start gap-4">
-          <motion.h4 variants={variants} className="w-auto text-[#506c00]">Alltagsarchitekt Gehirn</motion.h4>
-          <motion.p variants={variants}>MY InnoTrinsic konzentriert sich auf das Gehirn und seine
-            enorme Komplexität, die einen entscheidenden Einfluss auf unser Handeln, unsere
-            Leistungsfähigkeit, unser Wohlbefinden und das Wachstum von Organisationen und
-            Gesellschaft hat. Wir schöpfen aus den Neurowissenschaften und der
-            Neuropsychologie, um dieses Wissen in praktische Strukturen und Methoden zu
-            überführen, die im Unternehmensalltag und im Leben jedes Menschen unterstützen
-            können.</motion.p>
-        </motion.div>
+
         <motion.div variants={variants} className="flex w-auto m-auto justify-center flex-col items-start gap-4">
           <motion.h4 variants={variants} className="w-auto text-[#506c00]">Alltagsarchitekt Gehirn</motion.h4>
           <motion.p variants={variants}>MY InnoTrinsic konzentriert sich auf das Gehirn und seine
