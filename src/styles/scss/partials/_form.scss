@@ -178,14 +178,14 @@ form :is(input, select, textarea) {
 }
 
 form input:active {
-  background-color: #041220;
+  background-color: #c4cfa0;
 }
 
 form input:focus-visible,
 textarea:focus-visible {
   border: 1px solid var(--clr-contrast-700);
-  background-color: #041220;
-  color: var(--clr-contrast-100);
+  background-color: #f3f8e9;
+  color: var(--clr-contrast-700);
 }
 
 form .btn-group {

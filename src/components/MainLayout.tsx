@@ -79,7 +79,7 @@ export default function MainLayout({ preview, children, navbar, legals, t }: any
         <div className="content-grid bg-[#04070e] text-sm">
             <div className="hidden lg:flex flex-col lg:flex-row items-center justify-center h-auto p-6 w-full  text-white gap-2">
                 Unsere Webseite befindet sich im Aufbau <FontAwesomeIcon className="mx-4 text-[#e0dd70] h-full text-xl max-h-6" icon={faPersonDigging} />
-                Mehr Inormationen zu MY InnoTrinsic folgen in Kürze. Wer nicht warten möchte kann uns gerne kontaktieren.
+                Mehr Inormationen zu MY InnoTrinsic folgen in Kürze. Wer nicht warten möchte, kann uns gerne kontaktieren.
             </div>
             <div className="flex lg:hidden flex-row lg:flex-row items-center justify-center h-auto p-6 w-full  text-white gap-2">
                 Unsere Webseite befindet sich im Aufbau <FontAwesomeIcon className="mx-4 text-[#e0dd70] h-full text-xl max-h-6" icon={faPersonDigging} />

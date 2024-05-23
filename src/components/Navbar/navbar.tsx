@@ -99,7 +99,7 @@ const Navbar = ({ logo, alt, navbar, legals }: any) => {
 
           >
             <svg
-
+              className="max-h-8"
               xmlns="http://www.w3.org/2000/svg"
               xmlSpace="preserve"
               width={324.962}

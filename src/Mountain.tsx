@@ -179,7 +179,7 @@ export function Mountain(props: MountainType) {
     console.log(viewport.width)
   }, [viewport.width])
   return (
-    <group visible={!disposed} ref={group} rotation={[0, -1.5, 0]} scale={2} {...props} position={[size(0, viewport.width / 5, 10), -5, 0]} dispose={null}>
+    <group visible={!disposed} ref={group} rotation={[0, -1.5, 0]} scale={2} {...props} position={[size(0, viewport.width / 5, 10), -7, 0]} dispose={null}>
       <group name="Scene">
         <group name="Empty" position={[-6.21, 1.135, -0.845]} />
         <PerspectiveCamera name="Camera" makeDefault={false} far={1000} near={0.001} fov={44.959} position={[10.123, 6.476, -0.803]} rotation={[1.757, 1.225, -1.768]} />

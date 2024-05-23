@@ -20,6 +20,7 @@ const ContactForm = ({ props }: contactProps) => {
     const [email, setEmail] = useState("")
     const [message, setMessage] = useState("")
     const [firstName, setFirstName] = useState("");
+    const [formReady, setFormReady] = useState(true);
     const controlsForm = useAnimationControls();
     const messageControls = useAnimationControls();
     const inView = useInView(form, { once: false, margin: "100px 0px 100px 0px" });
@@ -55,6 +56,7 @@ const ContactForm = ({ props }: contactProps) => {
 
     const bringBackform = async (e: any) => {
         e.preventDefault();
+
         await messageControls.start("exit");
         return await controlsForm.start("enter");
     };
@@ -62,8 +64,10 @@ const ContactForm = ({ props }: contactProps) => {
     const testMail = (e: any) => {
         e.preventDefault();
         setStatus("Sende Email...");
+
         setTimeout(() => {
             setStatus("Email versendet!");
+            setFormReady(false)
             setTimeout(() => {
                 setStatus("Abschicken");
             }, 1000);
@@ -77,6 +81,7 @@ const ContactForm = ({ props }: contactProps) => {
         e.preventDefault();
         if (form.current == null) return;
         setStatus("Sende Email...");
+
         emailjs
             .sendForm(
                 "service_o81qvau",
@@ -87,6 +92,7 @@ const ContactForm = ({ props }: contactProps) => {
             .then(
                 (result: any) => {
                     setStatus("Email versendet!");
+                    setFormReady(false)
                     setTimeout(() => {
                         setStatus("Abschicken");
                     }, 1000);
@@ -104,7 +110,7 @@ const ContactForm = ({ props }: contactProps) => {
 
     useEffect(() => {
 
-        inView ? controlsForm.start("enter") :
+        inView && formReady ? controlsForm.start("enter") :
             controlsForm.start("exit")
 
     }, [inView]);
@@ -130,7 +136,7 @@ const ContactForm = ({ props }: contactProps) => {
                     </motion.div>
                     <motion.form
                         ref={form}
-                        onSubmit={testMail}
+                        onSubmit={sendEmail}
                         variants={formVariants}
                         initial="initial"
                         animate={controlsForm}

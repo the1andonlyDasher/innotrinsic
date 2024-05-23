@@ -266,7 +266,8 @@ const GL = (props: glProps) => {
                 {/* <BGText /> */}
 
                 {/* <ContactGL /> */}
-                <ambientLight intensity={1} />
+                <ambientLight intensity={0.2} />
+                {/* <Mountain scroll={props.scroll} /> */}
             </Canvas>
         </div>
     );

@@ -140,7 +140,9 @@ export default function Home() {
               </Link>
             </motion.div>
           </motion.div>
-          <motion.div ref={lpViewer} className=" py-5 md:py-10 w-full h-full flex flex-col gap-2 items-start justify-center"></motion.div>
+          <motion.div variants={variants} ref={lpViewer} className=" md:py-10 w-full  flex flex-col gap-2 items-start justify-center">
+            <Image className="m-auto w-[300px] sm:w-[400px] md:w-[500px]  " src="/images/landing_braincare_transparent.webp" width={600} height={300} alt=" Gehirn in einem Glaskopf wird von einer Hand gehalten" />
+          </motion.div>
           {/* HERO SECTION ENDE */}
           {/* RUBRIKEN ANFANG */}
 

@@ -219,7 +219,7 @@ export default function Home() {
             können.</motion.p>
         </motion.div>
         <motion.div variants={variants} className="flex w-auto m-auto justify-center flex-col items-start gap-4">
-          <motion.h4 variants={variants} className="w-auto text-[#506c00]">Das Gehirn wir zum besten Freund</motion.h4>
+          <motion.h4 variants={variants} className="w-auto text-[#506c00]">Das Gehirn wird zum besten Freund</motion.h4>
           <motion.p variants={variants}>Mit einem respektvollen Blick auf die Natur
             des Menschen gehen wir neue Wege der Kooperation und Kollaboration mit dem
             mächtigsten Organ des Körpers. Ähnlich wie wir für unsere physische Gesundheit
@@ -227,7 +227,7 @@ export default function Home() {
             kann. Das Gehirn wird zum besten Freund, der uns unterstützt und begleitet.</motion.p>
         </motion.div>
         <motion.div variants={variants} className="flex w-auto m-auto justify-center flex-col items-start gap-4">
-          <motion.h4 variants={variants} className="w-auto text-[#506c00]">BrainCare pragmatisch und mit Struktur:</motion.h4>
+          <motion.h4 variants={variants} className="w-auto text-[#506c00]">BrainCare pragmatisch und mit Struktur</motion.h4>
           <motion.p variants={variants}>Als verlässlicher Partner von Menschen
             und Organisationen haben wir aus dem Wissen der Neurowissenschaften ein
             neuroloyales Strukturprinzip entwickelt, um Menschen und Organisationen für diese
@@ -379,10 +379,11 @@ Instrumente, management- und prozessfähig umsetzt.."/>
           </motion.div>
         </motion.div>
       </Sec>
-      <ContactForm props={{ id: "kontakt", title: "Kontakt", subtitle: "Teilen Sie uns mit was wir für Sie tun können." }} />
+      <ContactForm props={{ id: "kontakt", title: "Kontakt" }} />
       <motion.div className=" rounded-2xl bg-[#A4C57B] w-full flex flex-col md:flex-row justify-center items-center gap-6 p-6 sm:p-8 md:p-12 my-12">
-        <h5 className="text-[#32689C] font-bold text-center w-auto">MY InnoTrinsic | © {year}</h5>
+        <h5 className="text-[#10202f] font-bold text-center w-auto">MY InnoTrinsic | © {year}</h5>
         <Link href={"/impressum"}><h5 className="text-[#32689C] font-bold">Impressum</h5></Link>
+        <Link href={"/datenschutz"}><h5 className="text-[#32689C] font-bold">Datenschutz</h5></Link>
       </motion.div>
     </>
   );
