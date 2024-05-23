@@ -57,7 +57,7 @@ const ContactForm = ({ props }: contactProps) => {
     const bringBackform = async (e: any) => {
         e.preventDefault();
 
-        await messageControls.start("exit");
+        await messageControls.start("exit").then(() => { setFormReady(true) });
         return await controlsForm.start("enter");
     };
 
@@ -130,7 +130,7 @@ const ContactForm = ({ props }: contactProps) => {
                     >
                         <h4>Vielen Dank!</h4>
                         <p>Wir werden Ihre Anfrage schnellstmöglich bearbeiten und uns bei Ihnen melden.</p>
-                        <button className="btn__small py-2" onClick={bringBackform}>
+                        <button className="text-xl py-2 px-6 bg-[#a0c17f] rounded-full hover:text-white hover:bg-[#32689C]" onClick={bringBackform}>
                             Weitere Email
                         </button>
                     </motion.div>
