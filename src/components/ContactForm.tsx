@@ -169,7 +169,7 @@ const ContactForm = ({ props }: ContactProps) => {
                     </motion.div>
                     <motion.form
                         ref={form}
-                        onSubmit={testMail}
+                        onSubmit={sendEmail}
                         variants={formVariants}
                         initial="initial"
                         animate={controlsForm}
