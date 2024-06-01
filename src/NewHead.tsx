@@ -14,7 +14,7 @@ import { productViewer, globalTarget, orbitTarget, loc } from './ts/atoms'
 import { size as s } from './ts/utils';
 import { useRouter } from 'next/router'
 import IdeaCloud from './ts/landingGL/IdeaCloud'
-import { useAnimation } from 'framer-motion'
+import { delay, useAnimation } from 'framer-motion'
 import { useSearchParams } from 'next/navigation'
 
 
@@ -60,6 +60,8 @@ const materialVariants = {
       delay: 0.25,
     },
   },
+
+
 };
 
 const material2Variants = {
@@ -73,6 +75,7 @@ const material2Variants = {
       damping: 10,
       stiffness: 50,
       restDelta: 0.1,
+      delay: 0.5
     },
   },
   exit: {
@@ -159,7 +162,7 @@ export function NewHead(props: HeadHandsProps) {
       animate={controls}
       exit="exit"
       variants={material2Variants}
-      transition={{ type: "spring", damping: 20, stiffness: 50, delay: 0.5 }}
+
       transparent
       toneMapped
     />
@@ -173,7 +176,7 @@ export function NewHead(props: HeadHandsProps) {
       animate={brain_material_controls}
       exit="exit"
       variants={material2Variants}
-      transition={{ type: "spring", damping: 20, stiffness: 50, delay: 0.5 }}
+
 
       color="#f5cb6e"
       metalness={1}
@@ -203,46 +206,31 @@ export function NewHead(props: HeadHandsProps) {
     />
   );
 
-  // UEF for mounting and visibility
-  useEffect(() => {
-    if (
-      (router.pathname === "/einsatzgebiete" || router.pathname === "/")
-      && (searchParams.get("test") === null ||
-        false)
-    ) {
-      setTimeout(() => {
-        setDisposed(false);
-        setBDisposed(false);
-        setHDisposed(false);
-        setH1Disposed(true);
-        setH2Disposed(true);
-        setIsInPage(true);
-      }, 100);
-    } else if (
-      (router.pathname === "/einsatzgebiete" || router.pathname === "/")
-      && (searchParams.get("test") !== null ||
-        false)
-    ) {
-      setTimeout(() => {
-        setH1Disposed(false);
-        setH2Disposed(false);
-        setBDisposed(false);
-      }, 500);
-    } else {
-      setTimeout(() => {
-        brain_material_controls.start("exit");
-        controls.start("exit").then(() => {
-          setIsInPage(false), setDisposed(true);
-        });
-      }, 800);
-    }
-  }, [router.pathname, searchParams]);
-
-
 
   useEffect(() => {
     if (router.pathname === "/") {
-      if ((props.scroll.current > 0.1)) {
+      if ((props.scroll.current > 0.05)) {
+        brain_material_controls.start(
+          "hidden");
+        controls.start("exit").then(() => {
+          setIsInPage(false), setDisposed(true)
+        });
+      } else {
+        setDisposed(false)
+        setIsInPage(true)
+      }
+    } else {
+      brain_material_controls.start(
+        "hidden");
+      controls.start("exit").then(() => {
+        setIsInPage(false), setDisposed(true)
+      });
+    }
+  }, [router.pathname, props.scroll.current]);
+
+  useEffect(() => {
+    if (isInPage) {
+      if ((props.scroll.current > 0.05)) {
         brain_material_controls.start(
           "hidden");
         controls.start("exit");
@@ -255,10 +243,10 @@ export function NewHead(props: HeadHandsProps) {
         "hidden");
       controls.start("exit");
     }
-  }, [props.scroll.current, router.pathname]);
+  }, [isInPage]);
 
   return (<>
-    <group visible={router.pathname === "/" ? true : false} {...props} position={pos} dispose={null} scale={s(6, viewport.width / 5, 8.5)} rotation={[0, -Math.PI / 1.15, 0]}>
+    <group visible={!disposed} {...props} position={pos} dispose={null} scale={s(6, viewport.width / 5, 8.5)} rotation={[0, -Math.PI / 1.15, 0]}>
       <group position={[0.485, 0.649, -0.045]} rotation={[-Math.PI / 1.75, 0.2, Math.PI / 2.5]} scale={[0.358, 0.358, 0.358]}>
         <primitive object={nodes.Bone001} />
         <primitive object={nodes.Bone002} />

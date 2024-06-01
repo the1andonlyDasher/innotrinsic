@@ -151,15 +151,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         ? "enter"
                         : "exit"
         );
-        textMatControls.start(
-            hovered && clicked
-                ? "enter"
-                : clicked && !hovered
-                    ? "enter"
-                    : !clicked && hovered
-                        ? "enter"
-                        : "initial"
-        );
+
         // hovered && clicked
         //     ? subGroupControls.stop()
         //     : clicked && !hovered
@@ -176,33 +168,50 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
 
     useEffect(() => {
         // set positions of sphere in circle or in curve above head
-        if (router.pathname === "/" && props.scroll.current
-            > 0.1) {
+        if (router.pathname === "/") {
+            if (props.scroll.current
+                > 0.05) {
+                textMatControls.start("exit")
+                sphereControls.start({ scale: 0 });
+                subGroupControls.start({
+                    x: 0,
+                    y: 0,
+                    z: 0,
+                });
+            } else {
+                setTimeout(() => {
+                    sphereControls.start({ scale: 1 });
+                    textMatControls.start(
+                        hovered && clicked
+                            ? "enter"
+                            : clicked && !hovered
+                                ? "enter"
+                                : !clicked && hovered
+                                    ? "enter"
+                                    : "initial"
+                    );
+                    subGroupControls.start({
+                        x: Math.cos(((Math.PI * 1.15) / props.r) * props.index) * radius,
+                        y: Math.sin(((Math.PI * 1.15) / props.r) * props.index) * radius / 1.45,
+                        z: 0
+
+                    })
+                }, 500)
+
+            }
+        }
+        else {
             sphereControls.start({ scale: 0 });
+            textMatControls.start("exit")
+
             subGroupControls.start({
                 x: 0,
                 y: 0,
                 z: 0,
             });
 
-        }
-        else {
-            sphereControls.start({ scale: 1 });
-            subGroupControls.start({
-                x: Math.cos(((Math.PI * 1.15) / props.r) * props.index) * radius,
-                y: Math.sin(((Math.PI * 1.15) / props.r) * props.index) * radius / 1.45,
-                z: 0
-
-            })
-            groupControls.start(props.scroll.current > 0.1 ? "exit" : "enter");
             setClicked(searchParams.get("neuron") === props.text ? true : false);
         };
-
-        if (clicked) {
-            textMatControls.start("hide")
-        } else if (searchParams.get("neuron") === props.text) {
-            textMatControls.start("enter")
-        } else textMatControls.start("initial")
 
     }, [searchParams, router.pathname, props.scroll.current]);
 
@@ -265,7 +274,8 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         type: "spring",
                         damping: 10,
                         stiffness: 40,
-                        restDelta: 0.001
+                        restDelta: 0.001,
+
                     }}
                 >
                     <Billboard>
@@ -296,7 +306,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                         initial: { opacity: 1, color: "#475946" },
                                         hide: { opacity: 0.2, color: "#475946" },
                                         enter: { opacity: 1, color: "#ffffff" },
-                                        exit: { opacity: 0.2, color: "#475946" },
+                                        exit: { opacity: 0, color: "#475946" },
                                     }}
                                 />
                                 {`${props.text}`}

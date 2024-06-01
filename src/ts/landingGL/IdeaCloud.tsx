@@ -122,7 +122,7 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
 
                     animate={sphereMaterialControls}
                     variants={{
-                        hide: { opacity: 0.2, color: "#ebfbca" },
+                        hide: { opacity: 0.2, color: "#ebfbca", transition: { delay: 0.5 } },
                         visible: { opacity: 1, color: "#ebfbca" },
                     }}
                 />
