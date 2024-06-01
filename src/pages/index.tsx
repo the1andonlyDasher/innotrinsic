@@ -3,7 +3,7 @@ import { Work_Sans } from "next/font/google";
 import Sec from "@/components/Section";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { animate, motion } from "framer-motion";
+import { animate, motion, useInView } from "framer-motion";
 import { IdeaData } from "@/ts/landingGL/IdeaCloud";
 import { useEffect, useRef, useState } from "react";
 import { backgroundText, loc, productViewer } from "@/ts/atoms";
@@ -49,6 +49,7 @@ const blurVariants = {
 
 export default function Home() {
   var date = new Date();
+
   var year: any = date.getFullYear().toString();
   const searchParams = useSearchParams();
   const [location, setLocation] = useAtom(loc);
@@ -58,12 +59,15 @@ export default function Home() {
 
   const [pvAtom, setPVAtom] = useAtom(productViewer);
   const lpViewer = useRef<any>(!null);
-
+  const inView = useInView(lpViewer, { margin: "0px", amount: 0.1 })
   const setCoords = () => {
+
     const { width, height, left, top } =
       lpViewer?.current.getBoundingClientRect();
     setPVAtom({ width, height, left, top });
+
   };
+
 
   useEffect(() => {
     setCoords();
@@ -171,7 +175,7 @@ export default function Home() {
         onViewportEnter={(entry) => {
           entry?.isIntersecting && setLocation("science");
         }}
-        className=" py-16 flex my-auto justify-center items-start flex-col top-0 gap-12 md:gap-16 w-full h-auto"
+        className="breakout rounded-xl px-6 bg-[#F8F3E0] py-16 flex my-auto justify-center items-start flex-col top-0 gap-12 md:gap-16 w-full h-auto"
       >
 
         <motion.div

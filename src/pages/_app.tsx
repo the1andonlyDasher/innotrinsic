@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }: AppProps) {
     ["Home", null],
     ["Kontakt", faCalendar]
   ];
-  const legals_names = ["Impressum"]
+  const legals_names = ["Impressum", "Datenschutz"]
   return (<>
 
     <MainLayout navbar={names} legals={legals_names}>

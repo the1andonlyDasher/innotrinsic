@@ -72,11 +72,11 @@ export function CookieConsent() {
     }
     return (<>
         <motion.div initial="hidden" animate={controls} variants={cookieWrapper__variants} className='origin-bottom-left flex justify-center text-[#506c00] items-center fixed bottom-0 left-0 w-full h-full overflow-hidden backdrop-blur-lg z-30'>
-            <motion.div variants={modal__variants} className='p-6 flex flex-col justify-start items-center w-full h-full max-h-[700px] max-w-[500px] bg-[#F8F3E0]'>
+            <motion.div variants={modal__variants} className='p-6 flex flex-col justify-center items-center w-full h-full max-h-[700px] max-w-[500px] bg-[#F8F3E0]'>
                 <motion.p variants={element__variants} className='m-0'>Wir verwenden</motion.p>
-                <motion.h2 variants={element__variants} className='m-0'>Cookies</motion.h2>
+                <motion.h2 variants={element__variants} className='my-0 text-center font-bold'>Cookies</motion.h2>
                 <motion.p className='text-base py-4 overflow-y-auto' variants={element__variants}>
-                    Wir nutzen EmailJS, um das Versenden von E-Mails von unserer Anwendung zu erleichtern. Wenn Sie ein Formular auf unserer Website absenden, werden die folgenden Daten von EmailJS erfasst und verarbeitet:
+                    Wir nutzen EmailJS, um das Versenden von E-Mails von unserer Anwendung zu erleichtern. Wenn Sie ein Formular auf unserer Website absenden, werden die folgenden Daten von EmailJS erfasst und verarbeitet:<br />
 
                     - Name<br />
                     - E-Mail-Adresse<br />
@@ -95,8 +95,8 @@ export function CookieConsent() {
                     <motion.button variants={element__variants} type='button' aria-label='Decline cookies' className='border border-[#506c00] p-4 cursor-pointer bg-none text-[#506c00] font-bold rounded flex-auto' onClick={handleCookieDeclined}>Ablehnen</motion.button>
                 </motion.div>
                 <motion.ul variants={modal__variants} className='flex flex-wrap gap-4 justify-between w-full my-4'>
-                    <motion.li onClick={() => setClosed(!closed)}><Link className='underline-offset-1' href="/Impressum">Impressum</Link></motion.li>
-                    <motion.li onClick={() => setClosed(!closed)}><Link className='underline-offset-1' href="/Datenschutz">Datenschutz</Link></motion.li>
+                    <motion.li onClick={() => setClosed(!closed)}><Link className='underline-offset-1' href="/impressum">Impressum</Link></motion.li>
+                    <motion.li onClick={() => setClosed(!closed)}><Link className='underline-offset-1' href="/datenschutz">Datenschutz</Link></motion.li>
                 </motion.ul>
             </motion.div>
         </motion.div>

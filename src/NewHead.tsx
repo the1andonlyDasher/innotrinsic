@@ -5,7 +5,7 @@ Command: npx gltfjsx@6.2.16 public/newHead.glb --types --output src/NewHead.tsx
 
 import * as THREE from 'three'
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
-import { MeshTransmissionMaterial, useAspect, useGLTF } from '@react-three/drei'
+import { Float, MeshTransmissionMaterial, useAspect, useGLTF } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 import { motion as motion3d } from "framer-motion-3d"
 import { useThree } from '@react-three/fiber'
@@ -159,6 +159,7 @@ export function NewHead(props: HeadHandsProps) {
       animate={controls}
       exit="exit"
       variants={material2Variants}
+      transition={{ type: "spring", damping: 20, stiffness: 50, delay: 0.5 }}
       transparent
       toneMapped
     />
@@ -172,6 +173,8 @@ export function NewHead(props: HeadHandsProps) {
       animate={brain_material_controls}
       exit="exit"
       variants={material2Variants}
+      transition={{ type: "spring", damping: 20, stiffness: 50, delay: 0.5 }}
+
       color="#f5cb6e"
       metalness={1}
       roughness={0.1}
@@ -238,19 +241,25 @@ export function NewHead(props: HeadHandsProps) {
 
 
   useEffect(() => {
-    if ((router.pathname === "/" && props.scroll.current > 0.1)) {
+    if (router.pathname === "/") {
+      if ((props.scroll.current > 0.1)) {
+        brain_material_controls.start(
+          "hidden");
+        controls.start("exit");
+      } else {
+        brain_material_controls.start("enter")
+        controls.start("enter")
+      }
+    } else {
       brain_material_controls.start(
         "hidden");
       controls.start("exit");
-    } else {
-      brain_material_controls.start("enter")
-      controls.start("enter")
     }
   }, [props.scroll.current, router.pathname]);
 
   return (<>
     <group visible={router.pathname === "/" ? true : false} {...props} position={pos} dispose={null} scale={s(6, viewport.width / 5, 8.5)} rotation={[0, -Math.PI / 1.15, 0]}>
-      <group position={[0.424, 0.549, -0.045]} rotation={[-Math.PI / 2, 0.25, Math.PI / 2]} scale={0.358}>
+      <group position={[0.485, 0.649, -0.045]} rotation={[-Math.PI / 1.75, 0.2, Math.PI / 2.5]} scale={[0.358, 0.358, 0.358]}>
         <primitive object={nodes.Bone001} />
         <primitive object={nodes.Bone002} />
         <primitive object={nodes.Bone004} />
@@ -259,18 +268,21 @@ export function NewHead(props: HeadHandsProps) {
         <primitive object={nodes.Bone018} />
         <skinnedMesh geometry={nodes.Shape_IndexedFaceSet001.geometry} skeleton={nodes.Shape_IndexedFaceSet001.skeleton} >{hand2Material}</skinnedMesh>
       </group>
-      <group rotation={[0, -Math.PI / 0.85, 0]} position={[0.125, -0.6, 0]}>
-        <pointLight intensity={15} color={"#ffde5b"} position={[0.2, 1.5, 0]} />
-        <mesh geometry={nodes.base.geometry} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>
-        <mesh geometry={nodes.right_hemisphere.geometry} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>
-        <mesh geometry={nodes.left_hemisphere.geometry} position={[0.137, 1.743, 0]} rotation={[-Math.PI, 0, 0]} scale={[-0.337, -0.325, -0.308]} >{brain_material}</mesh>
-        {/* <mesh geometry={nodes.head.geometry} position={[0.184, 1.584, 0]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={[4.297, 4.297, 4.243]} >{glass_material}</mesh> */}
-        <mesh geometry={nodes.cerebellum.geometry} position={[-0.066, 1.557, 0]} scale={[0.123, 0.075, 0.123]} >{brain_material}</mesh>
-        <mesh geometry={nodes.stem.geometry} position={[0.071, 1.561, 0]} scale={[0.083, 0.206, 0.083]} >{brain_material}</mesh>
-        <group position={[0.115, 1.9, 0]} scale={0.25}>
-          <IdeaCloud scroll={props.scroll} centerPoint={[0, 0, 0]} />
+      <Float floatIntensity={0.1} rotationIntensity={0.3}>
+
+        <group rotation={[0, -Math.PI / 0.85, 0]} position={[0.125, -0.6, 0]}>
+          <pointLight intensity={15} color={"#ffde5b"} position={[0.2, 1.5, 0]} />
+          <mesh geometry={nodes.base.geometry} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>
+          <mesh geometry={nodes.right_hemisphere.geometry} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>
+          <mesh geometry={nodes.left_hemisphere.geometry} position={[0.137, 1.743, 0]} rotation={[-Math.PI, 0, 0]} scale={[-0.337, -0.325, -0.308]} >{brain_material}</mesh>
+          {/* <mesh geometry={nodes.head.geometry} position={[0.184, 1.584, 0]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={[4.297, 4.297, 4.243]} >{glass_material}</mesh> */}
+          <mesh geometry={nodes.cerebellum.geometry} position={[-0.066, 1.557, 0]} scale={[0.123, 0.075, 0.123]} >{brain_material}</mesh>
+          <mesh geometry={nodes.stem.geometry} position={[0.071, 1.561, 0]} scale={[0.083, 0.206, 0.083]} >{brain_material}</mesh>
+          <group position={[0.115, 1.9, 0]} scale={0.25}>
+            <IdeaCloud scroll={props.scroll} centerPoint={[0, 0, 0]} />
+          </group>
         </group>
-      </group>
+      </Float>
     </group>
   </>
   )
