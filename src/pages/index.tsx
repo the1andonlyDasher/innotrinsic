@@ -20,6 +20,7 @@ import { faArrowDown, faArrowRight, faArrowRightArrowLeft, faAtom, faCalendar, f
 import ContactForm from "@/components/ContactForm";
 import FAQuestion from "@/components/FAQuestion";
 import PrivacyPopup from "@/components/PrivacyPopup";
+import { CookieConsent } from "@/components/cookies/Cookiebanner";
 
 const variants = {
   initial: { y: 20, filter: "blur(20px)", opacity: 0 },
@@ -87,6 +88,7 @@ export default function Home() {
 
   return (
     <>
+      <CookieConsent />
       {/* HERO SECTION ANFANG */}
       <Sec single left sectionName="landing" id="first">
         <motion.div

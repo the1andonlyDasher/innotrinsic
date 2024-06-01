@@ -1,27 +1,33 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAnimationControls, motion, useInView } from "framer-motion";
-import emailjs from "@emailjs/browser"
+import emailjs from "@emailjs/browser";
+import Cookies from 'js-cookie';
+import Link from "next/link";
+
 const userID = "zl8P8-ahkEcFjpsgG";
 emailjs.init(userID);
 
-type props = {
-    title?: string,
-    subtitle?: string,
-    sectionName?: string,
-    id?: string
+const USER_CONSENT_COOKIE_KEY = 'cookie_consent_is_true'
+const USER_CONSENT_COOKIE_EXPIRE_DATE = 365
+
+type Props = {
+    title?: string;
+    subtitle?: string;
+    sectionName?: string;
+    id?: string;
+};
+
+interface ContactProps {
+    props: Props;
 }
 
-interface contactProps {
-    props: props
-}
-
-
-const ContactForm = ({ props }: contactProps) => {
+const ContactForm = ({ props }: ContactProps) => {
     const form = useRef<HTMLFormElement>(null);
-    const [email, setEmail] = useState("")
-    const [message, setMessage] = useState("")
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
     const [firstName, setFirstName] = useState("");
     const [formReady, setFormReady] = useState(true);
+    const [isConsentGiven, setIsConsentGiven] = useState(false);
     const controlsForm = useAnimationControls();
     const messageControls = useAnimationControls();
     const inView = useInView(form, { once: false, margin: "100px 0px 100px 0px" });
@@ -30,7 +36,7 @@ const ContactForm = ({ props }: contactProps) => {
         initial: { y: 20, filter: "blur(20px)", opacity: 0 },
         enter: { y: 0, filter: "blur(0px)", opacity: 1, delay: 1 },
         exit: { y: 20, filter: "blur(20px)", opacity: 0 },
-    }
+    };
 
     const formVariants = {
         initial: { opacity: 0 },
@@ -43,11 +49,13 @@ const ContactForm = ({ props }: contactProps) => {
             transition: { staggerChildren: 0.1, when: "afterChildren" },
         },
     };
+
     const messageVariants = {
         initial: { opacity: 0 },
         enter: { opacity: 1, display: "flex" },
         exit: { opacity: 0, transitionEnd: { display: "none" } },
     };
+
     const sequence = async () => {
         await controlsForm.start("exit");
         return await messageControls.start("enter");
@@ -57,32 +65,42 @@ const ContactForm = ({ props }: contactProps) => {
 
     const bringBackform = async (e: any) => {
         e.preventDefault();
-
-        await messageControls.start("exit").then(() => { setFormReady(true) });
+        await messageControls.start("exit").then(() => {
+            setFormReady(true);
+        });
         return await controlsForm.start("enter");
     };
 
     const testMail = (e: any) => {
         e.preventDefault();
+        if (!cookieConsentIsTrue) {
+            alert("Bitte stimmen Sie der Datenschutzrichtlinie zu, bevor Sie fortfahren.");
+            return;
+        }
         setStatus("Sende Email...");
 
         setTimeout(() => {
             setStatus("Email versendet!");
-            setFormReady(false)
+            setFormReady(false);
             setTimeout(() => {
                 setStatus("Abschicken");
             }, 1000);
             setFirstName("");
-            setEmail("")
-            setMessage("")
+            setEmail("");
+            setMessage("");
             sequence();
         }, 1000);
     };
+
     const sendEmail = (e: any) => {
         e.preventDefault();
-        if (form.current == null) return;
+        if (!cookieConsentIsTrue) {
+            alert("Bitte stimmen Sie der Datenschutzrichtlinie zu, bevor Sie fortfahren.");
+            return;
+        }
         setStatus("Sende Email...");
-
+        const currentForm = form.current;
+        if (!currentForm) return; // Check if form is null
         emailjs
             .sendForm(
                 "service_o81qvau",
@@ -93,14 +111,14 @@ const ContactForm = ({ props }: contactProps) => {
             .then(
                 (result: any) => {
                     setStatus("Email versendet!");
-                    setFormReady(false)
+                    setFormReady(false);
                     setTimeout(() => {
                         setStatus("Abschicken");
                     }, 1000);
                     sequence();
                     setFirstName("");
-                    setEmail("")
-                    setMessage("")
+                    setEmail("");
+                    setMessage("");
                 },
                 (error: any) => {
                     setStatus("Fehlgeschlagen...");
@@ -109,11 +127,25 @@ const ContactForm = ({ props }: contactProps) => {
             );
     };
 
+    const [cookieConsentIsTrue, setCookieConsentIsTrue] = useState(Cookies.get(USER_CONSENT_COOKIE_KEY) === 'true')
+
+
+
+
     useEffect(() => {
 
-        inView && formReady ? controlsForm.start("enter") :
-            controlsForm.start("exit")
+        Cookies.set(USER_CONSENT_COOKIE_KEY, cookieConsentIsTrue ? 'true' : 'false', {
+            expires: USER_CONSENT_COOKIE_EXPIRE_DATE,
+        })
 
+    }, [cookieConsentIsTrue]);
+
+    const handleConsentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCookieConsentIsTrue(e.target.checked);
+    }
+
+    useEffect(() => {
+        inView && formReady ? controlsForm.start("enter") : controlsForm.start("exit");
     }, [inView]);
 
     return (
@@ -183,6 +215,9 @@ const ContactForm = ({ props }: contactProps) => {
                                 required
                                 rows={5}
                             />
+                        </motion.div>
+                        <motion.div className="flex flex-row items-center text-black gap-2">
+                            <input className="w-5 h-5" type="checkbox" checked={cookieConsentIsTrue} onChange={e => handleConsentChange(e)} />Ich habe die<Link className="m-0 p-0 underline" href="/Datenschutz">Datenschutzerklärung</Link> gelesen
                         </motion.div>
                         <motion.button variants={variants} className="btn__primary" type="submit">
                             {status}
