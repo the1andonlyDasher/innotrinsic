@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAnimationControls, motion, useInView } from "framer-motion";
 import emailjs from "@emailjs/browser"
-emailjs.init("zl8P8-ahkEcFjpsgG");
+const userID = "zl8P8-ahkEcFjpsgG";
+emailjs.init(userID);
 
 type props = {
     title?: string,
@@ -87,7 +88,7 @@ const ContactForm = ({ props }: contactProps) => {
                 "service_o81qvau",
                 "template_c4wva6m",
                 form.current,
-                "zl8P8-ahkEcFjpsgG"
+                userID
             )
             .then(
                 (result: any) => {
@@ -136,7 +137,7 @@ const ContactForm = ({ props }: contactProps) => {
                     </motion.div>
                     <motion.form
                         ref={form}
-                        onSubmit={sendEmail}
+                        onSubmit={testMail}
                         variants={formVariants}
                         initial="initial"
                         animate={controlsForm}

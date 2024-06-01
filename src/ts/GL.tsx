@@ -39,6 +39,7 @@ import { Neurons } from "@/Neurons2";
 import { Bloom, DepthOfField, EffectComposer, Noise, ToneMapping, Vignette } from '@react-three/postprocessing'
 import { Model_Hands } from "@/Hands";
 import { Model, Neuron } from "@/Neuron5";
+import { NewHead } from "@/NewHead";
 
 declare global {
     namespace JSX {
@@ -182,6 +183,7 @@ const GL = (props: glProps) => {
         resetCamera(router.pathname);
     }, [router.pathname]);
 
+
     return (
         <div className="canvas__wrapper">
 
@@ -245,9 +247,14 @@ const GL = (props: glProps) => {
                     attach="background"
                     size={1024}
                 />
+                <Float floatIntensity={0.1} rotationIntensity={0.5}>
+                    <NewHead scroll={props.scroll} />
+
+
+                </Float>
                 <Environment preset="apartment" blur={0} />
-                {/* <ambientLight intensity={1.5} />
-                <directionalLight intensity={2.5} color={"#BDED4C"} /> */}
+
+
 
                 {/* <Model_Hands scroll={props.scroll} /> */}
 

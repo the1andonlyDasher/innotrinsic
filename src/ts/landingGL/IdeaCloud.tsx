@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useRef } from "react";
+import { FunctionComponent, MutableRefObject, useEffect, useRef } from "react";
 import Idea from "./Idea";
 import { Instances } from "@react-three/drei";
 import { motion as motion3d } from "framer-motion-3d";
@@ -18,19 +18,20 @@ import { useRouter } from "next/router";
 
 interface IdeaCloudProps {
     centerPoint: [number, number, number];
+    scroll: MutableRefObject<number>;
 }
 
 export const IdeaData = [
     {
         // colors: ["#42c46d", "#3561A1"],
         colors: ["#fcfdd9", "#b5f299"],
-        text: "Business",
+        text: "Public Life",
         model: <Business scale={0.05} rotation={[0, Math.PI / 4, 0]} />
     },
     {
         // colors: ["#3564A1", "#33e3d4"],
         colors: ["#fcfdd9", "#327217"],
-        text: "Private",
+        text: "Sport",
         model: <Private scale={0.05} />
     },
     {
@@ -42,13 +43,13 @@ export const IdeaData = [
     {
         // colors: ["#B0E431", "#EDDFAB"],
         colors: ["#fcfdd9", "#b5f299"],
-        text: "Sport",
+        text: "Private",
         model: <Sport scale={0.05} />
     },
     {
         // colors: ["#297dad", "#e054c0"],
         colors: ["#fcfdd9", "#b5f299"],
-        text: "Public Life",
+        text: "Business",
         model: <Public scale={0.05} />
     },
 ];
@@ -118,16 +119,17 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
                 <sphereGeometry args={[0.3, 30, 30]} />
                 <motion3d.meshStandardMaterial
                     transparent
-                    toneMapped
+
                     animate={sphereMaterialControls}
                     variants={{
-                        hide: { opacity: 0.2, color: "#fff" },
-                        visible: { opacity: 1, color: "#fff" },
+                        hide: { opacity: 0.2, color: "#ebfbca" },
+                        visible: { opacity: 1, color: "#ebfbca" },
                     }}
                 />
                 {numIdeas.map((data: any, i: number) =>
                     <group key={i}>
                         <Idea
+                            scroll={props.scroll}
                             active={searchParams.get("neuron") === data.text ? true : false}
                             delayFactor={i + 1 / 10}
                             text={data.text}

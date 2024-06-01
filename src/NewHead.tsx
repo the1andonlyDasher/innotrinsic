@@ -4,7 +4,7 @@ Command: npx gltfjsx@6.2.16 public/newHead.glb --types --output src/NewHead.tsx
 */
 
 import * as THREE from 'three'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
 import { MeshTransmissionMaterial, useAspect, useGLTF } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 import { motion as motion3d } from "framer-motion-3d"
@@ -12,6 +12,11 @@ import { useThree } from '@react-three/fiber'
 import { useAtom } from 'jotai'
 import { productViewer, globalTarget, orbitTarget, loc } from './ts/atoms'
 import { size as s } from './ts/utils';
+import { useRouter } from 'next/router'
+import IdeaCloud from './ts/landingGL/IdeaCloud'
+import { useAnimation } from 'framer-motion'
+import { useSearchParams } from 'next/navigation'
+
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -33,9 +38,63 @@ type GLTFResult = GLTF & {
   animations: any[]
 }
 
+const materialVariants = {
+  initial: { opacity: 0 },
+  hide: { opacity: 0.1 },
+  enter: {
+    opacity: 0.5,
+    transition: {
+      type: "spring",
+      damping: 10,
+      stiffness: 50,
+      restDelta: 0.1,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      type: "spring",
+      damping: 10,
+      stiffness: 50,
+      restDelta: 0.1,
+      delay: 0.25,
+    },
+  },
+};
+
+const material2Variants = {
+  initial: { opacity: 0 },
+  hidden: { opacity: 0 },
+  hide: { opacity: 0.1 },
+  enter: {
+    opacity: 1,
+    transition: {
+      type: "spring",
+      damping: 10,
+      stiffness: 50,
+      restDelta: 0.1,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      type: "spring",
+      damping: 10,
+      stiffness: 50,
+      restDelta: 0.1,
+      delay: 0.25,
+    },
+  },
+};
+
+type HeadHandsProps = {
+  scroll: MutableRefObject<number>;
+  props?: JSX.IntrinsicElements["group"];
+};
+
 type ContextType = Record<string, React.ForwardRefExoticComponent<JSX.IntrinsicElements['skinnedMesh'] | JSX.IntrinsicElements['mesh'] | JSX.IntrinsicElements['bone']>>
 
-export function NewHead(props: JSX.IntrinsicElements['group']) {
+export function NewHead(props: HeadHandsProps) {
   const { nodes, materials } = useGLTF('/newHead.glb') as GLTFResult
   const [pvAtom, setPVAtom] = useAtom(productViewer);
   const [gTarget, setGTarget] = useAtom(globalTarget);
@@ -45,10 +104,32 @@ export function NewHead(props: JSX.IntrinsicElements['group']) {
   const [scl, setScale] = useState<any>([]);
   const { viewport, size } = useThree();
   const [w, h] = useAspect(size.width, size.height);
+  const router = useRouter();
 
   //refs
   const group: any = useRef(!null);
+  const [location, setLocation] = useAtom(loc);
 
+  //searchParams
+  const searchParams = useSearchParams();
+
+  // refs
+  const brain = useRef<any>(!null);
+
+  // animation controls
+  const controls = useAnimation();
+  const hand1_controls = useAnimation();
+  const brain_material_controls = useAnimation();
+
+
+  // states
+
+  const [brainDisposed, setBDisposed] = useState(false);
+  const [headDisposed, setHDisposed] = useState(false);
+  const [hand1Disposed, setH1Disposed] = useState(false);
+  const [hand2Disposed, setH2Disposed] = useState(false);
+  const [isInPage, setIsInPage] = useState(false);
+  const [disposed, setDisposed] = useState(false);
 
 
   useEffect(() => {
@@ -61,7 +142,7 @@ export function NewHead(props: JSX.IntrinsicElements['group']) {
       ((pvAtom?.width / window.innerWidth) * viewport.width) / 2 -
       viewport.width / 2 +
       (pvAtom?.left / window.innerWidth) * viewport.width,
-      -s(3, viewport.width / 5, 7) -
+      -s(3, viewport.width, 8) -
       ((pvAtom?.height / window.innerHeight) * viewport.height) / 2 +
       viewport.height / 2 -
       (pvAtom?.top / window.innerHeight) * viewport.height,
@@ -70,9 +151,14 @@ export function NewHead(props: JSX.IntrinsicElements['group']) {
     setPos(position);
     setScale(scale);
   }, [pvAtom]);
+
   const hand2Material = (
     <motion3d.meshStandardMaterial
-      color="#cfab7c"
+      color="#dfa286"
+      initial="initial"
+      animate={controls}
+      exit="exit"
+      variants={material2Variants}
       transparent
       toneMapped
     />
@@ -82,21 +168,23 @@ export function NewHead(props: JSX.IntrinsicElements['group']) {
   const brain_material = (
     <motion3d.meshStandardMaterial
       ref={bmRef}
+      initial="initial"
+      animate={brain_material_controls}
       exit="exit"
-      color="#87e727"
-      opacity={1}
-      transparent
+      variants={material2Variants}
+      color="#f5cb6e"
+      metalness={1}
+      roughness={0.1}
       toneMapped
     />
   );
 
-  const glassMat: any = useRef();
-  const glass = (
+  const glass_material = (
     <MeshTransmissionMaterial
-      ref={glassMat}
       samples={8}
       reflectivity={0.85}
       sheenRoughness={0}
+      opacity={0.4}
       iridescence={0.5}
       iridescenceIOR={0.95}
       resolution={1024 * 2}
@@ -106,14 +194,63 @@ export function NewHead(props: JSX.IntrinsicElements['group']) {
       clearcoat={1}
       clearcoatRoughness={0}
       transparent
-      color="#b7eba7"
+      color="#caf1a8"
       roughness={0}
       chromaticAberration={0.65}
     />
   );
-  return (
-    <group {...props} position={pos} dispose={null} scale={s(3, viewport.width / 5, 7)} rotation={[0, -Math.PI / 1.15, 0]}>
-      <group position={[0.294, 0.649, -0.045]} rotation={[-Math.PI / 2, 0.565, Math.PI / 2]} scale={0.258}>
+
+  // UEF for mounting and visibility
+  useEffect(() => {
+    if (
+      (router.pathname === "/einsatzgebiete" || router.pathname === "/")
+      && (searchParams.get("test") === null ||
+        false)
+    ) {
+      setTimeout(() => {
+        setDisposed(false);
+        setBDisposed(false);
+        setHDisposed(false);
+        setH1Disposed(true);
+        setH2Disposed(true);
+        setIsInPage(true);
+      }, 100);
+    } else if (
+      (router.pathname === "/einsatzgebiete" || router.pathname === "/")
+      && (searchParams.get("test") !== null ||
+        false)
+    ) {
+      setTimeout(() => {
+        setH1Disposed(false);
+        setH2Disposed(false);
+        setBDisposed(false);
+      }, 500);
+    } else {
+      setTimeout(() => {
+        brain_material_controls.start("exit");
+        controls.start("exit").then(() => {
+          setIsInPage(false), setDisposed(true);
+        });
+      }, 800);
+    }
+  }, [router.pathname, searchParams]);
+
+
+
+  useEffect(() => {
+    if ((router.pathname === "/" && props.scroll.current > 0.1)) {
+      brain_material_controls.start(
+        "hidden");
+      controls.start("exit");
+    } else {
+      brain_material_controls.start("enter")
+      controls.start("enter")
+    }
+  }, [props.scroll.current, router.pathname]);
+
+  return (<>
+    <group visible={router.pathname === "/" ? true : false} {...props} position={pos} dispose={null} scale={s(6, viewport.width / 5, 8.5)} rotation={[0, -Math.PI / 1.15, 0]}>
+      <group position={[0.424, 0.549, -0.045]} rotation={[-Math.PI / 2, 0.25, Math.PI / 2]} scale={0.358}>
         <primitive object={nodes.Bone001} />
         <primitive object={nodes.Bone002} />
         <primitive object={nodes.Bone004} />
@@ -122,13 +259,20 @@ export function NewHead(props: JSX.IntrinsicElements['group']) {
         <primitive object={nodes.Bone018} />
         <skinnedMesh geometry={nodes.Shape_IndexedFaceSet001.geometry} skeleton={nodes.Shape_IndexedFaceSet001.skeleton} >{hand2Material}</skinnedMesh>
       </group>
-      <mesh geometry={nodes.base.geometry} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>
-      <mesh geometry={nodes.right_hemisphere.geometry} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>
-      <mesh geometry={nodes.left_hemisphere.geometry} position={[0.137, 1.743, 0]} rotation={[-Math.PI, 0, 0]} scale={[-0.337, -0.325, -0.308]} >{brain_material}</mesh>
-      <mesh geometry={nodes.head.geometry} position={[0.184, 1.584, 0]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={[4.297, 4.297, 4.243]} >{glass}</mesh>
-      <mesh geometry={nodes.cerebellum.geometry} position={[-0.066, 1.557, 0]} scale={[0.123, 0.075, 0.123]} >{brain_material}</mesh>
-      <mesh geometry={nodes.stem.geometry} position={[0.071, 1.561, 0]} scale={[0.083, 0.206, 0.083]} >{brain_material}</mesh>
+      <group rotation={[0, -Math.PI / 0.85, 0]} position={[0.125, -0.6, 0]}>
+        <pointLight intensity={15} color={"#ffde5b"} position={[0.2, 1.5, 0]} />
+        <mesh geometry={nodes.base.geometry} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>
+        <mesh geometry={nodes.right_hemisphere.geometry} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>
+        <mesh geometry={nodes.left_hemisphere.geometry} position={[0.137, 1.743, 0]} rotation={[-Math.PI, 0, 0]} scale={[-0.337, -0.325, -0.308]} >{brain_material}</mesh>
+        {/* <mesh geometry={nodes.head.geometry} position={[0.184, 1.584, 0]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={[4.297, 4.297, 4.243]} >{glass_material}</mesh> */}
+        <mesh geometry={nodes.cerebellum.geometry} position={[-0.066, 1.557, 0]} scale={[0.123, 0.075, 0.123]} >{brain_material}</mesh>
+        <mesh geometry={nodes.stem.geometry} position={[0.071, 1.561, 0]} scale={[0.083, 0.206, 0.083]} >{brain_material}</mesh>
+        <group position={[0.115, 1.9, 0]} scale={0.25}>
+          <IdeaCloud scroll={props.scroll} centerPoint={[0, 0, 0]} />
+        </group>
+      </group>
     </group>
+  </>
   )
 }
 

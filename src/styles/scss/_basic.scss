@@ -232,13 +232,13 @@ a {
     background: var(--clr-contrast-100);
   }
 }
+
 .btn__primary,
 .btn__outline,
 .btn__alt {
-  @extend %trans;
+  @extend %trans, %flex-center;
   font-family: $ff-header;
   text-transform: uppercase;
-  margin: var(--space-m) 0;
   border-radius: 999px;
   position: relative;
   font-size: var(--fs-text);
@@ -247,12 +247,9 @@ a {
   padding: 1rem var(--space-l);
   z-index: 5;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
-  flex: 1 1 100%;
-  @include mq(small) {
-    flex: unset;
-  }
+  flex: 1;
+  max-width: 250px;
+  min-width: fit-content;
   &::after,
   &::before {
     @extend %flex-center, %absolute-full, %trans;
@@ -426,7 +423,7 @@ a {
 }
 
 .content-grid {
-  --padding-inline: 1rem;
+  --padding-inline: clamp(1rem, 5%, 3rem);
   --content-max-width: 1200px;
   --breakout-max-width: calc(var(--content-max-width) + 15ch);
 
@@ -649,31 +646,16 @@ div[data-scroll-content] .frame:first-child {
 
 .button__wrapper {
   display: flex;
+  justify-content: space-between;
   gap: 1.5rem;
-  width: 100%;
-  justify-content: flex-start;
   flex-wrap: wrap;
-  margin: 2em auto;
+  width: 100%;
+  margin: 2rem 0;
   padding: 0;
-  a {
-    display: flex;
-    flex: 1 1 100%;
-    @include mq(small) {
-      max-width: 250px;
-    }
-  }
-  .btn__primary,
-  .btn__outline {
-    font-size: clamp(0.75rem, 5vw, 1.25rem);
-  }
-  .secondary {
-    font-size: clamp(0.75rem, 5vw, 1rem);
-  }
-  .btn__primary,
-  .secondary,
-  .btn__outline {
-    margin: 0;
-    flex: 1 1 auto;
+  & > .btn__primary,
+  > .btn__alt,
+  > .btn__outline {
+    max-width: 100% !important;
   }
 }
 

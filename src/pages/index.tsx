@@ -19,6 +19,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faArrowRight, faArrowRightArrowLeft, faAtom, faCalendar, faCheck, faContactBook, faContactCard, faPerson, faPhone, faPieChart } from "@fortawesome/free-solid-svg-icons";
 import ContactForm from "@/components/ContactForm";
 import FAQuestion from "@/components/FAQuestion";
+import PrivacyPopup from "@/components/PrivacyPopup";
 
 const variants = {
   initial: { y: 20, filter: "blur(20px)", opacity: 0 },
@@ -70,10 +71,10 @@ export default function Home() {
 
   useEffect(() => {
     if (typeof window !== undefined) {
-      document.body.childNodes[0].childNodes[1].addEventListener('scroll', setCoords, false);
+      document.body.childNodes[0].childNodes[2].addEventListener('scroll', setCoords, false);
     }
     return () => {
-      document.body.childNodes[0].childNodes[1].removeEventListener('scroll', setCoords, false);
+      document.body.childNodes[0].childNodes[2].removeEventListener('scroll', setCoords, false);
     };
   });
 
@@ -87,10 +88,9 @@ export default function Home() {
   return (
     <>
       {/* HERO SECTION ANFANG */}
-
-      <Sec single left={false} sectionName="landing" id="first">
+      <Sec single left sectionName="landing" id="first">
         <motion.div
-          className="flex flex-col-reverse w-full  h-full md:flex-row"
+          className="flex flex-col w-full gap-20 h-full md:flex-row"
           viewport={{ amount: 0.25, once: false, margin: "0px" }}
           initial="initial"
           // animate={searchParams.get("view") || searchParams.get("test") ? "exit" : "enter"}
@@ -114,14 +114,16 @@ export default function Home() {
             },
           }}
         >
-
+          <motion.div variants={variants} ref={lpViewer} className=" md:py-10 w-full min-h-80 flex flex-col gap-2 items-start justify-center">
+            {/* <Image priority className="m-auto w-[400px] sm:w-[500px] md:w-[600px]  " src="/images/brain-myinnotrinsic-hero-min2.webp" width={600} height={300} alt=" Gehirn in einem Glaskopf wird von einer Hand gehalten" /> */}
+          </motion.div>
           <motion.div className="w-full h-full py-5 md:py-10 flex flex-col gap-2 items-start justify-center md:justify-center">
             <motion.div variants={variants}>
               <motion.dd className="text-4xl text-[#59684e]">
 
               </motion.dd>
               <motion.h1 className="text-[#ffffff]">
-                Jetzt, <br /> besser,<br /> <strong className="text-[#c3db7f]">Neuro</strong>Loyal
+                Jetzt, besser,<br /> <strong className="text-[#c3db7f]">Neuro</strong>Loyal
               </motion.h1>
             </motion.div>
             <motion.p
@@ -130,7 +132,7 @@ export default function Home() {
             >Mehrwert durch BrainCare: MY InnoTrinsic eröffnet neuroloyale Perspektiven und bietet „Do-it-Lösungen“ für Menschen, Unternehmen und Organisationen.
               {/* Unser Gehirn gestaltet unseren Alltag. Wir sollten aktiv damit arbeiten, als wäre es unser bester Freund. MY InnoTrinsic bietet einen neuen Blick auf das Gehirn und seine Potenziale. Wir schaffen Mehrwert durch neuroloyales Handeln und BrainCare für Menschen und Organisationen. Dafür haben wir umsetzungsorientierte Wege, Strukturen, Instrumente und Prozesse entwickelt. */}
             </motion.p>
-            <motion.div variants={variants} className="flex  flex-wrap gap-4">
+            <motion.div variants={variants} className="button__wrapper">
               <Link href={"/#mehr"} className="btn__primary">
                 Erfahre mehr <FontAwesomeIcon className="ml-2" icon={faArrowDown} />
               </Link>
@@ -139,9 +141,7 @@ export default function Home() {
               </Link>
             </motion.div>
           </motion.div>
-          <motion.div variants={variants} ref={lpViewer} className=" md:py-10 w-full  flex flex-col gap-2 items-start justify-center">
-            <Image className="m-auto w-[300px] sm:w-[400px] md:w-[500px]  " src="/images/landing_braincare_transparent.webp" width={600} height={300} alt=" Gehirn in einem Glaskopf wird von einer Hand gehalten" />
-          </motion.div>
+
           {/* HERO SECTION ENDE */}
           {/* RUBRIKEN ANFANG */}
 
@@ -194,11 +194,14 @@ export default function Home() {
         </motion.div>
         <motion.h3
           variants={variants}
-          className="w-full mb-12 text-center font-black text-[#506c00]"
+          className="w-full text-center font-black text-[#506c00]"
         >
           Das ist MY InnoTrinsic:
         </motion.h3>
+
         <motion.div variants={variants} className="flex w-auto m-auto justify-center flex-col items-start gap-4">
+          <motion.p className="w-full mb-16 text-center" variants={variants}>
+            Unser Gehirn ist der Architekt unseres Alltags. Wenn wir aktiv mit unserem Gehirn zusammenarbeiten, seine Vorgehensweise verstehen und es zu unserem besten Freund machen, schaffen wir Mehrwert durch BrainCare. MY InnoTrinsic öffnet einen Raum für den neuroloyalen Perspektivwechsel auf das Gehirn und sein immenses Potenzial. Unsere Strukturen, Instrumente und Prozesse sind umsetzungsorientiert, leicht erlernbar und alltagspraktikabel - für Menschen, Unternehmen und Organisationen.</motion.p>
           <motion.h4 variants={variants} className="w-auto text-[#506c00]">Neuroloyaler Perspektiven-Wechsel</motion.h4>
           <motion.p variants={variants}>Wir verändern Perspektiven, basierend auf
             der Leitidee des &quot;Respekts vor dem Menschen&quot; und der Kooperation und
@@ -237,23 +240,102 @@ export default function Home() {
         </motion.div>
       </motion.div>
       {/* SYMBOLE ENDE */}
-      <motion.div className="py-24"><motion.div className="flex flex-col  w-full h-full gap-12">
-        <motion.h3 className="w-full text-center text-[#506C00] font-black">Unsere Angebote</motion.h3>
-        <motion.div className="flex justify-center items-center flex-col lg:flex-row w-full  gap-12">
-          <motion.div className="flex flex-col justify-center items-center gap-8 py-12 max-h-[600px] max-w-[400px] w-full shadow-sm rounded-xl bg-[#F8F3E0] p-6">
-            <Image className="w-full max-w-48 mix-blend-darken" width={200} height={200} src={"/images/brain_as_mic.png"} alt={"A brain as a microphone"} />
-            <motion.h4 className="text-center w-auto text-[#506C00]">Vortrag</motion.h4>
+      <motion.div
+        variants={variants}
+        className="min-h-screen h-full w-full rounded-xl flex justify-center flex-col gap-6 py-20"
+      >
+        <motion.h4 className="w-full text-center text-[#506C00] font-black">Menschen bewegen uns. Wir sind MYInnoTrinsic.</motion.h4>
+        <motion.div
+          className="flex flex-col w-full gap-20  md:flex-row"
+          viewport={{ amount: 0.25, once: false, margin: "0px" }}
+          initial="initial"
+          // animate={searchParams.get("view") || searchParams.get("test") ? "exit" : "enter"}
+          whileInView={
+            searchParams.get("view") || searchParams.get("test")
+              ? "exit"
+              : "enter"
+          }
+          variants={{
+            initial: { opacity: 0 },
+            enter: {
+              opacity: 1,
+              display: "flex",
+              filter: "blur(0px)",
+              transition: { staggerChildren: 0.1, when: "beforeChildren" },
+            },
+            exit: {
+              opacity: 0,
+              transitionEnd: { display: "none" },
+              transition: { staggerChildren: 0.1, when: "afterChildren" },
+            },
+          }}
+        >
+          <motion.div className="w-full py-5 md:py-10 flex flex-col gap-8 items-center justify-center md:justify-center">
+
+            <Image className="mb-auto  w-[250px] sm:w-[300px] md:w-[300px] rounded-full" src="/images/karin-bild.jpg" width={709} height={709} alt="Bild von Dr. Karin Koert-Lehmann" />
+            <Image className="mb-auto" alt="Unterschrift von Dr. Karin Koert-Lehmann" src="/images/karin_unterschrift.png" width={300} height={50} />
+            <h5 className="  text-center text-[#09101c] text-2xl">Dr. Karin Koert-Lehmann</h5>
           </motion.div>
-          <motion.div className="flex flex-col justify-center items-center gap-8 py-12 max-h-[600px] max-w-[400px] w-full shadow-sm rounded-xl bg-[#F8F3E0] p-6">
-            <Image className="w-full max-w-48 mix-blend-darken" width={200} height={200} src={"/images/business_meeting.png"} alt={"A brain as a microphone"} />
-            <motion.h4 className="text-center w-auto text-[#506C00]">Gruppenscouting</motion.h4>
+          <motion.div className="w-full  py-5 md:py-10 flex flex-col gap-8 items-center justify-center md:justify-center">
+
+            <Image className="mb-auto w-[250px] sm:w-[300px] md:w-[300px] rounded-full" src="/images/ulrike-bild.jpg" width={709} height={709} alt="Bild von Ulrike Corneliussen" />
+            <Image className="mb-auto" alt="Unterschrift von Ulrike Corneliussen" src="/images/ulrike_unterschrift.png" width={200} height={100} />
+            <h5 className="  text-center text-[#09101c] text-2xl">Ulrike Corneliussen</h5>
           </motion.div>
-          <motion.div className="flex flex-col justify-center items-center gap-8 py-12 max-h-[600px] max-w-[400px] w-full shadow-sm rounded-xl bg-[#F8F3E0] p-6">
-            <Image className="w-full max-w-48 mix-blend-darken" width={200} height={200} src={"/images/person.png"} alt={"A brain as a microphone"} />
-            <motion.h4 className="text-center w-auto text-[#506C00]">Einzelscouting</motion.h4>
+
+          {/* HERO SECTION ENDE */}
+          {/* RUBRIKEN ANFANG */}
+
+
+        </motion.div>
+      </motion.div>
+      <motion.div className="py-24">
+        <motion.div className="flex flex-col w-full gap-12">
+          <motion.h3 className="w-full text-center text-[#506C00] font-black">Unsere Angebote</motion.h3>
+          <motion.div className="grid grid-cols-1 gap-12 sm:grid-cols-2 ">
+
+            <motion.div className="flex flex-col  justify-center items-center gap-8 py-12 max-h-[600px]  w-full shadow-sm rounded-xl bg-[#F8F3E0] p-6">
+              <Image className="w-full max-w-48 mix-blend-darken" width={200} height={200} src={"/images/business_meeting.png"} alt={"A brain as a microphone"} />
+              <motion.h4 className="text-center w-auto text-[#506C00]">Gruppenscouting</motion.h4>
+            </motion.div>
+            <motion.div className="flex flex-col  justify-center items-center gap-8 py-12 max-h-[600px]  w-full shadow-sm rounded-xl bg-[#F8F3E0] p-6">
+              <Image className="w-full max-w-48 mix-blend-darken" width={200} height={200} src={"/images/person.png"} alt={"A brain as a microphone"} />
+              <motion.h4 className="text-center w-auto text-[#506C00]">Einzelscouting</motion.h4>
+            </motion.div>
+
+
+            <motion.div className="flex flex-col justify-center items-center gap-8 py-12 max-h-[600px]  w-full shadow-sm rounded-xl bg-[#F8F3E0] p-6">
+              <Image className="w-full max-w-48 mix-blend-darken" width={200} height={200} src={"/images/academy.png"} alt={"A brain as a microphone"} />
+              <motion.h4 className="text-center w-auto text-[#506C00]">My InnoTrinsic Academy</motion.h4>
+            </motion.div>
+            <motion.div className="flex flex-col justify-center items-center gap-8 py-12 max-h-[600px]   w-full shadow-sm rounded-xl bg-[#F8F3E0] p-6">
+              <Image className="w-full max-w-48 mix-blend-darken" width={200} height={200} src={"/images/brain_as_mic.png"} alt={"A brain as a microphone"} />
+              <motion.h4 className="text-center w-auto text-[#506C00]">Vortrag</motion.h4>
+            </motion.div>
+
           </motion.div>
         </motion.div>
       </motion.div>
+      <motion.div className="py-24">
+        <motion.div className="flex flex-col w-full gap-12">
+          <motion.h3 className="w-full text-center text-[#506C00] font-black">My InnoTrinsic kennenlernen</motion.h3>
+          <motion.div className="w-full grid gap-12 grid-cols-1 grid-rows-2 items-center justify-items-center">
+            <div className="flex w-full justify-between flex-col items-center gap-12 md:flex-row rounded-xl bg-[#F8F3E0] p-6 max-w-4xl">
+              <Image className="rounded-md" alt="Leute in einem Businessmeeting" src="/images/brainbasics.jpg" width={300} height={300} />
+              <div className="flex flex-col text-[#383d2b] items-start md:items-start justify-center px-6 md:px-12">
+                <h4 className="mt-auto w-auto text-[#506C00] ">BrainBasics für Business</h4>
+                <p>Ausgerichtet an jeweiliger Fragestellung</p>
+              </div>
+            </div>
+            <div className="flex w-full justify-between flex-col items-center gap-12 md:flex-row rounded-xl bg-[#F8F3E0] p-6 max-w-4xl">
+              <Image className="rounded-md" alt="Zwei Leute bei einem Einzelgespräch" src="/images/firstview-ich.jpg" width={300} height={300} />
+              <div className="flex flex-col text-[#383d2b] items-start md:items-start justify-center px-6 md:px-12">
+                <h4 className="mt-auto w-auto text-[#506C00] ">First View: Jetzt Ich</h4>
+                <p>Dein Weg zu deiner BrainCare-Solution</p>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
       </motion.div>
       <Sec sectionName="mountain" left={false} single>
         <motion.div
@@ -280,19 +362,18 @@ export default function Home() {
           }}
           className="py-16 flex my-auto justify-center items-center flex-col-reverse lg:flex-row top-0 gap-12 md:gap-16 w-full h-auto"
         >
-          <motion.div className="flex  w-auto flex-col justify-center items-center gap-12 text-[#32689C]">
-            <motion.h4 className="text-[#32689C] text-4xl text-center md:text-left">Ein Gehirn, das Berge versetzen kann.</motion.h4>
+          <motion.div className="flex w-full flex-col justify-center items-center gap-12 text-[#32689C]">
+            <motion.h4 className="text-[#32689C] text-4xl text-center lg:text-left">Ein Gehirn, das Berge versetzen kann.</motion.h4>
             <motion.ul className="mx-auto flex flex-col w-auto gap-6">
-              <motion.li className="w-auto flex flex-row items-start justify-start leading-7"><p className="w-auto text-xl"><FontAwesomeIcon icon={faCheck} className="mr-4 " /></p><p className="w-auto text-xl font-semibold">Motivationsboost: Umrüche zu Durchbrüchen machen</p></motion.li>
-              <motion.li className=" w-auto flex flex-row items-start justify-start leading-7"><p className="w-auto text-xl"><FontAwesomeIcon icon={faCheck} className="mr-4 text-xl" /></p><p className="w-auto text-xl font-semibold">ZukunfsMacher & BusinessGestalter - mit ZufriedenheitsMehrWert: Starten - High Quality/ExzellenzImpulse - Umsetzen
-              </p></motion.li>
-              <motion.li className=" w-auto flex flex-row items-start justify-start leading-7"><p className="w-auto text-xl"><FontAwesomeIcon icon={faCheck} className="mr-4 text-xl" /></p><p className="w-auto text-xl font-semibold"> HR Neuroloyal: Antriebsgerecht für Zufriedenheitsboost
+              <motion.li className="w-auto flex flex-row items-start justify-start leading-7"><p className="w-auto text-xl"><FontAwesomeIcon icon={faCheck} className="mr-4 " /></p><p className="w-auto text-xl font-semibold">Neues & Veränderung: Starten - Machen - Dranbleiben</p></motion.li>
+              <motion.li className=" w-auto flex flex-row items-start justify-start leading-7"><p className="w-auto text-xl"><FontAwesomeIcon icon={faCheck} className="mr-4 text-xl" /></p><p className="w-auto text-xl font-semibold">Motivationsboost: Umbrüche zu Durchbrüchen machen</p></motion.li>
+              <motion.li className=" w-auto flex flex-row items-start justify-start leading-7"><p className="w-auto text-xl"><FontAwesomeIcon icon={faCheck} className="mr-4 text-xl" /></p><p className="w-auto text-xl font-semibold">MehrWert für alle: Gemeinsam wachsen</p> </motion.li>
+              <motion.li className="w-auto flex flex-row items-start justify-start leading-7"><p className="w-auto text-xl"><FontAwesomeIcon icon={faCheck} className="mr-4 text-xl" /></p><p className="w-auto text-xl font-semibold">Zukunftsmacher: Authentische Impulse und High Quality-Ideen
               </p> </motion.li>
-              <motion.li className="w-auto flex flex-row items-start justify-start leading-7"><p className="w-auto text-xl"><FontAwesomeIcon icon={faCheck} className="mr-4 text-xl" /></p><p className="w-auto text-xl font-semibold"> MehrWert für alle: Neuroloyales Personal Empowering
-              </p> </motion.li>
+              <motion.li className="w-auto flex flex-row items-start justify-start leading-7"><p className="w-auto text-xl"><FontAwesomeIcon icon={faCheck} className="mr-4 text-xl" /></p><p className="w-auto text-xl font-semibold">Neuroloyales Empowering: Antriebsgerecht mit Zufriedenheitsboost</p> </motion.li>
             </motion.ul>
           </motion.div>
-          <motion.div className="flex flex-col justify-center items-center w-full">
+          <motion.div className="flex flex-col justify-center items-center lg:items-end w-full">
             <Image width={500} height={300} alt="Ein Gehirn das Berge versetzt" src="/images/brain_and_mountain.png" />
           </motion.div>
         </motion.div>
@@ -385,6 +466,7 @@ Instrumente, management- und prozessfähig umsetzt.."/>
         <Link href={"/impressum"}><h5 className="text-[#32689C] font-bold">Impressum</h5></Link>
         <Link href={"/datenschutz"}><h5 className="text-[#32689C] font-bold">Datenschutz</h5></Link>
       </motion.div>
+
     </>
   );
 }

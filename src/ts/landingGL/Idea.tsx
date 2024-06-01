@@ -12,6 +12,7 @@ import { useAnimation } from "framer-motion";
 import { motion as motion3d } from "framer-motion-3d";
 import {
     FunctionComponent,
+    MutableRefObject,
     Suspense,
     useEffect,
     useRef,
@@ -50,6 +51,7 @@ interface IdeaProps {
     active: boolean;
     children?: any;
     index: number;
+    scroll: MutableRefObject<number>;
 }
 
 const Idea: FunctionComponent<IdeaProps> = (props) => {
@@ -106,17 +108,15 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
 
     //uef for router state change
     useEffect(() => {
-        if (router.pathname === "/einsatzgebiete" || router.pathname === "/" &&
+        if (router.pathname === "/" &&
             searchParams.get("view") === null) {
             setClicked(false);
             setHover(false);
             // console.log(line.current);
         }
-    }, [router.pathname, searchParams]);
+    }, [router.pathname, searchParams, props.scroll.current]);
 
-    useEffect(() => {
-        console.log(clicked, hovered)
-    }, [clicked, hovered]);
+
     // UEF for hover state
     useEffect(() => {
         sphereControls.start(
@@ -176,37 +176,35 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
 
     useEffect(() => {
         // set positions of sphere in circle or in curve above head
-        if (router.pathname === "/") {
+        if (router.pathname === "/" && props.scroll.current
+            > 0.1) {
+            sphereControls.start({ scale: 0 });
+            subGroupControls.start({
+                x: 0,
+                y: 0,
+                z: 0,
+            });
 
+        }
+        else {
+            sphereControls.start({ scale: 1 });
             subGroupControls.start({
                 x: Math.cos(((Math.PI * 1.15) / props.r) * props.index) * radius,
                 y: Math.sin(((Math.PI * 1.15) / props.r) * props.index) * radius / 1.45,
                 z: 0
-            });
 
-        } else {
-            subGroupControls.start({
-                x: Math.sin(((Math.PI * 2) / props.r) * props.index) * radius,
-                y: 0,
-                z: Math.cos(((Math.PI * 2) / props.r) * props.index) * radius
             })
-            groupControls.start(searchParams.get("test") ? "exit" : "enter");
+            groupControls.start(props.scroll.current > 0.1 ? "exit" : "enter");
             setClicked(searchParams.get("neuron") === props.text ? true : false);
         };
-        sphereControls.start(
-            !clicked
-                ? { scale: 1 }
-                : searchParams.get("neuron") !== props.text
-                    ? { scale: 1 }
-                    : { scale: 1.5 }
-        );
+
         if (clicked) {
             textMatControls.start("hide")
         } else if (searchParams.get("neuron") === props.text) {
             textMatControls.start("enter")
         } else textMatControls.start("initial")
 
-    }, [searchParams]);
+    }, [searchParams, router.pathname, props.scroll.current]);
 
     useEffect(() => {
         setOrbitTarget;
@@ -214,7 +212,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
 
     // UEF for mounting and visibility
     useEffect(() => {
-        if ((router.pathname === "/einsatzgebiete" || router.pathname === "/")) {
+        if ((props.scroll.current < 0.05)) {
             setTimeout(() => {
                 setDisposed(false);
                 setIsInPage(true);
@@ -232,7 +230,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
         if (isInPage) {
             groupControls.start("enter");
         }
-    }, [isInPage]);
+    }, [props.scroll, isInPage]);
 
     const p: any = new V3();
     return (
@@ -288,17 +286,17 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 strokeWidth={0}
                                 renderOrder={5}
                                 anchorY="bottom"
-                                font="/fonts/montserrat-alternates-v17-latin-800.ttf"
+                                font="/fonts/poppins-v21-latin-800.ttf"
                             >
                                 <motion3d.meshBasicMaterial
                                     toneMapped={false}
                                     initial="initial"
                                     animate={textMatControls}
                                     variants={{
-                                        initial: { opacity: 1, color: "#4e5c68" },
-                                        hide: { opacity: 0.2, color: "#4e5c68" },
+                                        initial: { opacity: 1, color: "#475946" },
+                                        hide: { opacity: 0.2, color: "#475946" },
                                         enter: { opacity: 1, color: "#ffffff" },
-                                        exit: { opacity: 0.2, color: "#4e5c68" },
+                                        exit: { opacity: 0.2, color: "#475946" },
                                     }}
                                 />
                                 {`${props.text}`}
@@ -314,7 +312,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                             restDelta: 0.001,
                         }}
                     >
-                        <Billboard>
+                        {/* <Billboard>
                             <motion3d.mesh
                                 renderOrder={clicked ? 0 : -1}
                                 variants={circleVariants}
@@ -349,7 +347,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                     />
                                 </motion3d.meshStandardMaterial>
                             </motion3d.mesh>
-                        </Billboard>
+                        </Billboard> */}
                         <Instance
                             name={props.text}
                             ref={instance}
@@ -430,6 +428,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                 {idea && (
                     <QuadraticBezierLine
                         dashed
+                        color={"#a3b57a"}
                         dashScale={10}
                         lineWidth={3}
                         start={idea.current?.position}

@@ -57,10 +57,10 @@ export default function MainLayout({ preview, children, navbar, legals, t }: any
                     // console.log("scrollToHash");
                 }
             }
-            // else {
-            //   window.scrollTo(0,0)
-            //   // console.log("scrollTop")
-            // }
+            else {
+                window.scrollTo(0, 0)
+                // console.log("scrollTop")
+            }
         }
     };
 
@@ -95,6 +95,7 @@ export default function MainLayout({ preview, children, navbar, legals, t }: any
             <AnimatePresence
                 mode="wait"
                 initial={true}
+                onExitComplete={handExitComplete}
             >
                 <motion.div
                     key={router.route}
