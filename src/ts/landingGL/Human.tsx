@@ -10,7 +10,6 @@ import { motion as motion3d } from "framer-motion-3d";
 import { Head } from "@/ts/landingGL/head";
 import { Brain } from "@/ts/landingGL/brain";
 import { GroupProps, useFrame, useThree } from "@react-three/fiber";
-import { HeadHands } from "@/HeadHands";
 import { loc, productViewer, globalTarget, orbitTarget } from "../atoms";
 import { Billboard, Shadow, useAspect } from "@react-three/drei";
 import { useAtom } from "jotai";
@@ -83,7 +82,7 @@ const Human: FunctionComponent<HumanProps> = (props) => {
         >
             {/* <Head rotation={[0, Math.PI / 1.25, 0]} position={[0, -5.5, 0]} />
        */}
-            <HeadHands scroll={props.scroll} />
+            {/* <HeadHands scroll={props.scroll} /> */}
             {/* <Hand scale={1} rotation={[0, Math.PI / 1.25, 0]} position={[1, -6, -1]} /> */}
 
             <Shadow
