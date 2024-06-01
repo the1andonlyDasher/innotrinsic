@@ -151,7 +151,15 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         ? "enter"
                         : "exit"
         );
-
+        textMatControls.start(
+            hovered && clicked
+                ? "enter"
+                : clicked && !hovered
+                    ? "enter"
+                    : !clicked && hovered
+                        ? "enter"
+                        : "initial"
+        );
         // hovered && clicked
         //     ? subGroupControls.stop()
         //     : clicked && !hovered
