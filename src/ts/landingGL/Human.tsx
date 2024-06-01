@@ -7,7 +7,6 @@ import {
     useState,
 } from "react";
 import { motion as motion3d } from "framer-motion-3d";
-import { Head } from "@/ts/landingGL/head";
 import { Brain } from "@/ts/landingGL/brain";
 import { GroupProps, useFrame, useThree } from "@react-three/fiber";
 import { loc, productViewer, globalTarget, orbitTarget } from "../atoms";
