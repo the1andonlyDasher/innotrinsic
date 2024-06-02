@@ -247,7 +247,7 @@ export function NewHead(props: HeadHandsProps) {
 
   return (<>
     <group visible={!disposed} {...props} position={pos} dispose={null} scale={s(6, viewport.width / 5, 8.5)} rotation={[0, -Math.PI / 1.15, 0]}>
-      <group position={[0.485, 0.649, -0.045]} rotation={[-Math.PI / 1.75, 0.2, Math.PI / 2.5]} scale={[0.358, 0.358, 0.358]}>
+      <group position={[0.485, 0.749, -0.045]} rotation={[-Math.PI / 1.75, 0.2, Math.PI / 2.5]} scale={[0.358, 0.358, 0.358]}>
         <primitive object={nodes.Bone001} />
         <primitive object={nodes.Bone002} />
         <primitive object={nodes.Bone004} />
