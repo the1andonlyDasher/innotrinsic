@@ -96,7 +96,7 @@ export default function Home() {
       {/* HERO SECTION ANFANG */}
       <Sec single left sectionName="landing" id="first">
         <motion.div
-          className="flex flex-col w-full gap-20 h-full md:flex-row"
+          className="flex flex-col w-full gap-20 h-full lg:flex-row"
           viewport={{ amount: 0.25, once: false, margin: "0px" }}
           initial="initial"
           // animate={searchParams.get("view") || searchParams.get("test") ? "exit" : "enter"}
@@ -129,7 +129,7 @@ export default function Home() {
 
               </motion.dd>
               <motion.h1 className="text-[#ffffff]">
-                Jetzt, besser,<br /> <strong className="text-[#c3db7f]">Neuro</strong>Loyal
+                Jetzt, besser, <strong className="text-[#c3db7f]">Neuro</strong>Loyal
               </motion.h1>
             </motion.div>
             <motion.p

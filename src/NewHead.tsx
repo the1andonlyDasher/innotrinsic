@@ -145,7 +145,7 @@ export function NewHead(props: HeadHandsProps) {
       ((pvAtom?.width / window.innerWidth) * viewport.width) / 2 -
       viewport.width / 2 +
       (pvAtom?.left / window.innerWidth) * viewport.width,
-      -s(3, viewport.width, 8) -
+      -s(3, viewport.width, 10) -
       ((pvAtom?.height / window.innerHeight) * viewport.height) / 2 +
       viewport.height / 2 -
       (pvAtom?.top / window.innerHeight) * viewport.height,
@@ -247,7 +247,7 @@ export function NewHead(props: HeadHandsProps) {
 
   return (<>
     <group visible={!disposed} {...props} position={pos} dispose={null} scale={s(6, viewport.width / 5, 8.5)} rotation={[0, -Math.PI / 1.15, 0]}>
-      <group position={[0.485, 0.749, -0.045]} rotation={[-Math.PI / 1.75, 0.2, Math.PI / 2.5]} scale={[0.358, 0.358, 0.358]}>
+      <group position={[0.425, 0.749, -0.045]} rotation={[-Math.PI / 1.75, 0.2, Math.PI / 2.5]} scale={0.3}>
         <primitive object={nodes.Bone001} />
         <primitive object={nodes.Bone002} />
         <primitive object={nodes.Bone004} />
@@ -258,7 +258,7 @@ export function NewHead(props: HeadHandsProps) {
       </group>
       <Float floatIntensity={0.1} rotationIntensity={0.3}>
 
-        <group rotation={[0, -Math.PI / 0.85, 0]} position={[0.125, -0.6, 0]}>
+        <group scale={1} rotation={[0, -Math.PI / 0.85, 0]} position={[0.125, -0.6, 0]}>
           <pointLight intensity={15} color={"#ffde5b"} position={[0.2, 1.5, 0]} />
           <mesh geometry={nodes.base.geometry} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>
           <mesh geometry={nodes.right_hemisphere.geometry} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>
