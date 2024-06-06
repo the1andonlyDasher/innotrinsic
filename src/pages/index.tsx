@@ -123,15 +123,10 @@ export default function Home() {
           <motion.div variants={variants} ref={lpViewer} className=" md:py-10 w-full min-h-80 flex flex-col gap-2 items-start justify-center">
             {/* <Image priority className="m-auto w-[400px] sm:w-[500px] md:w-[600px]  " src="/images/brain-myinnotrinsic-hero-min2.webp" width={600} height={300} alt=" Gehirn in einem Glaskopf wird von einer Hand gehalten" /> */}
           </motion.div>
-          <motion.div className="w-full h-full py-5 md:py-10 flex flex-col gap-2 items-start justify-center md:justify-center">
-            <motion.div variants={variants}>
-              <motion.dd className="text-4xl text-[#59684e]">
-
-              </motion.dd>
-              <motion.h1 className="text-[#ffffff]">
-                Jetzt, besser, <strong className="text-[#c3db7f]">Neuro</strong>Loyal
-              </motion.h1>
-            </motion.div>
+          <motion.div className="w-full h-full py-5 md:py-10 flex flex-col gap-8 items-start justify-center md:justify-center">
+            <motion.header variants={variants} className="font-header text-[#ffffff] font-bold  text-4xl leading-[1.25em] sm:text-5xl sm:leading-[1.25em] md:text-6xl md:leading-[1.25em]" >
+              Jetzt, besser, <strong className="text-[#c3db7f] w-auto font-bold">Neuro</strong>Loyal
+            </motion.header>
             <motion.p
               variants={variants}
               className=" max-w-[60ch] text-[#eff1de] flex"
@@ -152,14 +147,15 @@ export default function Home() {
           {/* RUBRIKEN ANFANG */}
 
 
-        </motion.div>
+        </motion.div >
       </Sec >
 
       {/* SYMBOLE ANFANG */}
 
-      <motion.div
+      < motion.div
         id="mehr"
-        viewport={{ amount: 0.1, once: false, margin: "0px" }}
+        viewport={{ amount: 0.1, once: false, margin: "0px" }
+        }
         initial="initial"
         whileInView="enter"
         variants={{
@@ -244,9 +240,9 @@ export default function Home() {
             ermöglichen. Unsere pragmatischen Strukturen und Bausteine sind bedarfsgerecht,
             zielgenau, flexibel und leicht erlernbar - für jeden nutzbar und anwendbar.</motion.p>
         </motion.div>
-      </motion.div>
+      </motion.div >
       {/* SYMBOLE ENDE */}
-      <motion.div
+      < motion.div
         variants={variants}
         className="min-h-screen h-full w-full rounded-xl flex justify-center flex-col gap-6 py-20"
       >
@@ -294,7 +290,7 @@ export default function Home() {
 
 
         </motion.div>
-      </motion.div>
+      </motion.div >
       <motion.div className="py-24">
         <motion.div className="flex flex-col w-full gap-12">
           <motion.h3 className="w-full text-center text-[#506C00] font-black">Unsere Angebote</motion.h3>
@@ -312,7 +308,7 @@ export default function Home() {
 
             <motion.div className="flex flex-col justify-center items-center gap-8 py-12 max-h-[600px]  w-full shadow-sm rounded-xl bg-[#F8F3E0] p-6">
               <Image className="w-full max-w-48 mix-blend-darken" width={200} height={200} src={"/images/academy.png"} alt={"A brain as a microphone"} />
-              <motion.h4 className="text-center w-auto text-[#506C00]">My InnoTrinsic Academy</motion.h4>
+              <motion.h4 className="text-center w-auto text-[#506C00]">MY InnoTrinsic Academy</motion.h4>
             </motion.div>
             <motion.div className="flex flex-col justify-center items-center gap-8 py-12 max-h-[600px]   w-full shadow-sm rounded-xl bg-[#F8F3E0] p-6">
               <Image className="w-full max-w-48 mix-blend-darken" width={200} height={200} src={"/images/brain_as_mic.png"} alt={"A brain as a microphone"} />

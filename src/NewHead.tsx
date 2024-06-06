@@ -5,7 +5,7 @@ Command: npx gltfjsx@6.2.16 public/newHead.glb --types --output src/NewHead.tsx
 
 import * as THREE from 'three'
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
-import { Float, MeshTransmissionMaterial, useAspect, useGLTF } from '@react-three/drei'
+import { Float, MeshTransmissionMaterial, Outlines, useAspect, useGLTF } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 import { motion as motion3d } from "framer-motion-3d"
 import { useThree } from '@react-three/fiber'
@@ -246,7 +246,7 @@ export function NewHead(props: HeadHandsProps) {
   }, [isInPage]);
 
   return (<>
-    <group visible={!disposed} {...props} position={pos} dispose={null} scale={s(6, viewport.width / 5, 8.5)} rotation={[0, -Math.PI / 1.15, 0]}>
+    <group visible={!disposed} {...props} position={pos} dispose={null} scale={s(6, viewport.width / 5, 9.5)} rotation={[0, -Math.PI / 1.15, 0]}>
       <group position={[0.425, 0.749, -0.045]} rotation={[-Math.PI / 1.75, 0.2, Math.PI / 2.5]} scale={0.3}>
         <primitive object={nodes.Bone001} />
         <primitive object={nodes.Bone002} />

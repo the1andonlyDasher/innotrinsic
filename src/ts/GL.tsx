@@ -74,6 +74,7 @@ const palette: any =
 
 const targetColors: any = {
     landing: ["#698151", "#A5C791"],
+    landingBusiness: ["#7592a0", "#cde2e7"],
     "/": ["#ffffff", "#fffde1"],
     science: ["#ffffff", "#fffde1"],
     symbols: ["#ffffff", "#fffde1"],
@@ -105,10 +106,10 @@ const GL = (props: glProps) => {
     const [nextColor2, setNextColor2] = useState(targetColors[`${location}`][1])
     const [loaded, setLoaded] = useState(false);
 
-    // useEffect(() => {
-    //     setNextColor1(targetColors[`${location}`][0])
-    //     setNextColor2(targetColors[`${location}`][1])
-    // }, [location]);
+    useEffect(() => {
+        setNextColor1(targetColors[`${location}`][0])
+        setNextColor2(targetColors[`${location}`][1])
+    }, [location]);
 
     useEffect(() => {
         animate(currentColor1, nextColor1, {
@@ -127,21 +128,21 @@ const GL = (props: glProps) => {
         });
     }, [nextColor1, nextColor2]);
 
-    useEffect(() => {
-        if (router.pathname === "/") {
-            if (props.scroll.current > 0.05) {
-                setNextColor1(targetColors[`science`][0])
-                setNextColor2(targetColors[`science`][1])
-            } else {
-                setNextColor1(targetColors[`landing`][0])
-                setNextColor2(targetColors[`landing`][1])
-            }
+    // useEffect(() => {
+    //     if (router.pathname === "/") {
+    //         if (props.scroll.current > 0.05) {
+    //             setNextColor1(targetColors[`science`][0])
+    //             setNextColor2(targetColors[`science`][1])
+    //         } else {
+    //             setNextColor1(targetColors[`landing`][0])
+    //             setNextColor2(targetColors[`landing`][1])
+    //         }
 
-        } else {
-            setNextColor1(targetColors[`science`][0])
-            setNextColor2(targetColors[`science`][1])
-        }
-    }, [props.scroll.current, router.pathname]);
+    //     } else {
+    //         setNextColor1(targetColors[`science`][0])
+    //         setNextColor2(targetColors[`science`][1])
+    //     }
+    // }, [props.scroll.current, router.pathname]);
 
     useEffect(() => {
         const handleResize = () => {

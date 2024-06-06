@@ -165,9 +165,6 @@ h3 {
   font-family: var(--fonts-header);
 
   line-height: 1.5;
-  strong {
-    font-weight: 900;
-  }
 }
 
 h4 {
@@ -644,13 +641,17 @@ div[data-scroll-content] .frame:first-child {
   }
 }
 
+header {
+  line-height: 1.8;
+}
+
 .button__wrapper {
   display: flex;
   justify-content: space-between;
   gap: 1.5rem;
   flex-wrap: wrap;
   width: 100%;
-  margin: 2rem 0;
+
   padding: 0;
   & > .btn__primary,
   > .btn__alt,
