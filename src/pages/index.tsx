@@ -246,7 +246,7 @@ export default function Home() {
         variants={variants}
         className="min-h-screen h-full w-full rounded-xl flex justify-center flex-col gap-6 py-20"
       >
-        <motion.h4 className="w-full text-center text-[#506C00] font-black">Menschen bewegen uns. Wir sind MYInnoTrinsic.</motion.h4>
+        <motion.h4 className="w-full text-center text-[#506C00] font-black">Menschen bewegen uns. Wir sind MY InnoTrinsic.</motion.h4>
         <motion.div
           className="flex flex-col w-full gap-20  md:flex-row"
           viewport={{ amount: 0.25, once: false, margin: "0px" }}
@@ -320,7 +320,7 @@ export default function Home() {
       </motion.div>
       <motion.div className="py-24">
         <motion.div className="flex flex-col w-full gap-12">
-          <motion.h3 className="w-full text-center text-[#506C00] font-black">My InnoTrinsic kennenlernen</motion.h3>
+          <motion.h3 className="w-full text-center text-[#506C00] font-black">MY InnoTrinsic kennenlernen</motion.h3>
           <motion.div className="w-full grid gap-12 grid-cols-1 grid-rows-2 items-center justify-items-center">
             <div className="flex w-full justify-between flex-col items-center gap-12 md:flex-row rounded-xl bg-[#F8F3E0] p-6 max-w-4xl">
               <Image className="rounded-md" alt="Leute in einem Businessmeeting" src="/images/brainbasics.jpg" width={300} height={300} />
