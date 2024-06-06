@@ -220,7 +220,7 @@ const ContactForm = ({ props }: ContactProps) => {
                                 rows={5}
                             />
                         </motion.div>
-                        <motion.div className="flex flex-row items-center text-black gap-2">
+                        <motion.div className="flex flex-wrap flex-row items-center text-black gap-2">
                             <input className="w-5 h-5" type="checkbox" checked={cookieConsentIsTrue} onChange={e => handleConsentChange(e)} />Ich habe die<Link className="m-0 p-0 underline" href="/datenschutz">Datenschutzerklärung</Link> gelesen
                         </motion.div>
                         <motion.button variants={variants} className="btn__primary" type="submit">
