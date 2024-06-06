@@ -124,12 +124,12 @@ export default function Home() {
             {/* <Image priority className="m-auto w-[400px] sm:w-[500px] md:w-[600px]  " src="/images/brain-myinnotrinsic-hero-min2.webp" width={600} height={300} alt=" Gehirn in einem Glaskopf wird von einer Hand gehalten" /> */}
           </motion.div>
           <motion.div className="w-full h-full py-5 md:py-10 flex flex-col gap-8 items-start justify-center md:justify-center">
-            <motion.header variants={variants} className="font-header text-[#ffffff] font-bold  text-4xl leading-[1.25em] sm:text-5xl sm:leading-[1.25em] md:text-6xl md:leading-[1.25em]" >
+            <motion.header variants={variants} className="text-center lg:text-left font-header text-[#ffffff] font-bold  text-5xl leading-[1.25em] sm:text-5xl sm:leading-[1.25em] md:text-6xl md:leading-[1.25em]" >
               Jetzt, besser, <strong className="text-[#c3db7f] w-auto font-bold">Neuro</strong>Loyal
             </motion.header>
             <motion.p
               variants={variants}
-              className=" max-w-[60ch] text-[#eff1de] flex"
+              className="text-center w-full lg:text-left max-w-[60ch] text-[#eff1de] flex"
             >Mehrwert durch BrainCare: MY InnoTrinsic eröffnet neuroloyale Perspektiven und bietet „Do-it-Lösungen“ für Menschen, Unternehmen und Organisationen.
               {/* Unser Gehirn gestaltet unseren Alltag. Wir sollten aktiv damit arbeiten, als wäre es unser bester Freund. MY InnoTrinsic bietet einen neuen Blick auf das Gehirn und seine Potenziale. Wir schaffen Mehrwert durch neuroloyales Handeln und BrainCare für Menschen und Organisationen. Dafür haben wir umsetzungsorientierte Wege, Strukturen, Instrumente und Prozesse entwickelt. */}
             </motion.p>
