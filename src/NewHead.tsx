@@ -145,7 +145,7 @@ export function NewHead(props: HeadHandsProps) {
       ((pvAtom?.width / window.innerWidth) * viewport.width) / 2 -
       viewport.width / 2 +
       (pvAtom?.left / window.innerWidth) * viewport.width,
-      -s(3, viewport.width, 10) -
+      -s(8, viewport.width / 1.25, 12) -
       ((pvAtom?.height / window.innerHeight) * viewport.height) / 2 +
       viewport.height / 2 -
       (pvAtom?.top / window.innerHeight) * viewport.height,
@@ -246,7 +246,7 @@ export function NewHead(props: HeadHandsProps) {
   }, [isInPage]);
 
   return (<>
-    <group visible={!disposed} {...props} position={pos} dispose={null} scale={s(6, viewport.width / 5, 9.5)} rotation={[0, -Math.PI / 1.15, 0]}>
+    <group visible={!disposed} {...props} position={pos} dispose={null} scale={s(6, viewport.width / 2, 9.5)} rotation={[0, -Math.PI / 1.15, 0]}>
       <group position={[0.425, 0.749, -0.045]} rotation={[-Math.PI / 1.75, 0.2, Math.PI / 2.5]} scale={0.3}>
         <primitive object={nodes.Bone001} />
         <primitive object={nodes.Bone002} />
