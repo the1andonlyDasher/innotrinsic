@@ -120,10 +120,10 @@ export default function Home() {
             },
           }}
         >
-          <motion.div variants={variants} ref={lpViewer} className=" md:py-10 aspect-square h-full w-full lg:min-h-80 flex flex-col gap-2 items-start justify-center">
+          <motion.div variants={variants} ref={lpViewer} className="aspect-square py-0 lg:py-10 viewer h-full w-full lg:min-h-80 flex flex-col gap-2 items-start justify-center">
             {/* <Image priority className="m-auto w-[400px] sm:w-[500px] md:w-[600px]  " src="/images/brain-myinnotrinsic-hero-min2.webp" width={600} height={300} alt=" Gehirn in einem Glaskopf wird von einer Hand gehalten" /> */}
           </motion.div>
-          <motion.div className="w-full h-full py-5 md:py-10 flex flex-col gap-8 items-start justify-center md:justify-center">
+          <motion.div className="w-full h-full py-0 lg:py-10 flex flex-col gap-8 items-start justify-center md:justify-center">
             <motion.header variants={variants} className="text-center lg:text-left font-header text-[#ffffff] font-bold  text-5xl leading-[1.25em] sm:text-5xl sm:leading-[1.25em] md:text-6xl md:leading-[1.25em]" >
               Jetzt, besser, <strong className="text-[#c3db7f] w-auto font-bold">Neuro</strong>Loyal
             </motion.header>
