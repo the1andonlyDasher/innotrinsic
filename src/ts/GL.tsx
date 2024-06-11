@@ -40,6 +40,7 @@ import { Bloom, DepthOfField, EffectComposer, Noise, ToneMapping, Vignette } fro
 import { Model_Hands } from "@/Hands";
 import { Model, Neuron } from "@/Neuron5";
 import { NewHead } from "@/NewHead";
+import { NewHead4 } from "@/NewHead4";
 
 declare global {
     namespace JSX {
@@ -264,7 +265,7 @@ const GL = (props: glProps) => {
                     attach="background"
                     size={1024}
                 />
-                <NewHead scroll={props.scroll} />
+                <NewHead4 scroll={props.scroll} />
 
 
 

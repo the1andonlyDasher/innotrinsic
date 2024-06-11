@@ -96,7 +96,7 @@ export default function Home() {
       {/* HERO SECTION ANFANG */}
       <Sec single left sectionName="landing" id="first">
         <motion.div
-          className="flex flex-col w-full gap-20 h-full lg:flex-row"
+          className="flex flex-col w-full gap-10 lg:gap-20 h-auto lg:h-full lg:flex-row "
           viewport={{ amount: 0.25, once: false, margin: "0px" }}
           initial="initial"
           // animate={searchParams.get("view") || searchParams.get("test") ? "exit" : "enter"}
@@ -120,7 +120,7 @@ export default function Home() {
             },
           }}
         >
-          <motion.div variants={variants} ref={lpViewer} className=" md:py-10 w-full min-h-80 flex flex-col gap-2 items-start justify-center">
+          <motion.div variants={variants} ref={lpViewer} className=" md:py-10 aspect-square h-full w-full lg:min-h-80 flex flex-col gap-2 items-start justify-center">
             {/* <Image priority className="m-auto w-[400px] sm:w-[500px] md:w-[600px]  " src="/images/brain-myinnotrinsic-hero-min2.webp" width={600} height={300} alt=" Gehirn in einem Glaskopf wird von einer Hand gehalten" /> */}
           </motion.div>
           <motion.div className="w-full h-full py-5 md:py-10 flex flex-col gap-8 items-start justify-center md:justify-center">
@@ -334,6 +334,33 @@ export default function Home() {
               <div className="flex flex-col text-[#383d2b] items-start md:items-start justify-center px-6 md:px-12">
                 <h4 className="mt-auto w-auto text-[#506C00] ">First View: Jetzt Ich</h4>
                 <p>Dein Weg zu deiner BrainCare-Solution</p>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+      <motion.div className="py-24">
+        <motion.div className="flex flex-col w-full gap-12">
+          <motion.h3 className="w-full text-center text-[#32689C] font-black">MY InnoTrinsic in Aktion</motion.h3>
+          <motion.div className="w-full grid gap-12 grid-cols-1 grid-rows-2 lg:grid-cols-2 items-center justify-items-center">
+            <div className="flex h-full w-full justify-center flex-col items-center p-6 md:p-8 gap-12 md:flex-row rounded-xl bg-[#D7E0E8]  max-w-4xl">
+              <div className="flex flex-col text-[#32689C] items-start md:items-start justify-center px-6 md:px-12">
+                <h4 className="mt-auto w-auto text-center md:text-left text-[#32689C] font-semibold text-2xl">High Performing Business</h4>
+              </div>
+            </div>
+            <div className="flex h-full w-full justify-center flex-col items-center p-6 md:p-8 gap-12 md:flex-row rounded-xl bg-[#D7E0E8]  max-w-4xl">
+              <div className="flex flex-col text-[#32689C] items-start md:items-start justify-center px-6 md:px-12">
+                <h4 className="mt-auto w-auto text-center md:text-left text-[#32689C] font-semibold text-2xl">Neuroloyales Management für Corporate Growth</h4>
+              </div>
+            </div>
+            <div className="flex h-full w-full justify-center flex-col items-center p-6 md:p-8 gap-12 md:flex-row rounded-xl bg-[#D7E0E8]  max-w-4xl">
+              <div className="flex flex-col text-[#32689C] items-start md:items-start justify-center px-6 md:px-12">
+                <h4 className="mt-auto w-auto text-center md:text-left text-[#32689C] font-semibold text-2xl">Neuroloyale Personalarbeit & Personal Development</h4>
+              </div>
+            </div>
+            <div className="flex h-full w-full justify-center flex-col items-center p-6 md:p-8 gap-12 md:flex-row rounded-xl bg-[#D7E0E8]  max-w-4xl">
+              <div className="flex flex-col text-[#32689C] items-start md:items-start justify-center px-6 md:px-12">
+                <h4 className="mt-auto w-auto text-center md:text-left text-[#32689C] font-semibold text-2xl">Neuroloyales Management für Corporate Growth</h4>
               </div>
             </div>
           </motion.div>

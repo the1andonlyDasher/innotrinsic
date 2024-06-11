@@ -17,37 +17,40 @@ import IdeaCloud from './ts/landingGL/IdeaCloud'
 import { delay, useAnimation } from 'framer-motion'
 import { useSearchParams } from 'next/navigation'
 
-
 type GLTFResult = GLTF & {
   nodes: {
     Shape_IndexedFaceSet001: THREE.SkinnedMesh
     base: THREE.Mesh
     right_hemisphere: THREE.Mesh
     left_hemisphere: THREE.Mesh
-    head: THREE.Mesh
     cerebellum: THREE.Mesh
     stem: THREE.Mesh
-    Bone001: THREE.Bone
-    Bone002: THREE.Bone
-    Bone004: THREE.Bone
-    Bone008: THREE.Bone
-    Bone014: THREE.Bone
-    Bone018: THREE.Bone
+    BezierCurve: THREE.Mesh
+    Bone: THREE.Bone
   }
   materials: {}
   animations: any[]
 }
 
-const materialVariants = {
+
+type HeadHandsProps = {
+  scroll: MutableRefObject<number>;
+  props?: JSX.IntrinsicElements["group"];
+};
+
+
+const handMaterialVariants = {
   initial: { opacity: 0 },
+  hidden: { opacity: 0 },
   hide: { opacity: 0.1 },
   enter: {
-    opacity: 0.5,
+    opacity: 0.4,
     transition: {
       type: "spring",
       damping: 10,
       stiffness: 50,
       restDelta: 0.1,
+      delay: 0.5
     },
   },
   exit: {
@@ -60,8 +63,6 @@ const materialVariants = {
       delay: 0.25,
     },
   },
-
-
 };
 
 const material2Variants = {
@@ -90,15 +91,10 @@ const material2Variants = {
   },
 };
 
-type HeadHandsProps = {
-  scroll: MutableRefObject<number>;
-  props?: JSX.IntrinsicElements["group"];
-};
-
 type ContextType = Record<string, React.ForwardRefExoticComponent<JSX.IntrinsicElements['skinnedMesh'] | JSX.IntrinsicElements['mesh'] | JSX.IntrinsicElements['bone']>>
 
-export function NewHead(props: HeadHandsProps) {
-  const { nodes, materials } = useGLTF('/newHead.glb') as GLTFResult
+export function NewHead4(props: HeadHandsProps) {
+  const { nodes, materials } = useGLTF('/newHead4.glb') as GLTFResult
   const [pvAtom, setPVAtom] = useAtom(productViewer);
   const [gTarget, setGTarget] = useAtom(globalTarget);
   const [target, setTarget] = useAtom(orbitTarget);
@@ -244,36 +240,30 @@ export function NewHead(props: HeadHandsProps) {
       controls.start("exit");
     }
   }, [isInPage]);
+  return (
+    <group {...props} visible={!disposed} {...props} position={pos} dispose={null} scale={s(6, viewport.width / 2, 9)} rotation={[0, -Math.PI / 1.15, 0]}>
+      <group position={[0.925, 0.6, 0.15]} rotation={[-Math.PI / 2, 0.2, Math.PI / 2.5]} scale={0.34}>
+        <primitive object={nodes.Bone} />
 
-  return (<>
-    <group visible={!disposed} {...props} position={pos} dispose={null} scale={s(6, viewport.width / 2, 9)} rotation={[0, -Math.PI / 1.15, 0]}>
-      <group position={[0.425, 0.749, -0.045]} rotation={[-Math.PI / 1.75, 0.2, Math.PI / 2.5]} scale={0.3}>
-        <primitive object={nodes.Bone001} />
-        <primitive object={nodes.Bone002} />
-        <primitive object={nodes.Bone004} />
-        <primitive object={nodes.Bone008} />
-        <primitive object={nodes.Bone014} />
-        <primitive object={nodes.Bone018} />
-        <skinnedMesh geometry={nodes.Shape_IndexedFaceSet001.geometry} skeleton={nodes.Shape_IndexedFaceSet001.skeleton} >{hand2Material}</skinnedMesh>
+        <skinnedMesh geometry={nodes.Shape_IndexedFaceSet001.geometry} material={nodes.Shape_IndexedFaceSet001.material} skeleton={nodes.Shape_IndexedFaceSet001.skeleton} >{hand2Material}</skinnedMesh>
+
       </group>
-      <Float floatIntensity={0.1} rotationIntensity={0.3}>
-
+      <Float floatIntensity={0.1} rotationIntensity={0.1}>
         <group scale={1} rotation={[0, -Math.PI / 0.85, 0]} position={[0.125, -0.6, 0]}>
           <pointLight intensity={15} color={"#ffde5b"} position={[0.2, 1.5, 0]} />
-          <mesh geometry={nodes.base.geometry} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>
-          <mesh geometry={nodes.right_hemisphere.geometry} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>
-          <mesh geometry={nodes.left_hemisphere.geometry} position={[0.137, 1.743, 0]} rotation={[-Math.PI, 0, 0]} scale={[-0.337, -0.325, -0.308]} >{brain_material}</mesh>
-          {/* <mesh geometry={nodes.head.geometry} position={[0.184, 1.584, 0]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={[4.297, 4.297, 4.243]} >{glass_material}</mesh> */}
-          <mesh geometry={nodes.cerebellum.geometry} position={[-0.066, 1.557, 0]} scale={[0.123, 0.075, 0.123]} >{brain_material}</mesh>
-          <mesh geometry={nodes.stem.geometry} position={[0.071, 1.561, 0]} scale={[0.083, 0.206, 0.083]} >{brain_material}</mesh>
+          <mesh geometry={nodes.base.geometry} material={nodes.base.material} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>
+          <mesh geometry={nodes.right_hemisphere.geometry} material={nodes.right_hemisphere.material} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>
+          <mesh geometry={nodes.left_hemisphere.geometry} material={nodes.left_hemisphere.material} position={[0.137, 1.743, 0]} rotation={[-Math.PI, 0, 0]} scale={[-0.337, -0.325, -0.308]} >{brain_material}</mesh>
+          <mesh geometry={nodes.cerebellum.geometry} material={nodes.cerebellum.material} position={[-0.066, 1.587, 0]} scale={[0.123, 0.061, 0.123]} >{brain_material}</mesh>
+          <mesh geometry={nodes.stem.geometry} material={nodes.stem.material} position={[0.071, 1.561, 0]} scale={[0.083, 0.206, 0.083]} >{brain_material}</mesh>
+          <mesh geometry={nodes.BezierCurve.geometry} material={nodes.BezierCurve.material} position={[0, 1.722, 0]} >{brain_material}</mesh>
           <group position={[0.115, 1.9, 0]} scale={0.25}>
             <IdeaCloud scroll={props.scroll} centerPoint={[0, 0, 0]} />
           </group>
         </group>
       </Float>
     </group>
-  </>
   )
 }
 
-useGLTF.preload('/newHead.glb')
+useGLTF.preload('/newHead4.glb')
