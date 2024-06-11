@@ -360,7 +360,7 @@ export default function Home() {
             </div>
             <div className="flex h-full w-full justify-center flex-col items-center p-6 md:p-8 gap-12 md:flex-row rounded-xl bg-[#D7E0E8]  max-w-4xl">
               <div className="flex flex-col text-[#32689C] items-start md:items-start justify-center px-6 md:px-12">
-                <h4 className="mt-auto w-auto text-center md:text-left text-[#32689C] font-semibold text-2xl">Neuroloyales Management für Corporate Growth</h4>
+                <h4 className="mt-auto w-auto text-center md:text-left text-[#32689C] font-semibold text-2xl">Neuroloyales HR Management </h4>
               </div>
             </div>
           </motion.div>
