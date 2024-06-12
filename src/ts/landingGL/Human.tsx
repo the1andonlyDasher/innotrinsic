@@ -14,7 +14,6 @@ import { Billboard, Shadow, useAspect } from "@react-three/drei";
 import { useAtom } from "jotai";
 import { lerp } from "../threeExport/math/MathUtils";
 import { useAnimation } from "framer-motion";
-import { Hand } from "@/Hand";
 
 interface HumanProps {
     scroll: MutableRefObject<number>;

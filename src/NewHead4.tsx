@@ -221,7 +221,7 @@ export function NewHead4(props: HeadHandsProps) {
   }, [isInPage]);
   return (
     <group {...props} visible={!disposed} {...props} position={pos} dispose={null} scale={s(6, viewport.width / 2, 9)} rotation={[0, -Math.PI / 1.15, 0]}>
-      <group rotation={[0, -0.1, 0]} scale={1}>
+      <group rotation={[0, -0.3, 0]} scale={1}>
         <primitive object={nodes.Bone} />
         <Model scroll={props.scroll} />
 

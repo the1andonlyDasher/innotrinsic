@@ -63,7 +63,7 @@ const fragmentShader = `
       // Combine the Fresnel effect and the inverted spherical mask with the opacity uniform
       float alpha = rim * invertedMask * opacity;
 
-      gl_FragColor = vec4(1.0, 1.0, 1.0, alpha); // Set the top color to opaque and the bottom color to transparent
+      gl_FragColor = vec4(0.918,1.,0.714, alpha); // Set the top color to opaque and the bottom color to transparent
   }
 
 
@@ -147,7 +147,7 @@ export function Model(props: HandProps) {
   return (
     <Float rotationIntensity={0.1} floatIntensity={0.1}>
       <group {...props} dispose={null}>
-        <mesh geometry={nodes.Shape_IndexedFaceSet001.geometry} position={[0.65, 0.65, 0.038]} rotation={[1.347, 1.369, Math.PI / 1.8]} >
+        <mesh geometry={nodes.Shape_IndexedFaceSet001.geometry} position={[0.65, 0.65, 0.038]} rotation={[1.3, 1.369, Math.PI / 1.8]} >
           {MyShaderMaterial}</mesh>
       </group>
     </Float>
