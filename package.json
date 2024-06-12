@@ -22,6 +22,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@nodetoy/react-nodetoy": "^0.1.24",
     "@react-three/cannon": "^6.6.0",
     "@react-three/drei": "^9.97.6",
     "@react-three/fiber": "^8.15.16",

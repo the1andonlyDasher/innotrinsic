@@ -1,45 +1,35 @@
 import {
     CameraControls,
     Environment,
-    Float,
     GradientTexture,
-    OrbitControls,
-    Shadow,
-    Stats,
+
 } from "@react-three/drei";
 import {
     Canvas,
     extend,
     ReactThreeFiber,
-    useThree,
 } from "@react-three/fiber";
-import { Suspense, forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Suspense, forwardRef, useEffect, useRef, useState } from "react";
 import { RoundedPlaneGeometry } from "maath/geometry";
 import * as geometry from "maath/geometry";
 import {
-    currentDistance,
+
+    glReady,
     globalTarget,
     loc,
-    orbitTarget,
+
 } from "./atoms";
 import { useAtom } from "jotai";
 import {
     animate,
+    motion,
     useAnimation,
 } from "framer-motion";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
-import { Mountain } from "@/Mountain";
-import ContactGL from "./contactGL/ContactGL";
-import BGText from "./BGText";
-import { motion as motion3d } from "framer-motion-3d"
-import Background from "./Background";
-import Human from "./landingGL/Human";
-import { Neurons } from "@/Neurons2";
-import { Bloom, DepthOfField, EffectComposer, Noise, ToneMapping, Vignette } from '@react-three/postprocessing'
-import { Model_Hands } from "@/Hands";
-import { Model, Neuron } from "@/Neuron5";
-import { NewHead } from "@/NewHead";
+
+
+
 import { NewHead4 } from "@/NewHead4";
 
 declare global {
@@ -201,8 +191,21 @@ const GL = (props: glProps) => {
         resetCamera(router.pathname);
     }, [router.pathname]);
 
+    const [shaderCompiled, setShaderCompiled] = useAtom(glReady);
 
-    return (
+    // Custom loader component
+    const Loader = () => {
+        return (
+            <motion.div initial={{ display: "flex", opacity: 1 }} animate={shaderCompiled ? { opacity: 0, transitionEnd: { display: "none" } } : { display: "flex", opacity: 1 }} className="fixed z-50 top-0 left-0 bg-gradient-to-bl from-[#698151] to-[#A5C791] text-white font-header font-semibold text-2xl flex flex-col justify-center items-center w-full h-full" >
+                Loading...
+            </motion.div>
+        );
+    };
+
+
+
+    return (<>
+        {!shaderCompiled && <Loader />}
         <div className="canvas__wrapper">
 
             <Canvas
@@ -294,6 +297,7 @@ const GL = (props: glProps) => {
                 {/* <Mountain scroll={props.scroll} /> */}
             </Canvas>
         </div>
+    </>
     );
 };
 

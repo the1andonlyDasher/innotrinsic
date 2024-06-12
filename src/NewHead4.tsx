@@ -16,6 +16,9 @@ import { useRouter } from 'next/router'
 import IdeaCloud from './ts/landingGL/IdeaCloud'
 import { delay, useAnimation } from 'framer-motion'
 import { useSearchParams } from 'next/navigation'
+import { shaderMaterial } from '@react-three/drei'
+import { Model } from './GhostHand'
+// import { fragment, uniforms, vertex } from '../src/shaderData';
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -39,31 +42,6 @@ type HeadHandsProps = {
 };
 
 
-const handMaterialVariants = {
-  initial: { opacity: 0 },
-  hidden: { opacity: 0 },
-  hide: { opacity: 0.1 },
-  enter: {
-    opacity: 0.4,
-    transition: {
-      type: "spring",
-      damping: 10,
-      stiffness: 50,
-      restDelta: 0.1,
-      delay: 0.5
-    },
-  },
-  exit: {
-    opacity: 0,
-    transition: {
-      type: "spring",
-      damping: 10,
-      stiffness: 50,
-      restDelta: 0.1,
-      delay: 0.25,
-    },
-  },
-};
 
 const material2Variants = {
   initial: { opacity: 0 },
@@ -203,6 +181,7 @@ export function NewHead4(props: HeadHandsProps) {
   );
 
 
+
   useEffect(() => {
     if (router.pathname === "/") {
       if ((props.scroll.current > 0.05)) {
@@ -242,10 +221,11 @@ export function NewHead4(props: HeadHandsProps) {
   }, [isInPage]);
   return (
     <group {...props} visible={!disposed} {...props} position={pos} dispose={null} scale={s(6, viewport.width / 2, 9)} rotation={[0, -Math.PI / 1.15, 0]}>
-      <group position={[0.925, 0.6, 0.15]} rotation={[-Math.PI / 2, 0.2, Math.PI / 2.5]} scale={0.34}>
+      <group rotation={[0, -0.1, 0]} scale={1}>
         <primitive object={nodes.Bone} />
+        <Model scroll={props.scroll} />
 
-        <skinnedMesh geometry={nodes.Shape_IndexedFaceSet001.geometry} material={nodes.Shape_IndexedFaceSet001.material} skeleton={nodes.Shape_IndexedFaceSet001.skeleton} >{hand2Material}</skinnedMesh>
+        {/* <skinnedMesh geometry={nodes.Shape_IndexedFaceSet001.geometry} material={nodes.Shape_IndexedFaceSet001.material} skeleton={nodes.Shape_IndexedFaceSet001.skeleton} >{MyShaderMaterial}</skinnedMesh> */}
 
       </group>
       <Float floatIntensity={0.1} rotationIntensity={0.1}>
