@@ -184,7 +184,7 @@ export function NewHead4(props: HeadHandsProps) {
 
   useEffect(() => {
     if (router.pathname === "/") {
-      if ((props.scroll.current > 0.05)) {
+      if ((props.scroll.current > 0.1)) {
         brain_material_controls.start(
           "hidden");
         controls.start("exit").then(() => {
@@ -205,7 +205,7 @@ export function NewHead4(props: HeadHandsProps) {
 
   useEffect(() => {
     if (isInPage) {
-      if ((props.scroll.current > 0.05)) {
+      if ((props.scroll.current > 0.1)) {
         brain_material_controls.start(
           "hidden");
         controls.start("exit");

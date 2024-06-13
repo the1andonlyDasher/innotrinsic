@@ -44,7 +44,7 @@ const fragmentShader = `
   void main() {
       // Calculate the Fresnel effect (inverted)
       float rim = dot(normalize(vNormal), normalize(vec3(0.0, -1.0, 0.0)));
-      rim = pow(rim, 5.0); // Adjust the power for the Fresnel effect
+      rim = pow(rim, 6.0); // Adjust the power for the Fresnel effect
 
       // Define the center and radius of the spherical mask
       vec3 sphereCenter = vec3(0.7, 0.0, -1.4); // Adjust the x-coordinate to move the sphere to the left side
@@ -114,12 +114,6 @@ export function Model(props: HandProps) {
     opacity: { value: 1 }
   };
 
-  // Update uniform value every frame
-  useFrame(() => {
-    if (shaderRef.current) {
-      shaderRef.current.uniforms.opacity.value = lerp(shaderRef.current.uniforms.opacity.value, props.scroll.current > 0.05 ? 2 : 0, 0.5);
-    }
-  });
 
   const shaderRef = useRef<ShaderMaterial>(null);
   const [shaderCompiled, setShaderCompiled] = useAtom(glReady);
