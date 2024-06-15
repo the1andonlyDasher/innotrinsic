@@ -23,7 +23,7 @@ export default function Home() {
                    Perspektiven und bietet „Do-it-Lösungen“ für Menschen, Unternehmen
                    und Organisationen."
         />
-        <meta name="robots" content="all" />
+        <meta name="robots" content="index, follow" />
       </Head>
       <CookieConsent />
       <LandingSection />

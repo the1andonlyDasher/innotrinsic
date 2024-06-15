@@ -20,7 +20,7 @@ const Impressum: FunctionComponent<ImpressumProps> = () => {
                     name="description"
                     content="MY Innotrinsic Datenschutz"
                 />
-                <meta name="robots" content="all" />
+                <meta name="robots" content="index, follow" />
             </Head>
             <motion.div className="flex h-full w-full flex-col justify-start md:justify-center items-start gap-6">
                 <h4>Haftung für Inhalte</h4>
