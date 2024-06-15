@@ -123,9 +123,9 @@ const Navbar = ({ logo, alt, navbar, legals }: any) => {
             </svg>
 
 
-            <motion.dd animate={{ color: nextColor1 }} className={`font-header font-semibold text-[${nextColor1}]`}>
+            <motion.div animate={{ color: nextColor1 }} className={`font-header font-semibold text-[${nextColor1}]`}>
               MY InnoTrinsic
-            </motion.dd>
+            </motion.div>
           </Link>
         </motion.div>
         <Navigation>
