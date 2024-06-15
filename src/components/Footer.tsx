@@ -15,10 +15,10 @@ const Footer: FC<FooterProps> = (props) => {
         <>
 
             <motion.div className=" rounded-2xl bg-[#A4C57B] w-full flex flex-col md:flex-row justify-center items-center gap-6 p-6 sm:p-8 md:p-12 my-12">
-                <h5 className="text-[#10202f] font-bold text-center w-auto">MY InnoTrinsic | © {year}</h5>
-                {props.home && <Link href={"/"}><h5 className="text-[#10202f] font-bold">Home</h5></Link>}
-                {props.legal && <Link href={"/impressum"}><h5 className="text-[#10202f] font-bold">Impressum</h5></Link>}
-                {props.data && <Link href={"/datenschutz"}><h5 className="text-[#10202f] font-bold">Datenschutz</h5></Link>}
+                <p className="text-[#10202f] font-header font-bold text-center w-auto">MY InnoTrinsic | © {year}</p>
+                {props.home && <Link href={"/"}><p className="font-header text-[#19240c] font-semibold">Home</p></Link>}
+                {props.legal && <Link href={"/impressum"}><p className="font-header text-[#19240c] font-semibold">Impressum</p></Link>}
+                {props.data && <Link href={"/datenschutz"}><p className="font-header text-[#19240c] font-semibold">Datenschutz</p></Link>}
             </motion.div>
 
         </>

@@ -62,9 +62,9 @@ const FAQuestion = (props: serviceType) => {
                             <FontAwesomeIcon icon={faPlus} scale={5} />
 
                         </motion.div>
-                        <dd className="faq__title">
+                        <div className="faq__title">
                             {props.title}
-                        </dd>
+                        </div>
 
                     </motion.div>
                 </motion.div>
