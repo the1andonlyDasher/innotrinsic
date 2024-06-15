@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.myinnotrinsic.de
+
+# Sitemaps
+Sitemap: https://www.myinnotrinsic.de/sitemap.xml
