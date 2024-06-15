@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { FunctionComponent } from "react";
 import Sec from '@/components/Section';
+import Head from "next/head";
 
 interface ImpressumProps {
 
@@ -12,6 +13,14 @@ const Impressum: FunctionComponent<ImpressumProps> = () => {
     var year: any = date.getFullYear().toString();
     return (<Sec single left sectionName="science">
         <>
+            <Head>
+                <title>Datenschutz</title>
+                <meta property="og:title" content="Datenschutz" key="title" />
+                <meta
+                    property="description"
+                    content="MY Innotrinsic Datenschutz"
+                />
+            </Head>
             <motion.div className="flex h-full w-full flex-col justify-start md:justify-center items-start gap-6">
                 <h4>Haftung für Inhalte</h4>
                 <p>

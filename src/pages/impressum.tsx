@@ -1,5 +1,6 @@
 import Sec from "@/components/Section";
 import { motion } from "framer-motion";
+import Head from "next/head";
 import Link from "next/link";
 import { FunctionComponent } from "react";
 
@@ -12,6 +13,14 @@ const Impressum: FunctionComponent<ImpressumProps> = () => {
     var year: any = date.getFullYear().toString();
     return (<Sec single left sectionName="science">
         <>
+            <Head>
+                <title>Impressum</title>
+                <meta property="og:title" content="Impressum" key="title" />
+                <meta
+                    property="description"
+                    content="MY Innotrinsic Impressum"
+                />
+            </Head>
             <motion.div className="flex h-full w-full flex-col justify-start md:justify-center items-start gap-6">
                 <h4>Impressum</h4>
                 <p className="w-full">

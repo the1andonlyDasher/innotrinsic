@@ -15,8 +15,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>My InnoTrinsic</title>
-        <meta property="og:title" content="My InnoTrinsicy" key="title" />
+        <title>MY InnoTrinsic</title>
+        <meta property="og:title" content="MY InnoTrinsic" key="title" />
         <meta
           property="description"
           content="Mehrwert durch BrainCare: MY InnoTrinsic eröffnet neuroloyale
