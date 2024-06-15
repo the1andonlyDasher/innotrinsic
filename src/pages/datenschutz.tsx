@@ -17,9 +17,10 @@ const Impressum: FunctionComponent<ImpressumProps> = () => {
                 <title>Datenschutz</title>
                 <meta property="og:title" content="Datenschutz" key="title" />
                 <meta
-                    property="description"
+                    name="description"
                     content="MY Innotrinsic Datenschutz"
                 />
+                <meta name="robots" content="all" />
             </Head>
             <motion.div className="flex h-full w-full flex-col justify-start md:justify-center items-start gap-6">
                 <h4>Haftung für Inhalte</h4>

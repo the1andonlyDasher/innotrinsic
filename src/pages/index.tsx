@@ -18,11 +18,12 @@ export default function Home() {
         <title>MY InnoTrinsic</title>
         <meta property="og:title" content="MY InnoTrinsic" key="title" />
         <meta
-          property="description"
+          name="description"
           content="Mehrwert durch BrainCare: MY InnoTrinsic eröffnet neuroloyale
                    Perspektiven und bietet „Do-it-Lösungen“ für Menschen, Unternehmen
                    und Organisationen."
         />
+        <meta name="robots" content="all" />
       </Head>
       <CookieConsent />
       <LandingSection />

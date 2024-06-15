@@ -17,9 +17,11 @@ const Impressum: FunctionComponent<ImpressumProps> = () => {
                 <title>Impressum</title>
                 <meta property="og:title" content="Impressum" key="title" />
                 <meta
-                    property="description"
+                    name="description"
                     content="MY Innotrinsic Impressum"
                 />
+                <meta name="robots" content="all" />
+
             </Head>
             <motion.div className="flex h-full w-full flex-col justify-start md:justify-center items-start gap-6">
                 <h4>Impressum</h4>
