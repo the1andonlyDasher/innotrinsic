@@ -2,6 +2,13 @@
 module.exports = {
   siteUrl: process.env.SITE_URL,
   generateRobotsTxt: true, // (optional)
-
+  robotsTxtOptions: {
+    policies: [
+      {
+        userAgent: "*",
+        allow: "/",
+      },
+    ],
+  },
   // ...other options
 };
