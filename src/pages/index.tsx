@@ -9,12 +9,21 @@ import BusinessSection from "@/components/sections/BusinessSection";
 import MountainSection from "@/components/sections/MountainSection";
 import FaqSection from "@/components/sections/FaqSection";
 import Footer from "@/components/Footer";
-import { Html, Head } from "next/document";
+import Head from "next/head";
 
 export default function Home() {
   return (
     <>
-
+      <Head>
+        <title>My InnoTrinsic</title>
+        <meta property="og:title" content="My InnoTrinsicy" key="title" />
+        <meta
+          property="description"
+          content="Mehrwert durch BrainCare: MY InnoTrinsic eröffnet neuroloyale
+                   Perspektiven und bietet „Do-it-Lösungen“ für Menschen, Unternehmen
+                   und Organisationen."
+        />
+      </Head>
       <CookieConsent />
       <LandingSection />
       <IconsSection />
