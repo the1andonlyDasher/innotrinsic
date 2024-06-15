@@ -9,10 +9,12 @@ import BusinessSection from "@/components/sections/BusinessSection";
 import MountainSection from "@/components/sections/MountainSection";
 import FaqSection from "@/components/sections/FaqSection";
 import Footer from "@/components/Footer";
+import { Html, Head } from "next/document";
 
 export default function Home() {
   return (
     <>
+
       <CookieConsent />
       <LandingSection />
       <IconsSection />
