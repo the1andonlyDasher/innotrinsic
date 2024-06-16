@@ -272,7 +272,7 @@ const GL = (props: glProps) => {
 
 
 
-                <Environment preset="apartment" blur={0} />
+                <Environment background={false} preset="apartment" blur={0} />
 
 
 

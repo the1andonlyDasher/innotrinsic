@@ -6,11 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "analyze": "cross-env ANALYZE=true next build",
     "lint": "next lint",
     "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@emailjs/browser": "^4.3.3",
+    "@next/bundle-analyzer": "^14.2.4",
     "ga-gtag": "^1.2.0",
     "js-cookie": "^3.0.5",
     "next": "14.1.3",

@@ -1,8 +1,7 @@
-import * as THREE from 'three';
 import React, { MutableRefObject, useMemo, useRef, useState } from 'react';
 import { Float, useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
-import { shaderMaterial } from '@react-three/drei';
+import { Mesh } from 'three/src/objects/Mesh.js'
 import { ShaderMaterial } from 'three';
 import { useFrame } from '@react-three/fiber';
 import { lerp } from 'three/src/math/MathUtils.js';
@@ -11,7 +10,7 @@ import { glReady } from './ts/atoms';
 
 type GLTFResult = GLTF & {
   nodes: {
-    Shape_IndexedFaceSet001: THREE.Mesh;
+    Shape_IndexedFaceSet001: Mesh;
   };
   materials: {};
   animations: any[];
