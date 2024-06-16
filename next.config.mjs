@@ -12,10 +12,28 @@ const bundleAnalyzer = withBundleAnalyzer({
 });
 
 const nextConfig = {
+  swcMinify: true,
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")],
   },
   reactStrictMode: true,
 };
 
-export default bundleAnalyzer(nextConfig);
+// export default bundleAnalyzer(nextConfig);
+
+export default bundleAnalyzer({
+  ...nextConfig,
+  webpack: (
+    config,
+    { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }
+  ) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      three$: path.resolve("./src/ts/threeExport/three"),
+      "../../../build/three.module.js": path.resolve(
+        "./src/ts/threeExport/three"
+      ),
+    };
+    return config;
+  },
+});

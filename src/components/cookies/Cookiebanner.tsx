@@ -5,6 +5,7 @@ import { faCookie } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { motion, useAnimation, useCycle } from "framer-motion"
 
+
 const USER_CONSENT_COOKIE_KEY = 'cookie_consent_is_true'
 const USER_CONSENT_COOKIE_EXPIRE_DATE = 365
 

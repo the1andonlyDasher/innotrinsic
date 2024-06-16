@@ -155,9 +155,7 @@ export function NewHead4(props: HeadHandsProps) {
       animate={brain_material_controls}
       exit="exit"
       variants={material2Variants}
-
-
-      color="#f5cb6e"
+      color="#ffe1a0"
       metalness={1}
       roughness={0.1}
       toneMapped
@@ -229,9 +227,7 @@ export function NewHead4(props: HeadHandsProps) {
       <group rotation={[0, -0.3, 0]} scale={1}>
         <primitive object={nodes.Bone} />
         <Model scroll={props.scroll} />
-
         {/* <skinnedMesh geometry={nodes.Shape_IndexedFaceSet001.geometry} material={nodes.Shape_IndexedFaceSet001.material} skeleton={nodes.Shape_IndexedFaceSet001.skeleton} >{MyShaderMaterial}</skinnedMesh> */}
-
       </group>
       <Float floatIntensity={0.1} rotationIntensity={0.1}>
         <group scale={1} rotation={[0, -Math.PI / 0.85, 0]} position={[0.125, -0.6, 0]}>
