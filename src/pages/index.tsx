@@ -25,7 +25,7 @@ export default function Home() {
         />
         <meta name="robots" content="index, follow" />
       </Head>
-      {/* <CookieConsent /> */}
+      <CookieConsent />
       <LandingSection />
       <IconsSection />
       <AboutUsSection />
