@@ -104,7 +104,7 @@ export function CookieConsent() {
         <motion.div
             onClick={() => setClosed(!closed)}
             className='z-40 flex text-white flex-row justify-center m-2 rounded bg-[#060a16] items-center cursor-pointer w-auto h-12 fixed bottom-0 left-0'>
-            <FontAwesomeIcon className='w-12' icon={faCookie} />
+            <FontAwesomeIcon className='w-12 max-h-6' icon={faCookie} />
         </motion.div>
     </>
     )

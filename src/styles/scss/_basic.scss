@@ -462,19 +462,30 @@ a {
   grid-column: full-width;
 }
 
-.content-grid section {
+// Platzhalter Klasse für section im Content-Grid
+%section-styles {
   @extend %flex-center;
   justify-content: flex-end;
   align-items: flex-start;
-
+  height: 100%;
   scroll-snap-align: end;
-  min-height: calc(100vh - 100px);
-  min-height: calc(100dvh - 100px);
   width: 100%;
   flex-direction: column;
   margin: 0 auto;
   position: relative;
-  padding: 1rem 0;
+}
+
+.content-grid {
+  section {
+    @extend %section-styles;
+    min-height: calc(100vh - 100px);
+    padding: 1rem 0;
+
+    &.section__wrapper {
+      min-height: calc(100vh - 100px); // Apply min-height to .section__wrapper
+      padding: 1rem 0; // Apply padding to .section__wrapper
+    }
+  }
 }
 
 .T3__ordered-list,

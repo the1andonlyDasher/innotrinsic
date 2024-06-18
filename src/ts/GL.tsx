@@ -62,25 +62,23 @@ const palette: any =
     white: "#f8f3e0"
 }
 
-
 const targetColors: any = {
-    landing: ["#698151", "#A5C791"],
-    landingBusiness: ["#7592a0", "#cde2e7"],
-    "/": ["#ffffff", "#fffde1"],
-    science: ["#ffffff", "#fffde1"],
-    symbols: ["#ffffff", "#fffde1"],
-    perspective: ["#ffffff", "#fffde1"],
-    braincare: ["#ffffff", "#fffde1"],
-    universal: ["#ffffff", "#fffde1"],
-    architekt: ["#ffffff", "#fffde1"],
-    freund: ["#ffffff", "#fffde1"],
-    head: ["#ffffff", "#fffde1"],
-    services: ["#ffffff", "#fffde1"],
-    faq: ["#ffffff", "#fffde1"],
-    different: ["#ffffff", "#fffde1"],
-    mountain: ["#ffffff", "#fffde1"],
+    landing: ["#D6DFA6", "#89B069", "#699051"],
+    landingBusiness: ["#7592a0", "#b7d7df", "#cde2e7"],
+    "/": ["#ffffff", "#fffde1", "#fffde1"],
+    science: ["#ffffff", "#fffde1", "#fffde1"],
+    symbols: ["#ffffff", "#fffde1", "#fffde1"],
+    perspective: ["#ffffff", "#fffde1", "#fffde1"],
+    braincare: ["#ffffff", "#fffde1", "#fffde1"],
+    universal: ["#ffffff", "#fffde1", "#fffde1"],
+    architekt: ["#ffffff", "#fffde1", "#fffde1"],
+    freund: ["#ffffff", "#fffde1", "#fffde1"],
+    head: ["#ffffff", "#fffde1", "#fffde1"],
+    services: ["#ffffff", "#fffde1", "#fffde1"],
+    faq: ["#ffffff", "#fffde1", "#fffde1"],
+    different: ["#ffffff", "#fffde1", "#fffde1"],
+    mountain: ["#ffffff", "#fffde1", "#fffde1"],
 }
-
 
 const GL = (props: glProps) => {
     const router = useRouter();
@@ -91,15 +89,18 @@ const GL = (props: glProps) => {
     const controls = useAnimation();
     const primitiveRef = useRef<any>(!null);
     const [currentColor1, setColor1] = useState("#fffcef")
-    const [currentColor2, setColor2] = useState("#96c972")
+    const [currentColor2, setColor2] = useState("#c1e9a4")
+    const [currentColor3, setColor3] = useState("#96c972")
     const [controlsEnabled, setControlsEnabled] = useState(false)
     const [nextColor1, setNextColor1] = useState(targetColors[`${location}`][0])
     const [nextColor2, setNextColor2] = useState(targetColors[`${location}`][1])
+    const [nextColor3, setNextColor3] = useState(targetColors[`${location}`][2])
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         setNextColor1(targetColors[`${location}`][0])
         setNextColor2(targetColors[`${location}`][1])
+        setNextColor3(targetColors[`${location}`][2])
     }, [location]);
 
     useEffect(() => {
@@ -117,7 +118,14 @@ const GL = (props: glProps) => {
             restDelta: 0.001,
             onUpdate: (latest) => setColor2(latest),
         });
-    }, [nextColor1, nextColor2]);
+        animate(currentColor3, nextColor3, {
+            type: "spring",
+            stiffness: 30,
+            damping: 10,
+            restDelta: 0.001,
+            onUpdate: (latest) => setColor3(latest),
+        });
+    }, [nextColor1, nextColor2, nextColor3]);
 
     // useEffect(() => {
     //     if (router.pathname === "/") {
@@ -257,14 +265,15 @@ const GL = (props: glProps) => {
 
 
                 <GradientTexture
-                    stops={[0, 1]}
+                    stops={[0, 0.5, 1]}
+                    width={100}
                     // colors={["#f6fff0", "#e5fcfc"]}
                     // colors={["#e5fcfc", "#E5F9A9"]}
                     // colors={["#e5fcfc", "#F8F3E0"]}
                     // colors={["#C8E99B", "#B0E431"]}
                     // colors={["#e5fcfc", "#96c972"]}
-                    colors={[currentColor1, currentColor2]}
-                    rotation={-0.95}
+                    colors={[currentColor1, currentColor2, currentColor3]}
+                    rotation={Math.PI / -2.5}
                     attach="background"
                     size={1024}
                 />

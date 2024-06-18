@@ -7,6 +7,7 @@ import { useFrame } from '@react-three/fiber';
 import { lerp } from 'three/src/math/MathUtils.js';
 import { useAtom } from 'jotai';
 import { glReady } from './ts/atoms';
+import { Vector3 } from './ts/threeExport/math/Vector3';
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -30,19 +31,24 @@ void main() {
 
 const fragmentShader = `
 uniform float opacity; // Uniform for controlling the opacity of the mask
+uniform vec3 uCameraPosition; // Uniform for camera position
+uniform vec3 uLightDirection; // Uniform for light direction
 
 varying vec3 vPosition;
 varying vec3 vNormal;
 
 void main() {
-    // Calculate the Fresnel effect (inverted)
-    float rim = dot(normalize(vNormal), normalize(vec3(0.0, -1.0, 0.0)));
-    rim = pow(rim, 6.0); // Adjust the power for the Fresnel effect
+    // Calculate the view direction from the camera to the fragment
+    vec3 viewDir = normalize(uCameraPosition - vPosition);
 
-    // Define the center and radius of the spherical mask
-    vec3 sphereCenter = vec3(0.7, 0.0, -1.4); // Adjust the x-coordinate to move the sphere to the left side
-    float sphereRadius = 1.5; // Adjust the radius as necessary
-    float sphereFalloff = 0.5; // Adjust the falloff for a smoother transition
+    // Calculate the diffuse lighting intensity based on the light direction
+    float diffuse = dot(normalize(vNormal), -uLightDirection);
+    diffuse = clamp(diffuse, 0.075, 1.0); // Clamp to ensure it's within valid range
+
+    // Define the center and radius of the spherical mask (adjust as needed)
+    vec3 sphereCenter = vec3(0.7, 0.0, -1.4); // Center the sphere at the origin
+    float sphereRadius = 1.6; // Adjust the radius as necessary
+    float sphereFalloff = 0.3; // Adjust the falloff for a smoother transition
 
     // Calculate the distance from the current fragment to the sphere center
     float distance = length(vPosition - sphereCenter);
@@ -53,15 +59,20 @@ void main() {
     // Invert the mask
     float invertedMask = 1.0 - sphereFade;
 
-    // Combine the Fresnel effect and the inverted spherical mask with the opacity uniform
-    float alpha = rim * invertedMask * opacity;
+    // Calculate the outline based on the view direction and diffuse lighting
+    float rim = dot(normalize(vNormal), viewDir);
+    rim = clamp(1.0 - abs(rim), 0.0, 1.0); // Adjust the Fresnel effect for outlining
+
+    // Combine the outline effect with the inverted spherical mask and diffuse lighting
+    float alpha = rim * invertedMask * diffuse * opacity;
 
     // Set the color directly without using colorFactor
     vec3 color = vec3(0.918, 1.0, 0.714); // Fixed color
-    // Optionally, you can adjust color based on other conditions
 
-    gl_FragColor = vec4(color, alpha); // Set the color with the computed alpha
+    // Output the color with the computed alpha
+    gl_FragColor = vec4(color, alpha);
 }
+
 `;
 
 type HandProps = {
@@ -82,7 +93,9 @@ export function Model(props: HandProps) {
   };
 
   const uniforms = useMemo(() => ({
-    opacity: { value: 0.0 }
+    opacity: { value: 0.0 },
+    uCameraPosition: { value: new Vector3(0, 1.5, 30) },
+    uLightDirection: { value: new Vector3(-15, 5, -15) }
   }), [])
 
   useFrame(() => {
@@ -97,7 +110,8 @@ export function Model(props: HandProps) {
   return (
     <Float rotationIntensity={0.1} floatIntensity={0.1}>
       <group {...props} dispose={null}>
-        <mesh geometry={nodes.Shape_IndexedFaceSet001.geometry} position={[0.65, 0.65, 0.038]} rotation={[1.4, 1.369, Math.PI / 1.9]}>
+        <mesh geometry={nodes.Shape_IndexedFaceSet001.geometry} position={[0.65, 0.55, 0.038]} rotation={[1.45, 1.35, Math.PI / 1.9]}>
+          {/* <boxGeometry args={[1, 1, 1]} /> */}
           <shaderMaterial
             attach="material"
             ref={shaderRef}
