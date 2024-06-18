@@ -70,7 +70,7 @@ const IconsSection: FunctionComponent<IconsSectionProps> = () => {
                 <Card header={"Leicht zu \nlernen"}>
                     <ManipulateSVG />
                 </Card>
-                <Card header={`Selbst-\nbestimmt`}>
+                <Card header={`Selbstbestimmt`}>
                     <WomenSVG />
                 </Card>
             </motion.div>

@@ -63,7 +63,7 @@ const palette: any =
 }
 
 const targetColors: any = {
-    landing: ["#D6DFA6", "#89B069", "#699051"],
+    landing: ["#c5cf8f", "#89B069", "#699051"],
     landingBusiness: ["#7592a0", "#b7d7df", "#cde2e7"],
     "/": ["#ffffff", "#fffde1", "#fffde1"],
     science: ["#ffffff", "#fffde1", "#fffde1"],

@@ -177,3 +177,6 @@ export { PMREMGenerator } from "three/src/extras/PMREMGenerator.js";
 export { WebGLUtils } from "three/src/renderers/webgl/WebGLUtils.js";
 export * from "three/src/constants.js";
 export { DataUtils } from "three/src/extras/DataUtils.js";
+export class AudioLoader {}
+export class CubeCamera {}
+export class CubeTextureLoader {}

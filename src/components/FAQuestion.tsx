@@ -59,7 +59,7 @@ const FAQuestion = (props: serviceType) => {
                             variants={arrow_variants}
                             animate={clicked ? "open" : "closed"}>
 
-                            <FontAwesomeIcon icon={faPlus} scale={5} />
+                            <FontAwesomeIcon icon={faPlus} />
 
                         </motion.div>
                         <div className="faq__title">

@@ -46,7 +46,7 @@
 .icons__wrapper {
   display: flex;
   top: 0;
-  padding: 4rem 1.5rem;
+  padding: clamp(3rem, 15vw, 6rem) 1.5rem;
   //   padding-left: 1.5rem;
   //   padding-right: 1.5rem;
   //   padding-top: 4rem;

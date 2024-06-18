@@ -53,13 +53,13 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                         height={709}
                         alt="Bild von Dr. Karin Koert-Lehmann"
                     />
-                    <Image
+                    {/* <Image
                         className="signature"
                         alt="Unterschrift von Dr. Karin Koert-Lehmann"
                         src="/images/karin_unterschrift.png"
                         width={300}
                         height={50}
-                    />
+                    /> */}
                     <h5>Dr. Karin Koert-Lehmann</h5>
                 </motion.div>
                 <motion.div className="avatar__container">
@@ -70,13 +70,13 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                         height={709}
                         alt="Bild von Ulrike Corneliussen"
                     />
-                    <Image
+                    {/* <Image
                         className="signature"
                         alt="Unterschrift von Ulrike Corneliussen"
                         src="/images/ulrike_unterschrift.png"
                         width={200}
                         height={100}
-                    />
+                    /> */}
                     <h5>Ulrike Corneliussen</h5>
                 </motion.div>
             </motion.div>

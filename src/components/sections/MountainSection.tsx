@@ -10,7 +10,7 @@ interface MountainSectionProps {
 }
 
 const MountainSection: FunctionComponent<MountainSectionProps> = () => {
-    return (<Sec sectionName="mountain" left={false} single>
+    return (<motion.div>
         <motion.div
             initial="initial"
             whileInView={"animate"}
@@ -50,7 +50,7 @@ const MountainSection: FunctionComponent<MountainSectionProps> = () => {
                 <Image width={500} height={300} alt="Ein Gehirn das Berge versetzt" src="/images/brain_and_mountain.png" />
             </motion.div>
         </motion.div>
-    </Sec>);
+    </motion.div>);
 }
 
 export default MountainSection;

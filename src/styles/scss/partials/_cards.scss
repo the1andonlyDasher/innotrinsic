@@ -93,7 +93,9 @@
     .card__header {
       font-family: var(--fonts-header);
       font-size: var(--fs-sub-small);
-      color: rgb(7, 7, 48);
+      color: #506c00;
+      font-family: "Poppins";
+      font-weight: 800;
       text-align: center;
       white-space: wrap;
       line-height: 1.3;
@@ -132,17 +134,17 @@
     max-width: 100px;
   }
   .card__header {
-    // font-family: var(--fonts-text);
     font-size: clamp(1rem, 5vw, 1.25rem);
-    // color: rgb(7, 7, 48);
+    color: #506c00;
+    font-family: "Poppins";
+    font-weight: 700;
     text-align: center;
     white-space: wrap;
     line-height: 1.5;
     display: flex;
     justify-content: center;
     text-transform: uppercase;
-    // font-weight: 900;
-    align-items: center;
+    align-items: flex-start;
     min-height: 80px;
   }
   .card__icon {
