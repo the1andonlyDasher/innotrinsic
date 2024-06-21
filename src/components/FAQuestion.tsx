@@ -1,4 +1,4 @@
-import { forwardRef, useState } from "react";
+import { ReactNode, forwardRef, useState } from "react";
 import Section from "./Section";
 import { AnimationProps, Variant, Variants, motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +9,7 @@ type serviceType = {
     title: string;
     description?: string;
     borderBottom: boolean;
+    children?: ReactNode;
 }
 
 
@@ -69,7 +70,9 @@ const FAQuestion = (props: serviceType) => {
                     </motion.div>
                 </motion.div>
                 <motion.div variants={desc_variants} animate={clicked ? "open" : "closed"} className="faq__answer-wrapper">
-                    <p className="faq__answer">{props.description}</p>
+                    {props.description && <p className="faq__answer">{props.description}</p>}
+
+                    {props.children && <div className="faq__answer">{props.children}</div>}
                 </motion.div>
             </motion.div>
         </motion.div>

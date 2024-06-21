@@ -76,7 +76,12 @@
   gap: 2.5rem;
   width: 100%;
   height: auto;
-
+  &.reverse {
+    flex-direction: column-reverse;
+    @include mq(large) {
+      flex-direction: row;
+    }
+  }
   @include mq(large) {
     flex-direction: row;
     gap: 5rem;
@@ -122,17 +127,15 @@
 
 .landing__header {
   font-size: 3rem;
-  line-height: 1;
+  line-height: 1.2;
   font-weight: 700;
   text-align: center;
   color: #ffffff;
   @include mq(small) {
     font-size: 3rem;
-    line-height: 1;
   }
   @include mq(medium) {
     font-size: 3.75rem;
-    line-height: 1;
   }
   @include mq(large) {
     text-align: left;
@@ -142,6 +145,9 @@
     width: auto;
     font-weight: 700;
     color: #c3db7f;
+  }
+  strong.business {
+    color: #b38224;
   }
 }
 

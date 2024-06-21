@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
-import { motion, useCycle } from "framer-motion";
+import { AnimatePresence, motion, useCycle } from "framer-motion";
 import { NavItem } from "@/components/Navbar/NavItemDesktop";
 import Navigation from "@/components/Navbar/Navigation";
 import MobileNav from "@/components/Navbar/MobileNav";
@@ -10,10 +10,11 @@ import { useAtom } from "jotai";
 import { loc } from "@/ts/atoms";
 import Link from "next/link";
 import { propagateServerField } from "next/dist/server/lib/render-server";
+import { useRouter } from "next/router";
 
 
 const Navbar = ({ logo, alt, navbar, legals }: any) => {
-
+  const router = useRouter()
   const navbarMain = useRef<any>(!null);
   const [isShrunk, setShrunk] = useState(false);
   useEffect(() => {
@@ -55,6 +56,8 @@ const Navbar = ({ logo, alt, navbar, legals }: any) => {
 
   const targetColors: any = {
     landing: "#ffffff",
+    landingBusiness: "#32689C",
+    business: "#32689C",
     "/": "#ffffff",
     science: "#506c00",
     symbols: "#506c00",
@@ -70,13 +73,41 @@ const Navbar = ({ logo, alt, navbar, legals }: any) => {
     mountain: "#506c00",
   }
 
+  const addColors: any = {
+    landing: "#ffffff",
+    landingBusiness: "#B38224",
+    "/": "#ffffff",
+    business: "#B38224",
+    science: "#7e9b2e",
+    symbols: "#506c00",
+    perspective: "#506c00",
+    braincare: "#506c00",
+    universal: "#506c00",
+    architekt: "#506c00",
+    freund: "#506c00",
+    head: "#506c00",
+    services: "#506c00",
+    faq: "#506c00",
+    different: "#506c00",
+    mountain: "#506c00",
+  }
+
+
   const [isOpen, toggleOpen] = useCycle(false, true);
   const [location, setLocation] = useAtom(loc);
   const [nextColor1, setNextColor1] = useState(targetColors[`${location}`])
+  const [nextColor2, setNextColor2] = useState(addColors[`${location}`])
 
   useEffect(() => {
     setNextColor1(targetColors[`${location}`])
+    setNextColor2(addColors[`${location}`])
   }, [location]);
+
+  const pathsToShowTitle = [
+    "/business",
+    "/private",
+    "/dashboard",
+  ]
 
   return (
     <motion.nav
@@ -94,12 +125,12 @@ const Navbar = ({ logo, alt, navbar, legals }: any) => {
           <Link
             aria-label="Home"
             aria-current="page"
-            className=" active flex justify-center items-center py-4 gap-2"
+            className="company__name"
             href="/"
 
           >
             <svg
-              className="max-h-8"
+              className="navbar__logo"
               xmlns="http://www.w3.org/2000/svg"
               xmlSpace="preserve"
               width={324.962}
@@ -122,10 +153,27 @@ const Navbar = ({ logo, alt, navbar, legals }: any) => {
               </g>
             </svg>
 
+            <motion.div className="navbar__text">
 
-            <motion.div animate={{ color: nextColor1 }} className={`font-header font-semibold text-[${nextColor1}]`}>
-              MY InnoTrinsic
+              <motion.div animate={{ color: nextColor1 }} className={`main-name `}>
+                MY InnoTrinsic
+              </motion.div>
+              <AnimatePresence mode="wait">
+                {pathsToShowTitle.includes(router.pathname) && (
+
+                  <motion.div
+                    key={router.pathname}
+                    initial={{ x: -10, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1, color: nextColor2, transition: { x: { delay: 1 }, opacity: { delay: 1 } } }}
+                    exit={{ opacity: 0, x: -10 }}
+                    className={`name-add`}
+                  >
+                    {router.pathname.replace(/^\/(.*)/, (match, p1) => p1.charAt(0).toUpperCase() + p1.slice(1))}
+                  </motion.div>
+
+                )}</AnimatePresence>
             </motion.div>
+
           </Link>
         </motion.div>
         <Navigation>
@@ -142,8 +190,8 @@ const Navbar = ({ logo, alt, navbar, legals }: any) => {
           ))}
         </MobileNav>
         <NavbarToggle toggle={() => toggleOpen()} />
-      </div>
-    </motion.nav>
+      </div >
+    </motion.nav >
   );
 };
 

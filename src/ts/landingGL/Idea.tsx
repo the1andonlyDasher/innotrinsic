@@ -298,8 +298,10 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         >
                             <Text
                                 lookAt={() => [0, 0, -5]}
-                                scale={Math.max(0.35, Math.min(viewport.width / 20, 0.45))}
+                                scale={Math.max(0.35, Math.min(viewport.width / 20, 0.4))}
                                 textAlign="center"
+                                lineHeight={1.2}
+                                position={[0, 0.1, 0]}
                                 anchorX="center"
                                 strokeWidth={0}
                                 renderOrder={5}

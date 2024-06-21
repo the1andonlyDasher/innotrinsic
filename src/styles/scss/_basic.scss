@@ -166,7 +166,6 @@ h2 {
 h3 {
   font-size: var(--fs-sub-big);
   font-family: var(--fonts-header);
-
   line-height: 1.5;
 }
 
@@ -259,7 +258,7 @@ a {
   }
 }
 
-.btn__primary {
+%btn__primary {
   background-color: transparent;
   border-color: transparent;
   border: none;
@@ -269,7 +268,7 @@ a {
   &::after {
     width: 200%;
     left: -100%;
-    background-color: #222d1b;
+
     z-index: -1;
     transform-origin: center;
     opacity: 1;
@@ -280,12 +279,31 @@ a {
   &:hover::after,
   &:active::after {
     left: 0;
-    background-color: #091501;
   }
 }
 
-.btn__outline {
-  color: #f0ffe6;
+.btn__primary {
+  @extend %btn__primary;
+  &::after {
+    background-color: #222d1b;
+  }
+  &:active::after,
+  &:hover::after {
+    background-color: #091501;
+  }
+  &.business {
+    &::after {
+      background-color: #32689c;
+    }
+    &:active::after,
+    &:hover::after {
+      background-color: #010815;
+    }
+  }
+}
+
+%btn__outline {
+  color: #ffffff;
   position: relative;
   &::before {
     z-index: -2;
@@ -295,9 +313,7 @@ a {
     opacity: 0;
     transform-origin: center;
   }
-  &:hover {
-    color: var(--clr-ice-100);
-  }
+
   &::after {
     border: 2px solid #f0ffe6;
   }
@@ -311,6 +327,28 @@ a {
     left: 0;
     opacity: 1;
     background-color: #5d9b31;
+  }
+}
+
+.btn__outline {
+  @extend %btn__outline;
+  &:active::after,
+  &:hover::after {
+    border-color: #5d9b31;
+  }
+  &:hover::before,
+  :active::before {
+    background-color: #5d9b31;
+  }
+  &.business {
+    &:active::after,
+    &:hover::after {
+      border-color: #010815;
+    }
+    &:hover::before,
+    :active::before {
+      background-color: #010815;
+    }
   }
 }
 
@@ -426,11 +464,9 @@ a {
   --padding-inline: clamp(1rem, 5%, 3rem);
   --content-max-width: 1200px;
   --breakout-max-width: calc(var(--content-max-width) + 15ch);
-
   --breakout-size: calc(
     (var(--breakout-max-width) - var(--content-max-width)) / 2
   );
-
   position: relative;
   display: grid;
   grid-template-columns:
@@ -465,7 +501,7 @@ a {
 // Platzhalter Klasse für section im Content-Grid
 %section-styles {
   @extend %flex-center;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: flex-start;
   height: 100%;
   scroll-snap-align: end;
@@ -486,6 +522,15 @@ a {
       padding: 1rem 0; // Apply padding to .section__wrapper
     }
   }
+}
+
+.wrapper {
+  @extend %flex-center, %flex-full;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2rem;
+  min-height: calc(100vh - 100px);
+  padding: 1rem 0;
 }
 
 .T3__ordered-list,

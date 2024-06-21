@@ -2,7 +2,7 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { FunctionComponent } from "react";
-import Sec from "../Section";
+import Sec from "../../Section";
 import Image from "next/image";
 
 interface MountainSectionProps {

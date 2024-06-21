@@ -1,13 +1,13 @@
 import ContactForm from "@/components/ContactForm";
 import { CookieConsent } from "@/components/cookies/Cookiebanner";
-import LandingSection from "@/components/sections/LandingSection";
-import IconsSection from "@/components/sections/IconsSection";
-import AboutUsSection from "@/components/sections/AboutUsSection";
-import ServicesSection from "@/components/sections/ServicesSection";
-import GetToKnowSection from "@/components/sections/GetToKnowSection";
-import BusinessSection from "@/components/sections/BusinessSection";
-import MountainSection from "@/components/sections/MountainSection";
-import FaqSection from "@/components/sections/FaqSection";
+import LandingSection from "@/components/sections/Home/LandingSection";
+import IconsSection from "@/components/sections/Home/IconsSection";
+import AboutUsSection from "@/components/sections/Home/AboutUsSection";
+import ServicesSection from "@/components/sections/Home/ServicesSection";
+import GetToKnowSection from "@/components/sections/Home/GetToKnowSection";
+import BusinessSection from "@/components/sections/Home/BusinessSection";
+import MountainSection from "@/components/sections/Home/MountainSection";
+import FaqSection from "@/components/sections/Home/FaqSection";
 import Footer from "@/components/Footer";
 import Head from "next/head";
 

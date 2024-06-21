@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { FunctionComponent } from "react";
-import FAQuestion from "../FAQuestion";
-import Sec from "../Section";
+import FAQuestion from "../../FAQuestion";
+import Sec from "../../Section";
 
 interface FaqSectionProps {
 
@@ -50,12 +50,11 @@ const FaqSection: FunctionComponent<FaqSectionProps> = () => {
 
             <motion.div className="faq__container">
 
-                <FAQuestion borderBottom title="Was bedeutet „neuroloyal“?" description="Wortwörtlich bedeutet es gehirngerecht. Doch loyal bedeutet nach unserem
-Verständnis noch viel mehr, nämlich respektierend, innerlich verbunden, schützend,
-wohlwollend und achtsam. Neuroloyal zu handeln heißt also, stets im Einklang mit
-seinem Gehirn zu agieren. Es heißt, die jeweils individuellen Zufriedenheitsantriebe
-zu kennen und in sein zukünftiges Handeln miteinzubeziehen. So fällt es leichter zu
-starten und durchzuhalten."/>
+                <FAQuestion borderBottom title="Was bedeutet „neuroloyal“?" description="Neuroloyal bedeutet wörtlich &quot;gehirngerecht&quot;. Doch für uns umfasst loyal noch viel
+mehr: kooperativ, respektvoll und achtsam. Es bedeutet, die Rolle des Gehirns als
+Alltagsarchitekt zu respektieren und - basierend auf der einzigartigen Neurophysis -
+zielgenau mit dem Gehirn zu kollaborieren. So fällt es leichter zu starten und
+durchzuhalten."/>
                 <FAQuestion borderBottom title="Was ist BrainCare?" description="Nicht ohne Grund verwenden wir das Bild vom Gehirn, dem eine schützende Hand
 hinzugefügt ist. Unser Ziel ist es, das Gehirn als Freund zu verstehen, das
 entsprechend gepflegt werden muss, um sein optimales Potenzial zu entfalten.
@@ -76,20 +75,24 @@ neurowissenschaftliche Erkenntnisse management- und prozessfähig umsetzt."/>
 Scouting 4 Stunden für kleinere, individuelle Fragestellungen. Ein klassisches
 Einzelscouting dauert 3 Tage. Eine umfassende, individuell abgestimmte
 Projektbegleitung im Unternehmen nimmt erfahrungsgemäß mehr Zeit in Anspruch."/>
-                <FAQuestion borderBottom title="Warum nennen wir es Scouting und nicht Coaching oder Beratung?" description="Wir sind BrainScouts, die neurophysisch-unternehmensrelevante Zusammenhänge
-sowie ihre teils weitreichenden Folgen aufzeigen und Handlungsoptionen skizzieren.
-Wenn die Entscheidung fällt, mit uns gemeinsam dieses Neuland erkunden, beraten
-wir nicht, sondern sind dabei: Wir packen gemeinsam einen Rucksack mit
-neuroloyalem Background-Wissen und wichtigen Werkzeugen. Wir zeigen Wege und
-Alternativwege und entdecken gemeinsam neue Möglichkeiten für den Einzelnen
-und/oder das Unternehmen. Denn darauf legen wir größten Wert: Dass es konkrete
-Ergebnisse und Ideen gibt. Und: Dass wir irgendwann nicht mehr benötigt werden."/>
-                <FAQuestion borderBottom title="Was heißt „Selbstbestimmt“?" description="Das Steuer hat immer der Scoutie in der Hand. Mit MY InnoTrinsic ist keine
-Manipulation möglich. MY InnoTrinsic funktioniert nur, wenn der Einzelne das
-Basiswissen über die neuronalen Zusammenhänge verstanden hat und sich
-ausdrücklich für seinen ganz eigenen, individuellen neuroloyalen Weg entschieden
-hat. Denn neuroloyales Wachstum entsteht aus den Antrieben des Einzelnen - und
-nicht aus einem fertigen Glaubenssystem."/>
+                <FAQuestion borderBottom title="Warum nennen wir es Scouting und nicht Coaching oder Beratung?" description="Wir sind BrainScouts und machen neurophysisch relevante Zusammenhänge sowie
+ihre weitreichenden Folgen sichtbar. Im nächsten Schritt gehen wir weiter. Wir
+beraten nicht nur, sondern sind beim Umsetzen dabei. Für den Einzelnen bedeutet
+das gleichzeitig: Learning by doing. Gemeinsam packen wir einen Rucksack mit
+neuroloyalem Hintergrundwissen und wichtigen Werkzeugen. Wir zeigen Wege und
+Alternativwege und gehen diese gemeinsam. Wir erklären und begleiten den
+gesamten Prozess und trainieren die neuroloyalen Module, Strukturen und
+Instrumente von MY InnoTrinsic. Darauf legen wir den größten Wert: Dass
+irgendwann unsere Unterstützung nicht mehr benötigt wird. Deshalb ist jedes
+Scouting gleichzeitig ein MY InnoTrinsic Training. Jeder Scoutie lernt, die
+neuroloyalen Strukturen und Werkzeuge eigenständig und autark zu nutzen."/>
+                <FAQuestion borderBottom title="Was heißt „Selbstbestimmt“?" description="In jeder Lebensphase und -situation soll jeder Mensch die Möglichkeit haben, sein
+Leben nach eigenen Vorstellungen und Werten zu gestalten. Wir legen großen Wert
+darauf, Autonomie, Souveränität und Eigenverantwortung zu fördern. Unser Ziel ist
+es, die Instrumente und das Wissen zu vermitteln, damit jeder Einzelne fundierte und
+authentische Entscheidungen treffen kann, die zum jeweiligen individuellen Weg
+passen. Dabei gehen wir stets partnerschaftlich vor, um die Interessen jedes
+Einzelnen bestens zu wahren."/>
                 <FAQuestion borderBottom={false} title="Was unterscheidet MY InnoTrinsic von anderen Angeboten?" description="MY InnoTrinsic ist Methodenrebellion mit Win-Win-Dynamik. Es ist ein tief gehender
 neurowissenschaftlich verankerter Prozess, der den Menschen bzw. den Menschen
 mit seinen neurophysischen Besonderheiten in den Mittelpunkt stellt. Durch

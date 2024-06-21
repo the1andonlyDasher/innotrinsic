@@ -31,6 +31,8 @@ import { useSearchParams } from "next/navigation";
 
 
 import { NewHead4 } from "@/NewHead4";
+import Game from "./ModuleSpiel";
+import { Mountain } from "@/Mount2";
 
 declare global {
     namespace JSX {
@@ -64,8 +66,9 @@ const palette: any =
 
 const targetColors: any = {
     landing: ["#c5cf8f", "#89B069", "#699051"],
-    landingBusiness: ["#7592a0", "#b7d7df", "#cde2e7"],
-    "/": ["#ffffff", "#fffde1", "#fffde1"],
+    landingBusiness: ["#ccf1fa", "#97b9c1", "#6790a5"],
+    business: ["#e3f9ff", "#fffde1", "#fbffe1"],
+    "/": ["#ffffff", "#fffde1", "#f6ffe1"],
     science: ["#ffffff", "#fffde1", "#fffde1"],
     symbols: ["#ffffff", "#fffde1", "#fffde1"],
     perspective: ["#ffffff", "#fffde1", "#fffde1"],
@@ -262,7 +265,7 @@ const GL = (props: glProps) => {
                 {/* <Neuron
                     scroll={props.scroll} /> */}
 
-
+                <Game />
 
                 <GradientTexture
                     stops={[0, 0.5, 1]}
@@ -291,7 +294,7 @@ const GL = (props: glProps) => {
                     <boxGeometry args={[3, 3, 3]} />
                     <meshStandardMaterial color="beige" />
                 </mesh> */}
-                {/* <Mountain scroll={props.scroll} /> */}
+                <Mountain scroll={props.scroll} />
                 {/* <Suspense>
                     <Float floatIntensity={0.1} rotationIntensity={0.5}>
                         <Human scroll={props.scroll} />

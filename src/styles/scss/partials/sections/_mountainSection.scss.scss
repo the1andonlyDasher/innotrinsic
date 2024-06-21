@@ -98,6 +98,7 @@
         font-size: 1.25rem;
         line-height: 1.75rem;
         svg {
+          height: clamp(1rem, 10vw, 1.5rem);
           margin-right: 1rem;
           font-size: 1.25rem;
           line-height: 1.75rem;

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Suspense, useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, MotionConfig } from "framer-motion";
 import { wrap } from "popmotion";
 import Image from "next/image";
 import { globalModuleIndex, moduleSet } from "@/ts/atoms";
@@ -28,6 +28,12 @@ const variants = {
     }
 };
 
+const variants2 = {
+    initial: { filter: "blur(20px)", opacity: 0 },
+    center: { filter: "blur(0px)", opacity: 1, },
+    exit: { filter: "blur(20px)", opacity: 0 },
+};
+
 /**
  * Experimenting with distilling swipe offset and velocity into a single variable, so the
  * less distance a user has swiped, the more velocity they need to register as a swipe.
@@ -39,11 +45,15 @@ const swipePower = (offset: number, velocity: number) => {
     return Math.abs(offset) * velocity;
 };
 
-interface carouselProps {
-    images: string[];
+interface textObject {
+    title: string;
+    text: string;
 }
 
-export const ImageCarousel = ({ images }: carouselProps) => {
+interface carouselProps {
+    images: textObject[];
+}
+export const SliderCarousel = ({ images }: carouselProps) => {
     const [[page, direction], setPage] = useState([0, 0]);
     const [globalIndex, setGlobalIndex] = useAtom(globalModuleIndex)
     // We only have 3 images, but we paginate them absolutely (ie 1, 2, 3, 4, 5...) and
@@ -61,7 +71,7 @@ export const ImageCarousel = ({ images }: carouselProps) => {
 
     return (
         <>
-            <div className="img_carousel-wrapper">
+            <div className="img_carousel-wrapper slider">
                 <Suspense>
                     {images && <AnimatePresence initial={false} custom={direction}>
                         <motion.div
@@ -89,10 +99,32 @@ export const ImageCarousel = ({ images }: carouselProps) => {
                                 }
                             }}
                         >
-                            <div className="w-full h-full flex justify-center font-black items-center text-[#305f8e] text-2xl">
-                                {images[imageIndex]}
-                            </div>
+                            <MotionConfig transition={{ type: "tween", ease: "easeInOut", duration: 0.5 }}>
+
+                                <motion.h3
+                                    key={images[imageIndex].title}
+                                    initial="initial"
+                                    animate="center"
+                                    exit="exit"
+                                    variants={variants2}
+                                    className="module__header"
+                                >
+                                    {images[imageIndex].title}
+                                </motion.h3>
+                                <motion.p
+                                    key={images[imageIndex].text}
+                                    initial="initial"
+                                    animate="center"
+                                    exit="exit"
+                                    className="module__text"
+                                    variants={variants2}
+                                >
+                                    {images[imageIndex].text}
+                                </motion.p>
+
+                            </MotionConfig>
                         </motion.div>
+
                     </AnimatePresence>}
                     <div className="next " onClick={() => paginate(1)}>
                         {"‣"}

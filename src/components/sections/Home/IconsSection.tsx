@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import { FunctionComponent, useEffect } from "react";
-import Card from "../Card";
-import BraincareSVG from "../svgs/Braincare";
-import JederSVG from "../svgs/Jedermann";
-import ManipulateSVG from "../svgs/Manipulate";
-import NeuroSVG from "../svgs/Neuroscience";
-import WomenSVG from "../svgs/Women";
+import Card from "../../Card";
+import BraincareSVG from "../../svgs/Braincare";
+import JederSVG from "../../svgs/Jedermann";
+import ManipulateSVG from "../../svgs/Manipulate";
+import NeuroSVG from "../../svgs/Neuroscience";
+import WomenSVG from "../../svgs/Women";
 import { loc } from "@/ts/atoms";
 import { useAtom } from "jotai";
 

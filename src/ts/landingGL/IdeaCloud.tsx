@@ -22,16 +22,16 @@ interface IdeaCloudProps {
 
 export const IdeaData = [
     {
-        // colors: ["#42c46d", "#3561A1"],
-        colors: ["#fcfdd9", "#b5f299"],
-        text: "Public Life",
-        model: <Business scale={0.05} rotation={[0, Math.PI / 4, 0]} />
-    },
-    {
         // colors: ["#3564A1", "#33e3d4"],
         colors: ["#fcfdd9", "#327217"],
         text: "Sport",
         model: <Private scale={0.05} />
+    },
+    {
+        // colors: ["#42c46d", "#3561A1"],
+        colors: ["#fcfdd9", "#b5f299"],
+        text: `Public \nPersons`,
+        model: <Business scale={0.05} rotation={[0, Math.PI / 4, 0]} />
     },
     {
         // colors: ["#5bff4f", "#bf95fa"],
@@ -42,7 +42,7 @@ export const IdeaData = [
     {
         // colors: ["#B0E431", "#EDDFAB"],
         colors: ["#fcfdd9", "#b5f299"],
-        text: "Private",
+        text: "Privat",
         model: <Sport scale={0.05} />
     },
     {

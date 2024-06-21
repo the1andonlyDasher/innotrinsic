@@ -32,7 +32,8 @@ void main() {
 const fragmentShader = `
 uniform float opacity; // Uniform for controlling the opacity of the mask
 uniform vec3 uCameraPosition; // Uniform for camera position
-uniform vec3 uLightDirection; // Uniform for light direction
+uniform vec3 uLightDirection1; // Uniform for the first light direction
+uniform vec3 uLightDirection2; // Uniform for the second light direction
 
 varying vec3 vPosition;
 varying vec3 vNormal;
@@ -41,9 +42,16 @@ void main() {
     // Calculate the view direction from the camera to the fragment
     vec3 viewDir = normalize(uCameraPosition - vPosition);
 
-    // Calculate the diffuse lighting intensity based on the light direction
-    float diffuse = dot(normalize(vNormal), -uLightDirection);
-    diffuse = clamp(diffuse, 0.075, 1.0); // Clamp to ensure it's within valid range
+    // Calculate the diffuse lighting intensity based on the first light direction
+    float diffuse1 = dot(normalize(vNormal), -uLightDirection1);
+    diffuse1 = clamp(diffuse1, 0.0, 1.0); // Clamp to ensure it's within valid range
+
+    // Calculate the diffuse lighting intensity based on the second light direction
+    float diffuse2 = dot(normalize(vNormal), -uLightDirection2);
+    diffuse2 = clamp(diffuse2, 0.0, 0.5); // Fainter light, adjust the range as necessary
+
+    // Combine the two diffuse lighting intensities
+    float diffuse = max(diffuse1, diffuse2); // Use max to combine the lighting effects
 
     // Define the center and radius of the spherical mask (adjust as needed)
     vec3 sphereCenter = vec3(0.7, 0.0, -1.4); // Center the sphere at the origin
@@ -72,8 +80,8 @@ void main() {
     // Output the color with the computed alpha
     gl_FragColor = vec4(color, alpha);
 }
-
 `;
+
 
 type HandProps = {
   scroll: MutableRefObject<number>;
@@ -95,7 +103,8 @@ export function Model(props: HandProps) {
   const uniforms = useMemo(() => ({
     opacity: { value: 0.0 },
     uCameraPosition: { value: new Vector3(0, 1.5, 30) },
-    uLightDirection: { value: new Vector3(-15, 5, -15) }
+    uLightDirection1: { value: new Vector3(-20, 5, -15) },
+    uLightDirection2: { value: new Vector3(-18, -20, 15) }
   }), [])
 
   useFrame(() => {
@@ -110,7 +119,7 @@ export function Model(props: HandProps) {
   return (
     <Float rotationIntensity={0.1} floatIntensity={0.1}>
       <group {...props} dispose={null}>
-        <mesh geometry={nodes.Shape_IndexedFaceSet001.geometry} position={[0.65, 0.55, 0.038]} rotation={[1.45, 1.35, Math.PI / 1.9]}>
+        <mesh geometry={nodes.Shape_IndexedFaceSet001.geometry} position={[0.65, 0.65, 0.038]} rotation={[2.3, 1.35, Math.PI / 4]}>
           {/* <boxGeometry args={[1, 1, 1]} /> */}
           <shaderMaterial
             attach="material"

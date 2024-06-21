@@ -40,6 +40,7 @@ interface sectionProps {
   text?: string;
   children?: JSX.Element;
   single?: boolean;
+  addClass?: string;
 }
 
 interface sProps {
@@ -53,7 +54,7 @@ function Section(props: sectionProps) {
 
   return (
     <InView as="div"
-      className="section__wrapper"
+      className={`${props.addClass} section__wrapper"`}
       threshold={0.8}
       rootMargin={margin}
       onChange={(inView, entry) => {
