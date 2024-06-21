@@ -108,14 +108,12 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
 
     //uef for router state change
     useEffect(() => {
-        if (router.pathname === "/" &&
-            searchParams.get("view") === null) {
+        if (router.pathname === "/" && searchParams.get("view") === null) {
             setClicked(false);
             setHover(false);
             // console.log(line.current);
         }
-    }, [router.pathname, searchParams, props.scroll.current]);
-
+    }, [router.pathname, searchParams]);
 
     // UEF for hover state
     useEffect(() => {
@@ -175,79 +173,52 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
 
 
     useEffect(() => {
-        // set positions of sphere in circle or in curve above head
-        if (router.pathname === "/") {
-            if (props.scroll.current
-                > 0.05) {
-                textMatControls.start("exit")
-                sphereControls.start({ scale: 0 });
-                subGroupControls.start({
-                    x: 0,
-                    y: 0,
-                    z: 0,
-                });
-            } else {
-                setTimeout(() => {
-                    sphereControls.start({ scale: 1 });
-                    textMatControls.start(
-                        hovered && clicked
-                            ? "enter"
-                            : clicked && !hovered
-                                ? "enter"
-                                : !clicked && hovered
-                                    ? "enter"
-                                    : "initial"
-                    );
-                    subGroupControls.start({
-                        x: Math.cos(((Math.PI * 1.15) / props.r) * props.index) * radius,
-                        y: Math.sin(((Math.PI * 1.15) / props.r) * props.index) * radius / 1.45,
-                        z: 0
-
-                    })
-                }, 500)
-
-            }
-        }
-        else {
-            sphereControls.start({ scale: 0 });
-            textMatControls.start("exit")
-
-            subGroupControls.start({
-                x: 0,
-                y: 0,
-                z: 0,
-            });
-
-            setClicked(searchParams.get("neuron") === props.text ? true : false);
-        };
-
-    }, [searchParams, router.pathname, props.scroll.current]);
-
-    useEffect(() => {
         setOrbitTarget;
     }, []);
 
     // UEF for mounting and visibility
     useEffect(() => {
-        if ((props.scroll.current < 0.05)) {
-            setTimeout(() => {
-                setDisposed(false);
-                setIsInPage(true);
-            }, 800);
+        if (props.scroll.current < 0.015) {
+            setDisposed(false);
+            setIsInPage(true);
         } else {
-            setTimeout(() => {
-                groupControls.start("exit").then(() => {
-                    setIsInPage(false), setDisposed(true);
-                });
-            }, 100);
+            textMatControls.start("exit");
+            sphereControls.start({ scale: 0 });
+            subGroupControls.start({
+                x: 0,
+                y: 0,
+                z: 0,
+            });
+            groupControls.start("exit").then(() => {
+                setIsInPage(false), setDisposed(true);
+            });
         }
-    }, [router.pathname]);
+    }, [props.scroll.current]);
 
     useEffect(() => {
         if (isInPage) {
             groupControls.start("enter");
+            setTimeout(() => {
+                sphereControls.start({ scale: 1 });
+                textMatControls.start(
+                    hovered && clicked
+                        ? "enter"
+                        : clicked && !hovered
+                            ? "enter"
+                            : !clicked && hovered
+                                ? "enter"
+                                : "initial"
+                );
+                subGroupControls.start({
+                    x: Math.cos(((Math.PI * 1.15) / props.r) * props.index) * radius,
+                    y:
+                        (Math.sin(((Math.PI * 1.15) / props.r) * props.index) * radius) /
+                        1.45,
+                    z: 0,
+                });
+            }, 500);
         }
-    }, [props.scroll, isInPage]);
+    }, [isInPage]);
 
     const p: any = new V3();
     return (
@@ -272,18 +243,13 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         x: position[0],
                         y: position[1],
                         z: position[2],
-
                     }}
-                    animate={
-                        subGroupControls
-
-                    }
+                    animate={subGroupControls}
                     transition={{
                         type: "spring",
                         damping: 10,
                         stiffness: 40,
                         restDelta: 0.001,
-
                     }}
                 >
                     <Billboard>
@@ -371,15 +337,12 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         <Instance
                             name={props.text}
                             ref={instance}
-
                             onClick={(e) => (
                                 e.stopPropagation(),
-
                                 router.push(
-                                    router.pathname === "/" ?
-                                        router.pathname :
-                                        router.pathname + `?view=true&neuron=${props.text}`
-                                    ,
+                                    router.pathname === "/"
+                                        ? router.pathname
+                                        : router.pathname + `?view=true&neuron=${props.text}`,
                                     undefined,
                                     {
                                         shallow: true,
@@ -392,9 +355,11 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 // setOrbitTarget({ x: 0, y: 1, z: 0 }),
 
                                 searchParams.get("view") !== null &&
-                                router.replace(router.pathname === "/" ?
-                                    "/" :
-                                    router.pathname, undefined, { shallow: true })
+                                router.replace(
+                                    router.pathname === "/" ? "/" : router.pathname,
+                                    undefined,
+                                    { shallow: true }
+                                )
                             }
                             onPointerOver={(e) => (
                                 e.stopPropagation(),

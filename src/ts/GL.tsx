@@ -33,6 +33,8 @@ import { useSearchParams } from "next/navigation";
 import { NewHead4 } from "@/NewHead4";
 import Game from "./ModuleSpiel";
 import { Mountain } from "@/Mount2";
+import { NeuronNet } from "./NeuronNet";
+import Neuron from "./Neuron";
 
 declare global {
     namespace JSX {
@@ -216,7 +218,7 @@ const GL = (props: glProps) => {
 
 
     return (<>
-        {!shaderCompiled && <Loader />}
+        {/* {!shaderCompiled && <Loader />} */}
         <div className="canvas__wrapper">
 
             <Canvas
@@ -283,7 +285,7 @@ const GL = (props: glProps) => {
                 <NewHead4 scroll={props.scroll} />
 
 
-
+                {/* <Neuron /> */}
                 <Environment background={false} preset="apartment" blur={0} />
 
 

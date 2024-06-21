@@ -51,7 +51,7 @@ const FaqSection: FunctionComponent<FaqSectionProps> = () => {
             <motion.div className="faq__container">
 
                 <FAQuestion borderBottom title="Was bedeutet „neuroloyal“?" description="Neuroloyal bedeutet wörtlich &quot;gehirngerecht&quot;. Doch für uns umfasst loyal noch viel
-mehr: kooperativ, respektvoll und achtsam. Es bedeutet, die Rolle des Gehirns als
+mehr - kooperativ, respektvoll und achtsam. Es bedeutet, die Rolle des Gehirns als
 Alltagsarchitekt zu respektieren und - basierend auf der einzigartigen Neurophysis -
 zielgenau mit dem Gehirn zu kollaborieren. So fällt es leichter zu starten und
 durchzuhalten."/>
@@ -84,7 +84,7 @@ Alternativwege und gehen diese gemeinsam. Wir erklären und begleiten den
 gesamten Prozess und trainieren die neuroloyalen Module, Strukturen und
 Instrumente von MY InnoTrinsic. Darauf legen wir den größten Wert: Dass
 irgendwann unsere Unterstützung nicht mehr benötigt wird. Deshalb ist jedes
-Scouting gleichzeitig ein MY InnoTrinsic Training. Jeder Scoutie lernt, die
+Scouting gleichzeitig ein MY InnoTrinsic - Training. Jeder Scoutie lernt, die
 neuroloyalen Strukturen und Werkzeuge eigenständig und autark zu nutzen."/>
                 <FAQuestion borderBottom title="Was heißt „Selbstbestimmt“?" description="In jeder Lebensphase und -situation soll jeder Mensch die Möglichkeit haben, sein
 Leben nach eigenen Vorstellungen und Werten zu gestalten. Wir legen großen Wert

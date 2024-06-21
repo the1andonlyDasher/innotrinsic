@@ -105,7 +105,6 @@ export function NewHead4(props: HeadHandsProps) {
 
 
   // states
-
   const [brainDisposed, setBDisposed] = useState(false);
   const [headDisposed, setHDisposed] = useState(false);
   const [hand1Disposed, setH1Disposed] = useState(false);
@@ -141,7 +140,6 @@ export function NewHead4(props: HeadHandsProps) {
       animate={controls}
       exit="exit"
       variants={material2Variants}
-
       transparent
       toneMapped
     />
@@ -183,47 +181,30 @@ export function NewHead4(props: HeadHandsProps) {
     />
   );
 
-
-
   useEffect(() => {
     if (router.pathname === "/") {
-      if ((props.scroll.current > 0.1)) {
-        brain_material_controls.start(
-          "hidden");
-        controls.start("exit").then(() => {
+      if ((props.scroll.current > 0.015)) {
+        brain_material_controls.start("hidden").then(() => {
           setIsInPage(false), setDisposed(true)
         });
       } else {
-        setDisposed(false)
-        setIsInPage(true)
+        setDisposed(false);
+        setIsInPage(true);
       }
     } else {
-      brain_material_controls.start(
-        "hidden");
-      controls.start("exit").then(() => {
+      brain_material_controls.start("hidden").then(() => {
         setIsInPage(false), setDisposed(true)
       });
     }
   }, [router.pathname, props.scroll.current]);
 
   useEffect(() => {
-    if (isInPage) {
-      if ((props.scroll.current > 0.1)) {
-        brain_material_controls.start(
-          "hidden");
-        controls.start("exit");
-      } else {
-        brain_material_controls.start("enter")
-        controls.start("enter")
-      }
-    } else {
-      brain_material_controls.start(
-        "hidden");
-      controls.start("exit");
+    if (isInPage === true) {
+      brain_material_controls.start("enter")
     }
   }, [isInPage]);
   return (
-    <group {...props} visible={!disposed} {...props} position={pos} dispose={null} scale={s(6, viewport.width / 2, 9)} rotation={[0, -Math.PI / 1.15, 0]}>
+    <group {...props}  {...props} position={pos} dispose={null} scale={s(6, viewport.width / 2, 9)} rotation={[0, -Math.PI / 1.15, 0]}>
       <group rotation={[0, -0.3, 0]} scale={1}>
         <primitive object={nodes.Bone} />
         <Model scroll={props.scroll} />

@@ -109,7 +109,7 @@ export function Model(props: HandProps) {
 
   useFrame(() => {
     if (shaderRef.current) {
-      const targetOpacity = props.scroll.current > 0.025 ? 0 : 1;
+      const targetOpacity = props.scroll.current > 0.015 ? 0 : 1;
       uniforms.opacity.value = lerp(uniforms.opacity.value, targetOpacity, 0.1);
       shaderRef.current.needsUpdate = true; // Ensure the shader material knows it needs updating
       shaderRef.current.uniformsNeedUpdate = true; // Ensure the shader material knows it needs updating
