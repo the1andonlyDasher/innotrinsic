@@ -44,21 +44,21 @@ export default function WordCloud() {
                 Math.sin(r(6, index)) * radius / 2,
                 0,
                 Math.cos(r(6, index)) * radius / 2
-            ]} children={"Hello"} />)}</motion3d.group>
+            ]}  >{"Hello"}</Word>)}</motion3d.group>
         <motion3d.group position={[0, 0, 0]}>{Array.from({ length: 15 }).map((_, index: number) =>
 
             <Word key={index} position={[
                 Math.sin(r(15, index)) * radius,
                 0,
                 Math.cos(r(15, index)) * radius
-            ]} children={"Hello"} />)}</motion3d.group>
+            ]}  >{"Hello"}</Word>)}</motion3d.group>
         <motion3d.group position={[0, 2, 0]}>{Array.from({ length: 6 }).map((_, index: number) =>
 
             <Word key={index} position={[
                 Math.sin(r(6, index)) * radius / 2,
                 0,
                 Math.cos(r(6, index)) * radius / 2
-            ]} children={"Hello"} />)}</motion3d.group>
+            ]}  >{"Hello"}</Word>)}</motion3d.group>
     </>)
 }
 

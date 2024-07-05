@@ -67,6 +67,7 @@ const Cluster: FC<ClusterProps> = ({ name }) => {
     return (<Instances >
         {arr.map((_, index: number) =>
             <ClusterPart
+                key={index}
                 visible={!disposed}
                 index={index}
                 count={count}
