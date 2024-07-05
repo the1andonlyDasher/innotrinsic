@@ -8,6 +8,7 @@ import { lerp } from 'three/src/math/MathUtils.js';
 import { useAtom } from 'jotai';
 import { glReady } from './ts/atoms';
 import { Vector3 } from './ts/threeExport/math/Vector3';
+import { useRouter } from 'next/router';
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -92,6 +93,7 @@ export function Model(props: HandProps) {
   const { nodes, materials } = useGLTF('/ghostHand.glb') as GLTFResult;
   const shaderRef = useRef<ShaderMaterial>(null);
   const [shaderCompiled, setShaderCompiled] = useAtom(glReady);
+  const router = useRouter();
   const [opacity, setOpacity] = useState(1); // State to manage opacity
 
   const handleShaderCompiled = () => {
@@ -109,7 +111,7 @@ export function Model(props: HandProps) {
 
   useFrame(() => {
     if (shaderRef.current) {
-      const targetOpacity = props.scroll.current > 0.015 ? 0 : 1;
+      const targetOpacity = props.scroll.current > 0.015 || router.pathname !== "/" ? 0 : 1;
       uniforms.opacity.value = lerp(uniforms.opacity.value, targetOpacity, 0.1);
       shaderRef.current.needsUpdate = true; // Ensure the shader material knows it needs updating
       shaderRef.current.uniformsNeedUpdate = true; // Ensure the shader material knows it needs updating

@@ -236,6 +236,7 @@ a {
 .btn__outline,
 .btn__alt {
   @extend %trans, %flex-center;
+  gap: 0.5rem;
   font-family: $ff-header;
   text-transform: uppercase;
   border-radius: 999px;
@@ -514,12 +515,10 @@ a {
 .content-grid {
   section {
     @extend %section-styles;
-    min-height: calc(100vh - 100px);
-    padding: 1rem 0;
+    min-height: calc(100vh - 200px);
 
     &.section__wrapper {
-      min-height: calc(100vh - 100px); // Apply min-height to .section__wrapper
-      padding: 1rem 0; // Apply padding to .section__wrapper
+      min-height: calc(100vh - 200px); // Apply min-height to .section__wrapper
     }
   }
 }
@@ -529,7 +528,7 @@ a {
   flex-direction: column;
   align-items: flex-start;
   gap: 2rem;
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 200px);
   padding: 1rem 0;
 }
 

@@ -25,13 +25,14 @@ export const IdeaData = [
         // colors: ["#3564A1", "#33e3d4"],
         colors: ["#fcfdd9", "#327217"],
         text: "Sport",
-        model: <Private scale={0.05} />
+        model: <Sport scale={0.05} />
+
     },
     {
         // colors: ["#42c46d", "#3561A1"],
         colors: ["#fcfdd9", "#b5f299"],
-        text: `Public \nPersons`,
-        model: <Business scale={0.05} rotation={[0, Math.PI / 4, 0]} />
+        text: `Public Persons`,
+        model: <Public scale={0.05} />
     },
     {
         // colors: ["#5bff4f", "#bf95fa"],
@@ -43,13 +44,13 @@ export const IdeaData = [
         // colors: ["#B0E431", "#EDDFAB"],
         colors: ["#fcfdd9", "#b5f299"],
         text: "Privat",
-        model: <Sport scale={0.05} />
+        model: <Private scale={0.05} />
     },
     {
         // colors: ["#297dad", "#e054c0"],
         colors: ["#fcfdd9", "#b5f299"],
         text: "Business",
-        model: <Public scale={0.05} />
+        model: <Business scale={0.05} rotation={[0, Math.PI / 4, 0]} />
     },
 ];
 
@@ -85,7 +86,7 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
                     .getObjectByName(`${searchParams.get("neuron")}`)
                     .localToWorld(p.set(0, 0.2, 0))
             )
-            : setOrbitTarget({ x: 0, y: 1, z: 0 });
+            : setOrbitTarget({ x: 0, y: 0, z: 0 });
     }
 
 
@@ -99,31 +100,49 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
         }
     });
 
+    useEffect(() => {
+        if (group.current) {
+            searchParams.get("neuron")
+                ? setOrbitTarget(
+                    group.current
+                        .getObjectByName(`${searchParams.get("neuron")}`)
+                        .localToWorld(p.set(0, -0.2, 0))
+                )
+                : setOrbitTarget({ x: 0, y: 0, z: 0 });
+            sphereMaterialControls.start(searchParams.get("view") !== null || false ? "hide" : "visible");
+            searchParams.get("view") === null || false && sphereMaterialControls.start(searchParams.get("test") ? "hide" : "visible");
+        }
+    }, []);
+
 
     useEffect(() => {
-        searchParams.get("neuron")
-            ? setOrbitTarget(
-                group.current
-                    .getObjectByName(`${searchParams.get("neuron")}`)
-                    .localToWorld(p.set(0, 0.2, 0))
-            )
-            : setOrbitTarget({ x: 0, y: 1, z: 0 });
-        sphereMaterialControls.start(searchParams.get("view") !== null || false ? "hide" : "visible");
-        searchParams.get("view") === null || false && sphereMaterialControls.start(searchParams.get("test") ? "hide" : "visible");
+        if (group.current) {
+            searchParams.get("neuron")
+                ? setOrbitTarget(
+                    group.current
+                        .getObjectByName(`${searchParams.get("neuron")}`)
+                        .localToWorld(p.set(0, 0.2, 0))
+                )
+                : setOrbitTarget({ x: 0, y: -1, z: 0 });
+            sphereMaterialControls.start(searchParams.get("view") !== null || false ? "hide" : "visible");
+            searchParams.get("view") === null || false && sphereMaterialControls.start(searchParams.get("test") ? "hide" : "visible");
+        }
     }, [searchParams]);
 
     return (
         <group ref={group} position={props.centerPoint}>
-            <Instances renderOrder={3}>
-                <sphereGeometry args={[0.3, 30, 30]} />
+            <Instances >
+                <sphereGeometry args={[0.35, 30, 30]} />
                 <motion3d.meshStandardMaterial
+                    visible={false}
                     transparent
-
-                    animate={sphereMaterialControls}
-                    variants={{
-                        hide: { opacity: 0.2, color: "#ebfbca", transition: { delay: 0.5 } },
-                        visible: { opacity: 1, color: "#ebfbca" },
-                    }}
+                // initial="initial"
+                // animate={sphereMaterialControls}
+                // variants={{
+                //     intitial: { opacity: 0.1, color: "#ebfbca" },
+                //     hide: { opacity: 0.1, color: "#ebfbca" },
+                //     visible: { opacity: 1, color: "#ebfbca", transition: { delay: 0.5 } },
+                // }}
                 />
                 {numIdeas.map((data: any, i: number) =>
                     <group key={i}>
@@ -139,7 +158,7 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
                             rotation={[0, coneRotation, 0]}
                             duration={3 + Math.random() * 2 + i * Math.random()}
                         >
-                            {data.model}
+                            {/* {data.model} */}
                         </Idea>
                     </group>
 

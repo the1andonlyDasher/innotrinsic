@@ -87,6 +87,7 @@
   height: auto;
   transform-origin: right;
   font-family: "Poppins";
+
   .faq__content {
     display: flex;
     flex-direction: column;
@@ -123,6 +124,20 @@
     @include mq(large) {
       font-size: 1.5rem;
       line-height: 2rem;
+    }
+  }
+
+  .faq__title-slim {
+    margin: 0;
+    width: auto;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 600;
+    color: #32689c;
+
+    @include mq(large) {
+      font-size: 1.25rem;
+      line-height: 1.5rem;
     }
   }
 

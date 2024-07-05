@@ -1,18 +1,14 @@
-import { ReactNode, forwardRef, useState } from "react";
-import Section from "./Section";
-import { AnimationProps, Variant, Variants, motion } from "framer-motion";
+import { ReactNode, useState } from "react";
+import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown, faChevronDown, faPlus } from "@fortawesome/free-solid-svg-icons";
-
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 type serviceType = {
     title: string;
     description?: string;
     borderBottom: boolean;
     children?: ReactNode;
-    titleClass?: string;
 }
-
 
 const arrow_variants = {
     closed: { rotate: "0deg" },
@@ -40,17 +36,17 @@ const blurVariants = {
     },
 };
 
-const FAQuestion = (props: serviceType) => {
+const FAQuestionSlim = (props: serviceType) => {
     const [clicked, setClicked] = useState(false)
     return (<>
-        <motion.div initial="initial" whileInView="animate" exit="exit" variants={blurVariants} className="w-full h-auto">
+        <motion.div initial="initial" whileInView="animate" exit="exit" variants={blurVariants} className="w-full h-auto" >
             <motion.div
                 variants={{
                     show: { display: 'grid', opacity: 1, transition: { delay: 0.5, } },
                     hide: { transitionEnd: { display: "none" }, opacity: 0, transition: { display: { delay: 0.125 }, opacity: { duration: 0.125 }, when: "beforeChildren" } },
                 }}
 
-                className={`faq border border-transparent ${props.borderBottom && "border-b-[#32689C]"} `}>
+                className={`faq  border border-transparent ${props.borderBottom && "border-b-[#32689C]"} `}>
 
                 <motion.div className="faq__content">
                     <motion.div
@@ -64,7 +60,7 @@ const FAQuestion = (props: serviceType) => {
                             <FontAwesomeIcon icon={faPlus} />
 
                         </motion.div>
-                        <div className={`faq__title ${props.titleClass}`}>
+                        <div className={`faq__title-slim`}>
                             {props.title}
                         </div>
 
@@ -75,10 +71,10 @@ const FAQuestion = (props: serviceType) => {
 
                     {props.children && <div className="faq__answer">{props.children}</div>}
                 </motion.div>
-            </motion.div>
-        </motion.div>
+            </motion.div >
+        </motion.div >
     </>)
 }
 
 
-export default FAQuestion;
+export default FAQuestionSlim;

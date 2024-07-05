@@ -30,6 +30,10 @@
   -webkit-transition: 0.5s ease-in-out;
 }
 
+%col {
+  flex-direction: column;
+}
+
 %no-space {
   padding: 0;
   margin: 0;
@@ -51,9 +55,16 @@
 }
 
 .module__controls {
-  position: absolute;
+  position: relative;
+
   width: 100%;
   height: 4rem;
+}
+
+.module__viewer {
+  @extend %flex-full, %col;
+  align-items: center;
+  justify-content: center;
 }
 
 .module_carousel-wrapper {
@@ -65,10 +76,13 @@
     color: white;
     line-height: 1;
   }
-  .landing_wrapper {
-    .right-wrapper {
+  .landing__wrapper {
+    .left__wrapper {
+      width: 40%;
+    }
+    .right__wrapper {
       height: 100%;
-      width: 100%;
+      width: 60%;
     }
   }
 }

@@ -2,6 +2,9 @@ import {
     CameraControls,
     Environment,
     GradientTexture,
+    Instance,
+    Instances,
+    Stats,
 
 } from "@react-three/drei";
 import {
@@ -34,7 +37,12 @@ import { NewHead4 } from "@/NewHead4";
 import Game from "./ModuleSpiel";
 import { Mountain } from "@/Mount2";
 import { NeuronNet } from "./NeuronNet";
-import Neuron from "./Neuron";
+import { Neuron } from "./Neuron2";
+import WordCloud from "./brainBasicsGL/WordCloud";
+import Plane from "./landingGL/BGGLImage";
+import MMesh from "./landingGL/Bubble";
+import MorphingMesh from "./landingGL/Bubble";
+
 
 declare global {
     namespace JSX {
@@ -160,9 +168,41 @@ const GL = (props: glProps) => {
 
 
 
+
     useEffect(() => {
-        console.log(props.eventSource.current)
-    }, []);
+        cameraControls.current?.setTarget(gTarget.x, gTarget.y - 1, gTarget.z, true);
+
+        // controls.start({ x: target.x, y: target.y, z: target.z })
+
+    }, [gTarget]);
+
+    let coneRotation: any;
+    coneRotation = coneRotation === undefined ? Math.PI * 3 : coneRotation;
+    var i = 0;
+
+    function resolveConnect(pathname: string, searchParams: any) {
+        return new Promise(() => {
+            if (pathname === "/einsatzgebiete" && !searchParams.get("focusGroup")) {
+                setLoaded(true)
+                cameraControls.current?.connect(props.eventSource.current)
+            } else {
+                cameraControls.current?.disconnect()
+            }
+        })
+    }
+
+    async function resetCamera(pathname: string, searchParams: any) {
+        cameraControls.current?.rotateTo(0, Math.PI / 2, true),
+            cameraControls.current?.zoomTo(1, true)
+        await resolveConnect(pathname, searchParams)
+    }
+
+    async function moveCamera(pathname: string, searchParams: any) {
+
+        await resolveConnect(pathname, searchParams)
+    }
+
+
 
     useEffect(() => {
         cameraControls.current?.zoomTo(
@@ -172,36 +212,11 @@ const GL = (props: glProps) => {
     }, [searchParams]);
 
     useEffect(() => {
-        cameraControls.current?.setTarget(gTarget.x, gTarget.y, gTarget.z, true);
-        // controls.start({ x: target.x, y: target.y, z: target.z })
-
-    }, [gTarget]);
-
-    let coneRotation: any;
-    coneRotation = coneRotation === undefined ? Math.PI * 3 : coneRotation;
-    var i = 0;
-
-    function resolveConnect(pathname: any) {
-        return new Promise((resolve) => {
-            if (pathname === "/einsatzgebiete") {
-                setLoaded(true)
-                cameraControls.current?.connect(props.eventSource.current)
-            } else {
-                cameraControls.current?.disconnect()
-            }
-
-
-        })
-    }
-
-    async function resetCamera(pathname: string) {
-        cameraControls.current?.rotateTo(0, Math.PI / 2, true),
-            cameraControls.current?.zoomTo(1, true)
-        await resolveConnect(pathname)
-    }
+        moveCamera(router.pathname, searchParams)
+    }, [searchParams]);
 
     useEffect(() => {
-        resetCamera(router.pathname);
+        resetCamera(router.pathname, searchParams);
     }, [router.pathname]);
 
     const [shaderCompiled, setShaderCompiled] = useAtom(glReady);
@@ -215,10 +230,11 @@ const GL = (props: glProps) => {
         );
     };
 
+    const words = ['Private', 'Business', 'Society', 'Public Persons', 'Sport', 'Neuroscience', 'Innovation'];
 
 
     return (<>
-        {/* {!shaderCompiled && <Loader />} */}
+        {!shaderCompiled && <Loader />}
         <div className="canvas__wrapper">
 
             <Canvas
@@ -227,25 +243,10 @@ const GL = (props: glProps) => {
                 gl={{ antialias: true }}
                 eventSource={props.eventSource}
                 eventPrefix="client"
-            >
-                {/* <motion3d.mesh initial={{ x: target.x, y: target.y, z: target.z }} ref={primitiveRef} animate={controls}>
-                    <boxGeometry args={[3, 3, 3]} />
-                    <meshStandardMaterial color="beige" />
-                </motion3d.mesh> */}
-                {/* <Stats /> */}
-                {/* <OrbitControls
-                    // makeDefault={}
-                    ref={cameraControls}
-                    maxDistance={25}
-                    enableZoom={false}
-                    position={[10, 10, 1]}
-                    minDistance={10}
 
-                    minPolarAngle={0}
-                    maxPolarAngle={Math.PI / 2}
-                    minAzimuthAngle={-Math.PI / 2}
-                    maxAzimuthAngle={Math.PI / 2}
-                /> */}
+            >
+                {/* <WordCloud /> */}
+
                 {loaded &&
                     <CameraControls
                         infinityDolly={false}
@@ -256,27 +257,17 @@ const GL = (props: glProps) => {
                         maxDistance={25}
                         enabled={loaded}
                         distance={25}
-                        minDistance={10}
+                        minDistance={25}
                         minPolarAngle={0}
                         maxPolarAngle={Math.PI / 2}
                         minAzimuthAngle={-Math.PI / 2}
                         maxAzimuthAngle={Math.PI / 2}
                     />}
-
-
-                {/* <Neuron
-                    scroll={props.scroll} /> */}
-
+                <Stats showPanel={0} />
                 <Game />
-
                 <GradientTexture
                     stops={[0, 0.5, 1]}
                     width={100}
-                    // colors={["#f6fff0", "#e5fcfc"]}
-                    // colors={["#e5fcfc", "#E5F9A9"]}
-                    // colors={["#e5fcfc", "#F8F3E0"]}
-                    // colors={["#C8E99B", "#B0E431"]}
-                    // colors={["#e5fcfc", "#96c972"]}
                     colors={[currentColor1, currentColor2, currentColor3]}
                     rotation={Math.PI / -2.5}
                     attach="background"
@@ -284,31 +275,22 @@ const GL = (props: glProps) => {
                 />
                 <NewHead4 scroll={props.scroll} />
 
+                {/* <Plane active={true} image={"/images/Brainbasics.jpg"} /> */}
 
-                {/* <Neuron /> */}
                 <Environment background={false} preset="apartment" blur={0} />
 
 
 
                 {/* <Model_Hands scroll={props.scroll} /> */}
-
-                {/* <mesh>
-                    <boxGeometry args={[3, 3, 3]} />
-                    <meshStandardMaterial color="beige" />
-                </mesh> */}
                 <Mountain scroll={props.scroll} />
-                {/* <Suspense>
-                    <Float floatIntensity={0.1} rotationIntensity={0.5}>
-                        <Human scroll={props.scroll} />
-                       
 
-                    </Float>
-                </Suspense> */}
-                {/* <BGText /> */}
+                {/* <MorphingMesh position={[10, 0, -10]} textureUrl={"/images/Brainbasics.jpg"} count={1} />
+                <MorphingMesh position={[10, 0, 10]} textureUrl={"/images/Brainbasics.jpg"} count={1} />
+                <MorphingMesh position={[-10, 0, -10]} textureUrl={"/images/Brainbasics.jpg"} count={1} />
+                <MorphingMesh position={[-10, 0, 10]} textureUrl={"/images/Brainbasics.jpg"} count={1} /> */}
 
-                {/* <ContactGL /> */}
                 <ambientLight intensity={0.2} />
-                {/* <Mountain scroll={props.scroll} /> */}
+
             </Canvas>
         </div>
     </>

@@ -36,9 +36,10 @@ const blurVariants = {
 
 const LandingSection: FunctionComponent<LandingSectionProps> = () => {
     const searchParams = useSearchParams();
-    const [pvAtom, setPVAtom] = useAtom(productViewer);
+    const [, setPVAtom] = useAtom(productViewer);
     const lpViewer = useRef<any>(!null);
-    const inView = useInView(lpViewer, { margin: "0px", amount: 0.1 });
+
+
     const setCoords = () => {
         const { width, height, left, top } =
             lpViewer?.current.getBoundingClientRect();

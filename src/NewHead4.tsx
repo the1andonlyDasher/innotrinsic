@@ -44,6 +44,7 @@ type GLTFResult = GLTF & {
 type HeadHandsProps = {
   scroll: MutableRefObject<number>;
   props?: JSX.IntrinsicElements["group"];
+
 };
 
 
@@ -123,7 +124,7 @@ export function NewHead4(props: HeadHandsProps) {
       ((pvAtom?.width / window.innerWidth) * viewport.width) / 2 -
       viewport.width / 2 +
       (pvAtom?.left / window.innerWidth) * viewport.width,
-      -s(6, viewport.width / 1.5, 11) -
+      -s(7.5, viewport.width / 1.3, 14) -
       ((pvAtom?.height / window.innerHeight) * viewport.height) / 2 +
       viewport.height / 2 -
       (pvAtom?.top / window.innerHeight) * viewport.height,
@@ -191,7 +192,11 @@ export function NewHead4(props: HeadHandsProps) {
         setDisposed(false);
         setIsInPage(true);
       }
-    } else {
+    } else if (router.pathname.includes("/einsatzgebiete")) {
+      setDisposed(false);
+      setIsInPage(true);
+    }
+    else {
       brain_material_controls.start("hidden").then(() => {
         setIsInPage(false), setDisposed(true)
       });
@@ -199,19 +204,19 @@ export function NewHead4(props: HeadHandsProps) {
   }, [router.pathname, props.scroll.current]);
 
   useEffect(() => {
-    if (isInPage === true) {
+    if (isInPage) {
       brain_material_controls.start("enter")
     }
   }, [isInPage]);
   return (
-    <group {...props}  {...props} position={pos} dispose={null} scale={s(6, viewport.width / 2, 9)} rotation={[0, -Math.PI / 1.15, 0]}>
+    <group {...props}  {...props} position={pos} dispose={null} scale={s(5, scl[0] / 1.5, 10)} rotation={[0, -Math.PI / 1.15, 0]}>
       <group rotation={[0, -0.3, 0]} scale={1}>
         <primitive object={nodes.Bone} />
         <Model scroll={props.scroll} />
         {/* <skinnedMesh geometry={nodes.Shape_IndexedFaceSet001.geometry} material={nodes.Shape_IndexedFaceSet001.material} skeleton={nodes.Shape_IndexedFaceSet001.skeleton} >{MyShaderMaterial}</skinnedMesh> */}
       </group>
       <Float floatIntensity={0.1} rotationIntensity={0.1}>
-        <group scale={1} rotation={[0, -Math.PI / 0.85, 0]} position={[0.125, -0.6, 0]}>
+        <group scale={1} rotation={[0, -Math.PI / 0.85, 0]} position={[0.075, -0.6, 0.1]}>
           <pointLight intensity={15} color={"#ffde5b"} position={[0.2, 1.5, 0]} />
           <mesh geometry={nodes.base.geometry} material={nodes.base.material} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>
           <mesh geometry={nodes.right_hemisphere.geometry} material={nodes.right_hemisphere.material} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>

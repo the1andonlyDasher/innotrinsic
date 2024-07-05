@@ -79,13 +79,17 @@ const IconsSection: FunctionComponent<IconsSectionProps> = () => {
             <motion.div variants={variants} className="icons__text-section">
                 <motion.p className="w-full mb-16 text-center" variants={variants}>
                     Unser Gehirn ist der Architekt unseres Alltags. Wenn wir aktiv mit
-                    unserem Gehirn zusammenarbeiten, seine Vorgehensweise verstehen und es
-                    zu unserem besten Freund machen, schaffen wir Mehrwert durch
-                    BrainCare. MY InnoTrinsic öffnet einen Raum für den neuroloyalen
-                    Perspektivwechsel auf das Gehirn und sein immenses Potenzial. Unsere
-                    Strukturen, Instrumente und Prozesse sind umsetzungsorientiert, leicht
-                    erlernbar und alltagspraktikabel - für Menschen, Unternehmen und
-                    Organisationen.
+                    unserem Gehirn zusammenarbeiten, seine Funktionsweise verstehen und es
+                    auf neuroloyal angepassten Wegen zu unserem besten Freund machen,
+                    schaffen wir Mehrwert - für uns und unser Umfeld. MY InnoTrinsic hört
+                    den Neurowissenschaften aufmerksam zu, übersetzt und analysiert,
+                    welche Erkenntnisse relevant für unseren Alltag sind. Auf dieser Basis
+                    entwickeln wir Wege und Instrumente, die Agieren mit BrainCare
+                    ermöglichen. Unsere Strukturen, Instrumente und Prozesse sind
+                    umsetzungsorientiert, leicht erlernbar und alltagspraktikabel - für
+                    Menschen, Unternehmen und Organisationen. MY InnoTrinsic öffnet so
+                    einen Raum für den neuroloyalen Perspektivwechsel auf das Gehirn und
+                    sein immenses Potenzial.
                 </motion.p>
                 <motion.h4 variants={variants} className="section-description">
                     Neuroloyaler Perspektiven-Wechsel

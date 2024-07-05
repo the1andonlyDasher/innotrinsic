@@ -1,82 +1,76 @@
-import { shaderMaterial, useTexture } from "@react-three/drei";
-import { extend, useFrame } from "@react-three/fiber";
-import { FC, useMemo, useRef } from "react";
-import { Color, Texture } from "three";
+import { Mask, PivotControls, shaderMaterial, useGLTF, useMask, useTexture } from "@react-three/drei";
+import { extend, Canvas, useFrame } from "@react-three/fiber";
+import React, { FC, useRef, Suspense } from "react";
+import { Color, DoubleSide } from "three";
+import * as geometry from 'maath/geometry';
 
-
-
-interface NeuronProps {
-
+const CircularMask = (props: any) => {
+    const { nodes }: any = useGLTF("/neuron.glb");
+    return (
+        <group {...props}>
+            <PivotControls offset={[0, 0, 1]} activeAxes={[true, true, false]} disableRotations depthTest={false}>
+                <Mask scale={2} geometry={nodes.Icosphere.geometry} id={1} position={[0, 0, 0.95]}>
+                </Mask>
+            </PivotControls>
+        </group>)
 }
 
 
+export const Neuron: FC = () => {
+    const texture = useTexture("/images/benefits_cover.png");
+    const neuron_uniforms = {
+        texture1: { value: texture }
+    }
 
+    const plane_uniforms = {
+        texture1: { value: texture }
+    }
+    const plane_vertex = `
+  varying vec2 vUv;
 
-const vertex = `
-varying vec2 vUv;
-varying vec4 vWorldPosition;
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+  `
+    const plane_fragment = `
+  uniform sampler2D texture1;
+  varying vec2 vUv;
 
-void main() {
-  vUv = uv;
-  vWorldPosition = modelViewMatrix * vec4(position, 1.0);
-  gl_Position = projectionMatrix * vWorldPosition;
-}
-`;
+  void main() {
+    vec4 texColor = texture2D(texture1, vUv);
+    gl_FragColor = texColor;
+  }
+`
 
-const fragment = `
-uniform sampler2D texture1;
-uniform vec3 outlineColor;
-uniform float outlineThreshold;
-
-varying vec2 vUv;
-varying vec4 vWorldPosition;
-
-void main() {
-  // Calculate the edge factor for the outline
-  float edgeFactor = length(fwidth(vWorldPosition.xyz));
-  float outline = smoothstep(0.0, outlineThreshold, edgeFactor);
-
-  // Sample the texture using UV coordinates
-  vec4 texColor = texture2D(texture1, vUv);
-
-  // Mix the outline color and texture color
-  vec4 outlineMask = mix(vec4(outlineColor, 1.0), texColor, outline);
-
-  // Discard fragments outside the model
-  if (texColor.a < 0.1) discard;
-
-  gl_FragColor = outlineMask;
-}
-
-    `;
-
-
-const Neuron: FC<NeuronProps> = () => {
-    const texture = useTexture("/images/landing_braincare.png")
-    const uniforms = useMemo(() => ({
-        texture1: { value: texture },
-        outlineColor: { value: new Color(0.0, 0.0, 0.0) },
-        outlineThreshold: { value: 0.1 },
-    }), [])
-
-
-    useFrame(() => {
-        uniforms.texture1.value = texture;
-    });
-
-    const neuronMaterial = <shaderMaterial
-        uniforms={uniforms}
-        fragmentShader={fragment}
-        vertexShader={vertex}
-        needsUpdate
-        transparent
+    const PlaneShaderMaterial = <shaderMaterial
+        uniforms={plane_uniforms}
+        fragmentShader={plane_fragment}
+        vertexShader={plane_vertex}
     />
 
-    return (<mesh position={[-10, -2, 0]}>
-        <sphereGeometry args={[6, 30, 30]} />
-        {/* <meshBasicMaterial color={"lime"} /> */}
-        {neuronMaterial}
-    </mesh>);
-}
+    useFrame(() => {
+        neuron_uniforms.texture1.value = texture;
+        plane_uniforms.texture1.value = texture;
+    });
 
-export default Neuron;
+    const Plane = () => {
+        const stencil = useMask(1, false)
+        return (
+            <mesh position={[-10, -2, 0]}>
+                <planeGeometry args={[20, 20]} />
+                <meshPhongMaterial color="#33BBFF" {...stencil} />
+            </mesh>
+
+        )
+    }
+
+    return (
+        <>
+            {/* Plane with texture */}
+            <Plane />
+            <CircularMask position={[-10, -2, 1]} />
+        </>
+    );
+};
+

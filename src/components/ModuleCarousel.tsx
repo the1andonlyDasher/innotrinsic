@@ -113,19 +113,12 @@ export const ModuleCarousel = ({ images }: carouselProps) => {
         <>
             <div className="module_carousel-wrapper">
                 <motion.h3 className="modules__header">Modulprogramm für unsere Business-Kunden</motion.h3>
-                <motion.div className="module__controls">
-                    <div className="next " onClick={() => paginate(1)}>
-                        {"‣"}
-                    </div>
-                    <div className="prev" onClick={() => paginate(-1)}>
-                        {"‣"}
-                    </div>
-                </motion.div>
+
                 <motion.div
                     className="landing__wrapper"
                     viewport={{ amount: 0.25, once: false, margin: "0px" }}
                     initial="initial"
-                    // animate={searchParams.get("view") || searchParams.get("test") ? "exit" : "enter"}
+                    animate={searchParams.get("view") || searchParams.get("test") ? "exit" : "enter"}
                     whileInView={
                         searchParams.get("view") || searchParams.get("test")
                             ? "exit"
@@ -146,70 +139,18 @@ export const ModuleCarousel = ({ images }: carouselProps) => {
                         },
                     }}
                 >
-
-
-                    <motion.div
+                    <motion.div className="module__viewer viewer"
                         ref={lpViewer}
-                        className="right__wrapper viewer"
-                    ></motion.div>
-                    <motion.div className="left__wrapper relative">
 
-                        <motion.div className="relative w-full h-auto my-auto">
-                            {images && <AnimatePresence initial={false} custom={direction}>
-                                <motion.div
-                                    className="module__slide"
-                                    key={page}
-                                    custom={direction}
-                                    variants={variants}
-                                    initial="enter"
-                                    animate="center"
-                                    exit="exit"
-                                    transition={{
-                                        x: { type: "spring", stiffness: 300, damping: 30 },
-                                        opacity: { duration: 0.2 }
-                                    }}
-                                    drag="x"
-                                    dragConstraints={{ left: 0, right: 0 }}
-                                    dragElastic={1}
-                                    onDragEnd={(e, { offset, velocity }) => {
-                                        const swipe = swipePower(offset.x, velocity.x);
+                    >                <motion.div className="module__controls">
+                            <div className="next " onClick={() => paginate(1)}>
+                                {"‣"}
+                            </div>
+                            <div className="prev" onClick={() => paginate(-1)}>
+                                {"‣"}
+                            </div>
+                        </motion.div></motion.div>
 
-                                        if (swipe < -swipeConfidenceThreshold) {
-                                            paginate(1);
-                                        } else if (swipe > swipeConfidenceThreshold) {
-                                            paginate(-1);
-                                        }
-                                    }}
-                                >
-                                    <MotionConfig transition={{ type: "tween", ease: "easeInOut", duration: 0.5 }}>
-
-                                        <motion.div
-                                            key={images[imageIndex].title}
-                                            initial="initial"
-                                            animate="center"
-                                            exit="exit"
-                                            variants={variants2}
-                                            className="module__header"
-                                        >
-                                            {images[imageIndex].title}
-                                        </motion.div>
-                                        <motion.p
-                                            key={images[imageIndex].text}
-                                            initial="initial"
-                                            animate="center"
-                                            exit="exit"
-                                            className="module__text"
-                                            variants={variants2}
-                                        >
-                                            {images[imageIndex].text}
-                                        </motion.p>
-
-                                    </MotionConfig>
-                                </motion.div>
-
-                            </AnimatePresence>}
-                        </motion.div>
-                    </motion.div>
 
                 </motion.div>
                 <Suspense>
