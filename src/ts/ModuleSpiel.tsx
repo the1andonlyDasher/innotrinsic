@@ -76,7 +76,7 @@ const Mat: FC<CustomMeshProps> = ({ color, active, ...props }) => {
 };
 
 const Base: React.FC = () => {
-    const { nodes }: any = useGLTF("/module_base.glb");
+    const { nodes }: any = useGLTF("/HTG.glb");
     const texture = useTexture("/images/Rastergrafik.png");
     // set ready state
     const [ready, setReady] = useState(false);
@@ -92,7 +92,7 @@ const Base: React.FC = () => {
     useEffect(() => {
         ready &&
             controls.start({
-                x: 0,
+                x: -0.15,
                 y: -5,
                 z: 0,
                 rotateX: 0,
@@ -115,8 +115,8 @@ const Base: React.FC = () => {
             onPointerLeave={() => {
                 setHover(false);
             }}
-            scale={[3, 1.25, 1]}
-            geometry={nodes.base.geometry}
+            scale={1.05}
+            geometry={nodes.Plane.geometry}
             initial={{
                 rotateX: Math.random(),
                 rotateY: Math.random(),
@@ -136,20 +136,101 @@ const Base: React.FC = () => {
                 color="hsl(52, 22%, 86%)"
             >
             </Outlines>
-            <mesh position={[-1.5, 0, 1.01]} rotation={[0, 0, 0]}>
+            <mesh position={[-5, 0.2, 1.01]} scale={[2.5, 1, 1]} rotation={[0, 0, 0]}>
                 <planeGeometry args={[1.2 / 3, 1.5]} />
                 <meshBasicMaterial
                     color={"#a17323"} alphaMap={texture} toneMapped={false} transparent map={texture} alphaTest={0.0125} />
             </mesh>
             <Text
-                scale={[0.25, 0.65, 1]}
-                position={[0.45, 0, 1.2]}
+                scale={[0.5, 0.55, 1]}
+                position={[-2.5, 0.25, 1.2]}
+                anchorY="middle"
+                anchorX="center"
+                lineHeight={1}
+                font="/fonts/poppins-v21-latin-700.ttf"
+            >
+                <TextMaterial textColor={"#a17323"} />
+                {`Let's Go!? \nWhy To Go?`}
+            </Text>
+        </motion.mesh>
+    );
+};
+
+const Base_Left: React.FC = () => {
+    const { nodes }: any = useGLTF("/BB.glb");
+    const texture = useTexture("/images/Rastergrafik7.png");
+    // set ready state
+    const [ready, setReady] = useState(false);
+    // uef ready
+    useEffect(() => {
+        setTimeout(() => {
+            setReady(true);
+        }, 2000);
+    }, []);
+    //animation controls
+    const controls = useAnimation();
+    //animation trigger -> position
+    useEffect(() => {
+        ready &&
+            controls.start({
+                x: -0.15,
+                y: -5,
+                z: 0,
+                rotateX: 0,
+                rotateY: 0,
+                rotateZ: 0,
+            });
+    }, [ready]);
+    //atoms
+    const [currentModule, setCurrentModule] = useAtom(openModule);
+    const [hovered, setHover] = useState(false);
+    useCursor(hovered);
+    return (
+        <motion.mesh
+            onClick={() => {
+                setCurrentModule("BrainBasics");
+            }}
+            onPointerEnter={() => {
+                setHover(true);
+            }}
+            onPointerLeave={() => {
+                setHover(false);
+            }}
+            scale={1.05}
+            geometry={nodes.left_module.geometry}
+            initial={{
+                rotateX: Math.random(),
+                rotateY: Math.random(),
+                rotateZ: Math.random(),
+                x: 0 - Math.random() * 10,
+                y: -5.25 - Math.random() * 10,
+                z: 0 + Math.random() * 10,
+            }}
+            animate={controls}
+            transition={{ type: "spring", damping: 20, stiffness: 75 }}
+        >
+            <Mat active={true} color="#5784a9" />
+            <Outlines
+                toneMapped={false}
+                thickness={0.1}
+                visible={hovered}
+                color="hsl(52, 22%, 86%)"
+            >
+            </Outlines>
+            <mesh position={[2.5, 0.2, 1.01]} scale={[2.5, 1, 1]} rotation={[0, 0, 0]}>
+                <planeGeometry args={[1.2 / 3, 1.5]} />
+                <meshBasicMaterial
+                    color={"#ffffff"} alphaMap={texture} toneMapped={false} transparent map={texture} alphaTest={0.0125} />
+            </mesh>
+            <Text
+                scale={[0.5, 0.55, 1]}
+                position={[5, 0.25, 1.2]}
                 anchorY="middle"
                 anchorX="center"
                 font="/fonts/poppins-v21-latin-700.ttf"
             >
-                <TextMaterial textColor={"#a17323"} />
-                {`Let's Go!? Why To Go?`}
+                <TextMaterial textColor={"#ffffff"} />
+                {`Brain Basics`}
             </Text>
         </motion.mesh>
     );
@@ -217,7 +298,7 @@ const Top: React.FC = () => {
                 color="hsl(52, 22%, 86%)"
             >
             </Outlines>
-            <mesh position={[-0.5, 0, 1.01]} rotation={[0, 0, 0]}>
+            <mesh position={[-0.5, -0.1, 1.01]} scale={[1.2, 1, 1]} rotation={[0, 0, 0]}>
                 <planeGeometry args={[1.2 / 3, 1.2]} />
                 <meshBasicMaterial color={"hsl(0, 0%, 100%)"} alphaMap={texture} toneMapped={false} transparent map={texture} alphaTest={0.0125} />
             </mesh>
@@ -426,6 +507,7 @@ const Game: React.FC = () => {
                 </MotionConfig>
             </AnimatePresence>
             <Base />
+            <Base_Left />
         </group>
     );
 };

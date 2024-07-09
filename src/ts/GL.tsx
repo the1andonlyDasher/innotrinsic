@@ -42,6 +42,7 @@ import WordCloud from "./brainBasicsGL/WordCloud";
 import Plane from "./landingGL/BGGLImage";
 import MMesh from "./landingGL/Bubble";
 import MorphingMesh from "./landingGL/Bubble";
+import { Model } from "@/HandAnim";
 
 
 declare global {
@@ -263,8 +264,8 @@ const GL = (props: glProps) => {
                         minAzimuthAngle={-Math.PI / 2}
                         maxAzimuthAngle={Math.PI / 2}
                     />}
-                <Stats showPanel={0} />
-                <Game />
+                {/* <Stats showPanel={0} /> */}
+                {/* <Game /> */}
                 <GradientTexture
                     stops={[0, 0.5, 1]}
                     width={100}
@@ -282,7 +283,7 @@ const GL = (props: glProps) => {
 
 
                 {/* <Model_Hands scroll={props.scroll} /> */}
-                <Mountain scroll={props.scroll} />
+                {/* <Mountain scroll={props.scroll} /> */}
 
                 {/* <MorphingMesh position={[10, 0, -10]} textureUrl={"/images/Brainbasics.jpg"} count={1} />
                 <MorphingMesh position={[10, 0, 10]} textureUrl={"/images/Brainbasics.jpg"} count={1} />
@@ -290,6 +291,7 @@ const GL = (props: glProps) => {
                 <MorphingMesh position={[-10, 0, 10]} textureUrl={"/images/Brainbasics.jpg"} count={1} /> */}
 
                 <ambientLight intensity={0.2} />
+                {/* <Model scroll={props.scroll} /> */}
 
             </Canvas>
         </div>

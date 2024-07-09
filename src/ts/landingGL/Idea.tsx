@@ -8,7 +8,7 @@ import {
     useCursor,
 } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useAnimation, useMotionValueEvent, useScroll } from "framer-motion";
+import { delay, useAnimation, useMotionValueEvent, useScroll } from "framer-motion";
 import { motion as motion3d } from "framer-motion-3d";
 import {
     FunctionComponent,
@@ -26,7 +26,7 @@ import { useSearchParams } from "next/navigation";
 import Cluster from "./Cluster";
 import Plane from "./BGGLImage";
 import MorphingMesh from "./Bubble";
-import { transition } from '../utils';
+import { transition as t } from '../utils';
 
 const materialVariants = {
     visible: { opacity: 1 },
@@ -226,28 +226,28 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
     useEffect(() => {
         if (isInPage) {
             groupControls.start("enter");
-            setTimeout(() => {
-                sphereControls.start({ scale: 1 });
-                textMatControls.start("initial")
-                // set positions of sphere in circle or in curve above head
-                if (router.pathname === "/") {
-                    subGroupControls.start({
-                        x: Math.cos(((Math.PI * 1.15) / props.r) * props.index) * radius,
-                        y: Math.sin(((Math.PI * 1.15) / props.r) * props.index) * radius / 1.45,
-                        z: 0
-                    });
+            sphereControls.start({ scale: 1, transition: t({ delay: 0.5 }) });
+            textMatControls.start("initial")
+            // set positions of sphere in circle or in curve above head
+            if (router.pathname === "/") {
+                subGroupControls.start({
+                    x: Math.cos(((Math.PI * 1.15) / props.r) * props.index) * radius,
+                    y: Math.sin(((Math.PI * 1.15) / props.r) * props.index) * radius / 1.45,
+                    z: 0, transition: t({ delay: 0.5 })
+                });
 
-                } else {
-                    subGroupControls.start({
-                        x: Math.sin(((Math.PI * 2) / props.r) * props.index) * radius,
-                        y: 0,
-                        z: Math.cos(((Math.PI * 2) / props.r) * props.index) * radius
-                    })
+            } else {
+                subGroupControls.start({
+                    x: Math.sin(((Math.PI * 2) / props.r) * props.index) * radius,
+                    y: 0,
+                    z: Math.cos(((Math.PI * 2) / props.r) * props.index) * radius
+                    , transition: t({ delay: 0.5 })
+                })
 
-                };
-            }, 1000);
+            };
+
         }
-    }, [isInPage]);
+    }, [isInPage, router.pathname]);
 
 
     return (
@@ -257,7 +257,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                 variants={groupVariants}
                 visible={!disposed}
                 animate={groupControls}
-                transition={transition({ delay: props.delayFactor / 10 })}
+                transition={t({ delay: props.delayFactor / 10 })}
             >
                 <motion3d.group
                     ref={idea}
@@ -267,14 +267,14 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         z: position[2],
                     }}
                     animate={subGroupControls}
-                    transition={transition({ delay: 0 })}
+                // transition={transition({ delay: 0 })}
                 >
 
 
                     <Billboard>
                         <motion3d.group
                             animate={textControls}
-                            transition={transition({ delay: 0 })}
+                            transition={t({ delay: 0 })}
                         >
 
                             <Text
@@ -297,7 +297,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                     animate={textMatControls}
                                     exit="exit"
                                     variants={{
-                                        initial: { opacity: 1, color: "#475946" },
+                                        initial: { opacity: 1, color: "#475946", transition: t({ delay: 0.5 }) },
                                         hide: { opacity: 0.1, color: "#475946" },
                                         enter: { opacity: 1, color: "#ffffff" },
                                         clicked: { opacity: 0, color: "#ffffff" },
@@ -311,7 +311,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         <motion3d.group
                             animate={sphereControls}
                             transition={
-                                transition({ delay: 0 })
+                                t({ delay: 0 })
                             }
                         >
                             {/* <Billboard>
@@ -409,7 +409,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 position={[0, 0, 0]}
                                 clicked={clicked}
                                 inactive={searchParams.get("neuron") !== null && searchParams.get("neuron") !== props.text}
-                                textureUrl={"/images/brainbasics.jpg"}
+                                textureUrl={"/images/business_img.jpg"}
                                 count={1} />
                             <Suspense fallback={null}>
                                 <motion3d.group

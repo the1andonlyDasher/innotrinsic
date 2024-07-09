@@ -9,6 +9,7 @@ import { useAtom } from 'jotai';
 import { glReady } from './ts/atoms';
 import { Vector3 } from './ts/threeExport/math/Vector3';
 import { useRouter } from 'next/router';
+import { People } from './BusinessPeople';
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -121,6 +122,7 @@ export function Model(props: HandProps) {
   return (
     <Float rotationIntensity={0.1} floatIntensity={0.1}>
       <group {...props} dispose={null}>
+        <People />
         <mesh geometry={nodes.Shape_IndexedFaceSet001.geometry} position={[0.65, 0.65, 0.038]} rotation={[2.3, 1.35, Math.PI / 4]}>
           {/* <boxGeometry args={[1, 1, 1]} /> */}
           <shaderMaterial

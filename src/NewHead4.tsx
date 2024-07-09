@@ -193,15 +193,18 @@ export function NewHead4(props: HeadHandsProps) {
         setIsInPage(true);
       }
     } else if (router.pathname.includes("/einsatzgebiete")) {
-      setDisposed(false);
-      setIsInPage(true);
+      if (searchParams.get("view") !== null || undefined) {
+        brain_material_controls.start("hide")
+      } else {
+        brain_material_controls.start("enter")
+      }
     }
     else {
       brain_material_controls.start("hidden").then(() => {
         setIsInPage(false), setDisposed(true)
       });
     }
-  }, [router.pathname, props.scroll.current]);
+  }, [router.pathname, props.scroll.current, searchParams]);
 
   useEffect(() => {
     if (isInPage) {
