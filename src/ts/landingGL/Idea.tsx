@@ -196,7 +196,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                 subGroupControls.start({
                     x: 0,
                     y: 0,
-                    z: 0,
+                    z: 0, transition: t({ delay: 0.0 })
                 });
                 groupControls.start("exit").then(() => {
 
@@ -214,6 +214,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                 x: 0,
                 y: 0,
                 z: 0,
+                transition: t({ delay: 0.5 })
             });
             groupControls.start("exit").then(() => {
                 setTimeout(() => {
@@ -225,6 +226,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
 
     useEffect(() => {
         if (isInPage) {
+
             groupControls.start("enter");
             sphereControls.start({ scale: 1, transition: t({ delay: 0.5 }) });
             textMatControls.start("initial")
@@ -234,6 +236,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                     x: Math.cos(((Math.PI * 1.15) / props.r) * props.index) * radius,
                     y: Math.sin(((Math.PI * 1.15) / props.r) * props.index) * radius / 1.45,
                     z: 0, transition: t({ delay: 0.5 })
+
                 });
 
             } else {
@@ -245,9 +248,8 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                 })
 
             };
-
         }
-    }, [isInPage, router.pathname]);
+    }, [isInPage]);
 
 
     return (
