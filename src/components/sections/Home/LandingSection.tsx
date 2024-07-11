@@ -76,7 +76,7 @@ const LandingSection: FunctionComponent<LandingSectionProps> = () => {
     return (
         <Sec single left sectionName="landing" id="first">
             <motion.div
-                className="landing__wrapper"
+                className="landing__wrapper py-6"
                 viewport={{ amount: 0.25, once: false, margin: "0px" }}
                 initial="initial"
                 // animate={searchParams.get("view") || searchParams.get("test") ? "exit" : "enter"}

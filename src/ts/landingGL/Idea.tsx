@@ -104,6 +104,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
     // render loop
     useFrame((state) => {
         line.current.setPoints(props.centerPoint, idea.current.position);
+        line.current.needsUpdate = true;
     });
 
     //uef for router state change

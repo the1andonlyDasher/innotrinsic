@@ -61,10 +61,24 @@
   }
 }
 
+.mobile {
+  display: flex !important;
+  @include mq(large) {
+    display: none !important;
+  }
+}
+
+.desktop {
+  display: none !important;
+  @include mq(large) {
+    display: flex !important;
+  }
+}
+
 .science__img-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 5rem;
+
   width: 100%;
 
   @include mq(medium) {
@@ -73,17 +87,15 @@
 
   .avatar__container {
     display: flex;
-    padding-top: 1.25rem;
-    padding-bottom: 1.25rem;
+    position: relative;
     flex-direction: column;
     gap: 2rem;
     justify-content: center;
     align-items: center;
+    transform-origin: center;
     width: 100%;
 
     @include mq(medium) {
-      padding-top: 2.5rem;
-      padding-bottom: 2.5rem;
       justify-content: center;
     }
 
