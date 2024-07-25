@@ -454,9 +454,8 @@ a {
 .main {
   overflow-y: auto;
   overflow-x: hidden;
-
   left: 0;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 150px);
   width: 100%;
   top: 100px;
 }
@@ -515,10 +514,10 @@ a {
 .content-grid {
   section {
     @extend %section-styles;
-    min-height: calc(100vh - 200px);
+    min-height: calc(100vh - 150px);
 
     &.section__wrapper {
-      min-height: calc(100vh - 200px); // Apply min-height to .section__wrapper
+      min-height: calc(100vh - 150px); // Apply min-height to .section__wrapper
     }
   }
 }
@@ -528,7 +527,7 @@ a {
   flex-direction: column;
   align-items: flex-start;
   gap: 2rem;
-  min-height: calc(100vh - 200px);
+  min-height: calc(100vh - 150px);
   padding: 1rem 0;
 }
 
