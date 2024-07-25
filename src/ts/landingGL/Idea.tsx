@@ -1,14 +1,11 @@
 import {
-    Billboard,
-    GradientTexture,
     Instance,
     Outlines,
-    QuadraticBezierLine,
     Text,
     useCursor,
 } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { delay, useAnimation, useMotionValueEvent, useScroll } from "framer-motion";
+import { useAnimation } from "framer-motion";
 import { motion as motion3d } from "framer-motion-3d";
 import {
     FunctionComponent,
@@ -18,15 +15,14 @@ import {
     useRef,
     useState,
 } from "react";
-import { useAtom } from "jotai";
-import { currentDistance, globalTarget, orbitTarget } from "../atoms";
+
 import { useRouter } from "next/router";
-import { Vector3 as V3 } from "@/ts/threeExport/math/Vector3";
+
 import { useSearchParams } from "next/navigation";
-import Cluster from "./Cluster";
-import Plane from "./BGGLImage";
+
 import MorphingMesh from "./Bubble";
 import { transition as t } from '../utils';
+import CustomBillboard from "../CustomBillboard";
 
 const materialVariants = {
     visible: { opacity: 1 },
@@ -75,6 +71,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
     // states
     const [hovered, setHover] = useState(false);
     const [clicked, setClicked] = useState(false);
+
     const [disposed, setDisposed] = useState(false);
     const [isInPage, setIsInPage] = useState(false);
     const [r, setR] = useState(((Math.PI * 1.15) / props.r) * props.index);
@@ -101,19 +98,20 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
             ? +Math.max(0.1, 0.1 + Math.random() * 0.1)
             : -Math.max(0.1, 0.1 + Math.random() * 0.1);
 
-    // render loop
-    useFrame((state) => {
-        line.current.setPoints(props.centerPoint, idea.current.position);
-        line.current.needsUpdate = true;
-    });
+    // // render loop
+    // useFrame((state) => {
+    //     line.current.setPoints(props.centerPoint, idea.current.position);
+    //     line.current.needsUpdate = true;
+    // });
+
 
     //uef for router state change
     useEffect(() => {
-        if (router.pathname === "/" && searchParams.get("view") === null) {
+        if (router.pathname === "/" && !searchParams.get("view")) {
             setClicked(false);
             setHover(false);
-            // console.log(line.current);
         }
+
     }, [router.pathname, searchParams]);
 
     // UEF for hover state
@@ -141,7 +139,6 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         ? { scale: 0.75, y: 0.5, z: 0 }
                         : { scale: 0.65, y: 0.3, z: 0 }
         );
-
         controls.start(
             hovered && clicked
                 ? "enter"
@@ -151,10 +148,10 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         ? "enter"
                         : "exit"
         );
-
         textMatControls.start(
-            searchParams.get("neuron") === props.text && clicked ? "clicked" :
-                searchParams.get("neuron") && !clicked ? "hide" : hovered ? "enter" : "initial"
+            searchParams.get("focusGroup") ? "exit" :
+                searchParams.get("neuron") === props.text && clicked ? "clicked" :
+                    searchParams.get("neuron") && !clicked ? "hide" : hovered ? "enter" : "initial"
         );
         // hovered && clicked
         //     ? subGroupControls.stop()
@@ -187,81 +184,100 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
 
     // UEF for mounting and visibility for scrolling on index page
     useEffect(() => {
+        const enterHomePage = () => {
+            handleEnter(
+                Math.cos(((Math.PI * 1.15) / props.r) * props.index) * radius,
+                Math.sin(((Math.PI * 1.15) / props.r) * props.index) * radius / 1.45,
+                0,
+                0.5
+            );
+        };
+
+        const enterEinsatzgebietePage = () => {
+            handleEnter(
+                Math.sin(((Math.PI * 2) / props.r) * props.index) * radius,
+                0,
+                Math.cos(((Math.PI * 2) / props.r) * props.index) * radius,
+                0.5
+            );
+        };
+
+        const handleEnter = (x: any, y: any, z: any, delay: any) => {
+            subGroupControls.start({
+                x: x,
+                y: y,
+                z: z,
+                transition: t({ delay: delay })
+            });
+        };
+
+        const handleExit = (delay: any) => {
+            textMatControls.start("exit");
+            sphereControls.start({ scale: 0 });
+            subGroupControls.start({ x: 0, y: 0, z: 0, transition: t({ delay: delay }) });
+            groupControls.start("exit").then(() => {
+                setTimeout(() => {
+                    setIsInPage(false);
+                    setDisposed(true);
+                }, 500);
+            });
+        };
+
         if (router.pathname === "/") {
             if (props.scroll.current < 0.015) {
+                if (disposed) {
+                    setDisposed(false);
+                    setIsInPage(true);
+                } else {
+                    enterHomePage();
+                }
+            } else {
+                handleExit(0.0);
+            }
+        } else if (router.pathname === "/einsatzgebiete") {
+            if (disposed) {
                 setDisposed(false);
                 setIsInPage(true);
             } else {
-                textMatControls.start("exit");
-                sphereControls.start({ scale: 0 });
-                subGroupControls.start({
-                    x: 0,
-                    y: 0,
-                    z: 0, transition: t({ delay: 0.0 })
-                });
-                groupControls.start("exit").then(() => {
-
-                    setIsInPage(false), setDisposed(true);
-
-                });
+                enterEinsatzgebietePage();
             }
-        } else if (router.pathname.includes("/einsatzgebiete")) {
-            setDisposed(false);
-            setIsInPage(true);
         } else {
-            textMatControls.start("exit");
-            sphereControls.start({ scale: 0 });
-            subGroupControls.start({
-                x: 0,
-                y: 0,
-                z: 0,
-                transition: t({ delay: 0.5 })
-            });
-            groupControls.start("exit").then(() => {
-                setTimeout(() => {
-                    setIsInPage(false), setDisposed(true);
-                }, 500)
-            });
+            handleExit(0.5);
         }
     }, [router.pathname, props.scroll.current]);
 
+
+
+
+    const [groupVisible, setGroupVisible] = useState(true)
+    useEffect(() => {
+        if (searchParams.get("focusGroup")) {
+            setTimeout(() => { setGroupVisible(false) }, 1300)
+        } else {
+            setGroupVisible(true)
+        }
+    }, [searchParams]);
+
     useEffect(() => {
         if (isInPage) {
-
             groupControls.start("enter");
             sphereControls.start({ scale: 1, transition: t({ delay: 0.5 }) });
             textMatControls.start("initial")
-            // set positions of sphere in circle or in curve above head
-            if (router.pathname === "/") {
-                subGroupControls.start({
-                    x: Math.cos(((Math.PI * 1.15) / props.r) * props.index) * radius,
-                    y: Math.sin(((Math.PI * 1.15) / props.r) * props.index) * radius / 1.45,
-                    z: 0, transition: t({ delay: 0.5 })
-
-                });
-
-            } else {
-                subGroupControls.start({
-                    x: Math.sin(((Math.PI * 2) / props.r) * props.index) * radius,
-                    y: 0,
-                    z: Math.cos(((Math.PI * 2) / props.r) * props.index) * radius
-                    , transition: t({ delay: 0.5 })
-                })
-
-            };
         }
     }, [isInPage]);
 
 
     return (
         <>
+
             <motion3d.group
                 initial="initial"
                 variants={groupVariants}
-                visible={!disposed}
+                // visible={!disposed}
                 animate={groupControls}
                 transition={t({ delay: props.delayFactor / 10 })}
             >
+
                 <motion3d.group
                     ref={idea}
                     initial={{
@@ -272,12 +288,13 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                     animate={subGroupControls}
                 // transition={transition({ delay: 0 })}
                 >
+                    <CustomBillboard >
 
-
-                    <Billboard>
                         <motion3d.group
                             animate={textControls}
                             transition={t({ delay: 0 })}
+                            visible={groupVisible}
+
                         >
 
                             <Text
@@ -290,7 +307,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 anchorX="center"
                                 overflowWrap="normal"
                                 strokeWidth={0}
-
+                                color={"#475946"}
                                 anchorY="bottom"
                                 font="/fonts/poppins-v21-latin-800.ttf"
                             >
@@ -309,6 +326,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 />
                                 {`${props.text}`}
                             </Text>
+
                         </motion3d.group>
 
                         <motion3d.group
@@ -316,6 +334,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                             transition={
                                 t({ delay: 0 })
                             }
+                            visible={groupVisible}
                         >
                             {/* <Billboard>
                             <motion3d.mesh
@@ -357,17 +376,16 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 name={props.text}
                                 ref={instance}
                                 onClick={(e) => (
+                                    searchParams.get("view") ? null :
 
-                                    clicked ? null :
-                                        console.log("clicked"),
-                                    router.push(
-                                        router.pathname === "/" ? router.pathname :
-                                            router.pathname + `?view=true&neuron=${props.text}`,
-                                        undefined,
-                                        {
-                                            shallow: true,
-                                        }
-                                    )
+                                        router.push(
+                                            router.pathname === "/" ? router.pathname :
+                                                router.pathname + `?view=true&neuron=${props.text}`,
+                                            undefined,
+                                            {
+                                                shallow: true,
+                                            }
+                                        )
                                 )}
                                 onPointerMissed={(e) => (
 
@@ -408,12 +426,15 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 ) : null}
 
                             </Instance>
+
                             <MorphingMesh
                                 position={[0, 0, 0]}
                                 clicked={clicked}
+                                focused={searchParams.get("focusGroup") !== null}
                                 inactive={searchParams.get("neuron") !== null && searchParams.get("neuron") !== props.text}
                                 textureUrl={"/images/business_img.jpg"}
                                 count={1} />
+
                             <Suspense fallback={null}>
                                 <motion3d.group
                                     initial={{ scale: 0 }}
@@ -436,11 +457,13 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 </motion3d.group>
                             </Suspense>
                         </motion3d.group>
-                    </Billboard>
-                </motion3d.group>
+                    </CustomBillboard>
+                </motion3d.group >
+                {/* 
                 {idea && (
                     <QuadraticBezierLine
                         dashed
+                        visible={!searchParams.get("focusGroup")}
                         color={searchParams.get("neuron") === props.text ? "#ffffff" : "#a3b57a"}
                         dashScale={10}
                         lineWidth={3}
@@ -448,17 +471,16 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         end={props.centerPoint}
                         ref={line}
                         opacity={
-                            router.pathname === "/" || router.pathname === "/einsatzbereiche" &&
-                                searchParams.get("neuron") === null
-                                ? 1
-                                : searchParams.get("neuron") !== props.text
-                                    ? 0.2
-                                    : 0
+                            searchParams.get("neuron")
+                                ? 0.2
+                                : 1
                         }
                         transparent
                     />
-                )}
+                )
+                } */}
             </motion3d.group >
+
         </>
     );
 };

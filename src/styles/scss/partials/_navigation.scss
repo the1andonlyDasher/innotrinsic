@@ -250,7 +250,8 @@ a {
   align-items: center;
 }
 
-:is(.nav-items-desktop, .nav-items-mobile) li .nav-link {
+:is(.nav-items-desktop, .nav-items-mobile) li .nav-link,
+.wrapper-link {
   @extend %trans;
   background-color: transparent;
   position: relative;

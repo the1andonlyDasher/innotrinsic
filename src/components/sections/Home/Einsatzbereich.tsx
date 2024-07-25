@@ -85,7 +85,7 @@ const Einsatzbereich: FC<EinsatzbereichProps> = ({ keyProp, text }) => {
                     <Link href={`${router.pathname}?${searchParams}&focusGroup=${content}`} className="btn__alt" shallow>
                         {searchParams.get("neuron")}<FontAwesomeIcon icon={faArrowRight} />
                     </Link>
-                    <Link href={`${router.pathname}?${searchParams}&focusGroup=${content}`} className="btn__alt" shallow>
+                    <Link href={`${router.pathname}?${searchParams}&focusGroup=${content}&focus=true`} className="btn__alt" shallow>
                         Zielgruppen<FontAwesomeIcon icon={faPersonChalkboard} />
                     </Link>
                     <Link href={"/einsatzgebiete"} className="btn__outline" shallow>
@@ -98,7 +98,7 @@ const Einsatzbereich: FC<EinsatzbereichProps> = ({ keyProp, text }) => {
                 className=" w-full h-full"
                 variants={outerVariants} initial="initial" animate={searchParams.get("focusGroup") === content ? "enter" : "exit"}>
                 <motion.div variants={variants} className="w-full flex flex-col items-start justify-end gap-6  text-white ">
-                    {content !== "" && Object.entries(currentContent).map(([key, value]: any, index: number) =>
+                    {/* {content !== "" && Object.entries(currentContent).map(([key, value]: any, index: number) =>
                         <div className="bg-[#c7e0f0] p-6 rounded-xl w-full" key={index}><h3 className="text-3xl font-bold">{key}</h3>
                             {Object.values(value).map((item: any, index: number) => <div key={index}>
                                 <FAQuestionSlim title={item.title} borderBottom={false}>
@@ -107,7 +107,7 @@ const Einsatzbereich: FC<EinsatzbereichProps> = ({ keyProp, text }) => {
                                     </ul>
                                 </FAQuestionSlim>
                             </div>)}
-                        </div>)}
+                        </div>)} */}
                 </motion.div>
 
             </motion.div>

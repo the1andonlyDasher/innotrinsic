@@ -11,6 +11,7 @@ interface MorphingMeshProps {
     count: number;
     clicked: boolean;
     inactive: boolean;
+    focused: boolean;
     position: [number, number, number]
 }
 
@@ -18,6 +19,7 @@ const MorphingMesh: FC<MorphingMeshProps> = ({
     textureUrl,
     count,
     clicked,
+    focused,
     inactive,
     position
 }) => {
@@ -65,6 +67,7 @@ const MorphingMesh: FC<MorphingMeshProps> = ({
         () => ({
             uImage: { value: imageTexture },
             uActive: { value: 0.0 },
+            uFocused: { value: 0.0 },
             uInactive: { value: 0.0 },
             uMask: { value: maskTexture },
             uCloud: { value: cloudTexture },
@@ -99,6 +102,7 @@ uniform sampler2D uMask;
 uniform float uTime;
 uniform float uActive;
 uniform float uInactive;
+uniform float uFocused;
 
 // Beige color uniform
 uniform vec3 uBeigeColor;
@@ -157,28 +161,28 @@ void main() {
     float maskOpacity = texture2D(uMask, distortedUV).r;
 
     // Calculate cloud opacity based on noise value directly
-    float distortedCloudOpacity = 1.0 + 6.0 * snoise(distortedUV * 2.0 + uTime * 0.005); // Adjust scale and frequency as needed
+    float distortedCloudOpacity = 1.0 + 6.0 * snoise(uv * 10.0 + uTime * 0.05) * 0.2; // Adjust scale and frequency as needed
 
     float cloudOpacity = 2.0 + 1.0 * snoise(uv * 2.0 + uTime * 0.05); // Adjust scale and frequency as needed
 
     float mixedOpacity = cloudOpacity * distortedCloudOpacity + 2.5;
 
     // Apply delay for brighter areas
-    float delayFactor = 3.0 - mixedOpacity * 0.01; // Invert cloudOpacity to delay more in brighter areas
+    float delayFactor = 6.0 - mixedOpacity * 0.01; // Invert cloudOpacity to delay more in brighter areas
 
     // Generate region-based delays using noise function
-    float regionNoise = snoise(uv * 5.0); // Adjust scale (5.0) as needed
+    float regionNoise = snoise(uv * 3.0); // Adjust scale (5.0) as needed
     float regionThreshold = 0.25; // Adjust threshold for splitting regions
     float regionID = step(regionThreshold, regionNoise); // 1.0 for regions above threshold, 0.0 otherwise
     float regionDelay = mix(3.0, 12.0, regionNoise); // Adjust min and max delays based on regionNoise
 
     // Adjusted active state opacity based on delay
-    float adjustedActive = uActive * mix(regionDelay, 8.0 - pow(abs(delayFactor), 10.0), regionID);
+    float adjustedActive = uActive * mix(regionDelay, 8.0 - pow(abs(delayFactor), 2.0), regionID);
 
     // Combine edge mask opacity, cloud opacity, and adjusted active state opacity
-    float combinedOpacity = maskOpacity * cloudOpacity * adjustedActive;
+    float combinedOpacity = maskOpacity  * cloudOpacity * distortedCloudOpacity * adjustedActive * uFocused;
 
-    float combinedOpacity2 =  cloudOpacity * (1.0 - adjustedActive)  * uInactive;
+    float combinedOpacity2 =  cloudOpacity * (1.0 - adjustedActive) * uInactive ;
 
     // Get the color from the main image texture
     vec4 color = texture2D(uImage, uv);
@@ -209,7 +213,9 @@ void main() {
         if (shaderRef.current) {
             const targetOpacity = clicked ? 1.0 : 0.0;
             const lerpFactor = clicked ? 0.0125 : 0.0475;
+            const lerpFactor2 = focused ? 0.0475 : 0.0125;
             uniforms.uInactive.value = lerp(uniforms.uInactive.value, inactive ? 0.0 : 1.0, lerpFactor);
+            uniforms.uFocused.value = lerp(uniforms.uFocused.value, focused ? 0.0 : 1.0, lerpFactor2);
             uniforms.uActive.value = lerp(
                 uniforms.uActive.value,
                 targetOpacity,

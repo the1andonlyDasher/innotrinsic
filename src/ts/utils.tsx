@@ -35,3 +35,19 @@ export const useMediaQuery = (query: string) => {
 
     return matches;
 };
+
+
+export const useCustomCursor = (hovered: any, cursorType: any) => {
+    useEffect(() => {
+        if (hovered) {
+            document.body.style.cursor = cursorType;
+        } else {
+            document.body.style.cursor = 'default';
+        }
+        return () => {
+            document.body.style.cursor = 'default';
+        };
+    }, [hovered, cursorType]);
+};
+
+

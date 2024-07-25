@@ -136,14 +136,14 @@ const Base: React.FC = () => {
                 color="hsl(52, 22%, 86%)"
             >
             </Outlines>
-            <mesh position={[-5, 0.2, 1.01]} scale={[2.5, 1, 1]} rotation={[0, 0, 0]}>
+            <mesh position={[-5, 0.2, 1.01]} scale={[3.5, 1, 1]} rotation={[0, 0, 0]}>
                 <planeGeometry args={[1.2 / 3, 1.5]} />
                 <meshBasicMaterial
                     color={"#a17323"} alphaMap={texture} toneMapped={false} transparent map={texture} alphaTest={0.0125} />
             </mesh>
             <Text
                 scale={[0.5, 0.55, 1]}
-                position={[-2.5, 0.25, 1.2]}
+                position={[-2.65, 0.25, 1.2]}
                 anchorY="middle"
                 anchorX="center"
                 lineHeight={1}
@@ -217,14 +217,14 @@ const Base_Left: React.FC = () => {
                 color="hsl(52, 22%, 86%)"
             >
             </Outlines>
-            <mesh position={[2.5, 0.2, 1.01]} scale={[2.5, 1, 1]} rotation={[0, 0, 0]}>
+            <mesh position={[2.25, 0.2, 1.01]} scale={[3, 0.85, 1]} rotation={[0, 0, 0]}>
                 <planeGeometry args={[1.2 / 3, 1.5]} />
                 <meshBasicMaterial
                     color={"#ffffff"} alphaMap={texture} toneMapped={false} transparent map={texture} alphaTest={0.0125} />
             </mesh>
             <Text
                 scale={[0.5, 0.55, 1]}
-                position={[5, 0.25, 1.2]}
+                position={[4.75, 0.25, 1.2]}
                 anchorY="middle"
                 anchorX="center"
                 font="/fonts/poppins-v21-latin-700.ttf"
@@ -239,6 +239,7 @@ const Base_Left: React.FC = () => {
 const Top: React.FC = () => {
     const { nodes }: any = useGLTF("/module_top.glb");
     const texture = useTexture("/images/Rastergrafik6.png");
+    const texture2 = useTexture("/images/exMark.png");
     // set ready state
     const [ready, setReady] = useState(false);
     // uef ready
@@ -298,13 +299,13 @@ const Top: React.FC = () => {
                 color="hsl(52, 22%, 86%)"
             >
             </Outlines>
-            <mesh position={[-0.5, -0.1, 1.01]} scale={[1.2, 1, 1]} rotation={[0, 0, 0]}>
+            <mesh position={[-0.75, -0.1, 1.01]} scale={[1, 1, 1]} rotation={[0, 0, 0]}>
                 <planeGeometry args={[1.2 / 3, 1.2]} />
                 <meshBasicMaterial color={"hsl(0, 0%, 100%)"} alphaMap={texture} toneMapped={false} transparent map={texture} alphaTest={0.0125} />
             </mesh>
             <Text
                 scale={[0.35, 0.85, 1]}
-                position={[0.6, -0.2, 1.2]}
+                position={[0.2, -0.2, 1.2]}
                 anchorY="middle"
                 anchorX="center"
                 font="/fonts/poppins-v21-latin-700.ttf"
@@ -312,6 +313,10 @@ const Top: React.FC = () => {
                 {`Let's Go`}
                 <TextMaterial textColor={"hsl(0, 0%, 100%)"} />
             </Text>
+            <mesh position={[1.0, -0.1, 1.01]} scale={[0.2, 0.8, 1]} rotation={[0, 0, 0]}>
+                <planeGeometry args={[1.2 / 3, 1.2]} />
+                <meshBasicMaterial color={"hsl(0, 0%, 100%)"} alphaMap={texture2} toneMapped={false} transparent map={texture2} alphaTest={0.0125} />
+            </mesh>
         </motion.mesh>
     );
 };
@@ -388,7 +393,7 @@ const Module: React.FC<ModuleProps> = ({
                         >
                         </Outlines>
                         <mesh position={[-0.9, 0, 0.6]} rotation={[0, 0, 0]}>
-                            <planeGeometry args={[0.8 / 1.5, 0.8]} />
+                            <planeGeometry args={[1 / 1.5, 0.8]} />
                             <meshBasicMaterial color={textColor} alphaMap={texture} toneMapped={false} transparent map={texture} alphaTest={0.0125} />
                         </mesh>
                         <Text

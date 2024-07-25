@@ -7,11 +7,11 @@ import { useSearchParams } from "next/navigation";
 import { useAtom } from "jotai";
 import { currentDistance, loc, globalTarget } from "../atoms";
 import { Vector3 as V3 } from "@/ts/threeExport/math/Vector3";
-import { Business } from "@/Business";
-import { Private } from "@/Private";
-import { GePoVe } from "@/GePoVe";
-import { Public } from "@/Public";
-import { Sport } from "@/Sport";
+import { Business } from "@/3DModels/Business";
+import { Private } from "@/3DModels/Private";
+import { GePoVe } from "@/3DModels/GePoVe";
+import { Public } from "@/3DModels/Public";
+import { Sport } from "@/3DModels/Sport";
 import { useThree } from "@react-three/fiber";
 import { useRouter } from "next/router";
 
@@ -117,13 +117,13 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
 
     useEffect(() => {
         if (group.current) {
-            searchParams.get("neuron")
+            searchParams.get("neuron") && !searchParams.get("focusGroup")
                 ? setOrbitTarget(
                     group.current
                         .getObjectByName(`${searchParams.get("neuron")}`)
                         .localToWorld(p.set(0, 0.2, 0))
-                )
-                : setOrbitTarget({ x: 0, y: -1, z: 0 });
+                ) : searchParams.get("neuron") && searchParams.get("focusGroup") ? setTimeout(() => { setOrbitTarget({ x: 0, y: -1, z: 0 }) }, 1300)
+                    : setOrbitTarget({ x: 0, y: -1, z: 0 });
             sphereMaterialControls.start(searchParams.get("view") !== null || false ? "hide" : "visible");
             searchParams.get("view") === null || false && sphereMaterialControls.start(searchParams.get("test") ? "hide" : "visible");
         }

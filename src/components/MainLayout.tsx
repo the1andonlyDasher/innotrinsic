@@ -88,7 +88,7 @@ export default function MainLayout({ preview, children, navbar, legals, t }: any
             </div>
         </div>
         <div className="top-0 left-0 h-[100px] content-grid">
-            <Navbar className={`navbar`} navbar={navbar} legals={legals} />
+            <Navbar contentContainer={ref} className={`navbar`} navbar={navbar} legals={legals} />
         </div>
         <div ref={ref} className="main"
             onScroll={handleScroll}

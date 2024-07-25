@@ -2,9 +2,7 @@ import {
     CameraControls,
     Environment,
     GradientTexture,
-    Instance,
-    Instances,
-    Stats,
+
 
 } from "@react-three/drei";
 import {
@@ -20,6 +18,7 @@ import {
     glReady,
     globalTarget,
     loc,
+    orbitTarget,
 
 } from "./atoms";
 import { useAtom } from "jotai";
@@ -33,16 +32,12 @@ import { useSearchParams } from "next/navigation";
 
 
 
-import { NewHead4 } from "@/NewHead4";
+import { NewHead4 } from "@/3DModels/NewHead4";
+import { Model } from "@/3DModels/BrainOnly";
+import CustomBezierLine from "./CustomLine";
 import Game from "./ModuleSpiel";
-import { Mountain } from "@/Mount2";
-import { NeuronNet } from "./NeuronNet";
-import { Neuron } from "./Neuron2";
 import WordCloud from "./brainBasicsGL/WordCloud";
-import Plane from "./landingGL/BGGLImage";
-import MMesh from "./landingGL/Bubble";
-import MorphingMesh from "./landingGL/Bubble";
-import { Model } from "@/HandAnim";
+
 
 
 declare global {
@@ -141,22 +136,6 @@ const GL = (props: glProps) => {
         });
     }, [nextColor1, nextColor2, nextColor3]);
 
-    // useEffect(() => {
-    //     if (router.pathname === "/") {
-    //         if (props.scroll.current > 0.05) {
-    //             setNextColor1(targetColors[`science`][0])
-    //             setNextColor2(targetColors[`science`][1])
-    //         } else {
-    //             setNextColor1(targetColors[`landing`][0])
-    //             setNextColor2(targetColors[`landing`][1])
-    //         }
-
-    //     } else {
-    //         setNextColor1(targetColors[`science`][0])
-    //         setNextColor2(targetColors[`science`][1])
-    //     }
-    // }, [props.scroll.current, router.pathname]);
-
     useEffect(() => {
         const handleResize = () => {
             cameraControls.current?.setTarget(gTarget.x, gTarget.y, gTarget.z, true);
@@ -172,9 +151,6 @@ const GL = (props: glProps) => {
 
     useEffect(() => {
         cameraControls.current?.setTarget(gTarget.x, gTarget.y - 1, gTarget.z, true);
-
-        // controls.start({ x: target.x, y: target.y, z: target.z })
-
     }, [gTarget]);
 
     let coneRotation: any;
@@ -183,7 +159,7 @@ const GL = (props: glProps) => {
 
     function resolveConnect(pathname: string, searchParams: any) {
         return new Promise(() => {
-            if (pathname === "/einsatzgebiete" && !searchParams.get("focusGroup")) {
+            if (pathname === "/einsatzgebiete" && !searchParams.get("focusGroup") || searchParams.get("focus")) {
                 setLoaded(true)
                 cameraControls.current?.connect(props.eventSource.current)
             } else {
@@ -194,12 +170,10 @@ const GL = (props: glProps) => {
 
     async function resetCamera(pathname: string, searchParams: any) {
         cameraControls.current?.rotateTo(0, Math.PI / 2, true),
-            cameraControls.current?.zoomTo(1, true)
-        await resolveConnect(pathname, searchParams)
+            await resolveConnect(pathname, searchParams)
     }
 
     async function moveCamera(pathname: string, searchParams: any) {
-
         await resolveConnect(pathname, searchParams)
     }
 
@@ -207,7 +181,9 @@ const GL = (props: glProps) => {
 
     useEffect(() => {
         cameraControls.current?.zoomTo(
-            searchParams.get("view") !== null ? 3 : 1,
+            searchParams.get("view") && !searchParams.get("focusGroup") ? 3 :
+                searchParams.get("view") && searchParams.get("focusGroup") ? 3 :
+                    1,
             true
         );
     }, [searchParams]);
@@ -231,11 +207,51 @@ const GL = (props: glProps) => {
         );
     };
 
-    const words = ['Private', 'Business', 'Society', 'Public Persons', 'Sport', 'Neuroscience', 'Innovation'];
+    const words = [
+        "Think",
+        "Act",
+        "Move",
+        "Motivation",
+        "Satisfaction",
+        "Flexible",
+        "Exzellenz",
+        "Kreativität",
+        "Entscheiden",
+        "Problemlösung",
+        "Adaptability",
+        "Fokus",
+        "Resilienz",
+        "Kollaboration",
+        "Courage",
+        "Engagement",
+        "Effizienz",
+        "Productivity"
+    ]
+    const colors = [
+        "#e9f3ff",  // Brighter
+        "#f4f9ff",  // Brighter
+        "#f2ffdf",  // Brighter
+        "#c6dfe8",  // Brighter
+        "#c0c8b2",  // Brighter
+        "#f0f7ff",  // Brighter
+        "#e7f1ff",  // Brighter
+        "#dfedb6",  // Brighter
+        "#ecf8ff",  // Brighter
+        "#e3ffb6",  // Brighter
+        "#d5ebff",  // Brighter
+        "#f5f8ff",  // Brighter
+        "#f9ffdb",  // Brighter
+        "#dde5f0",  // Brighter
+        "#fdffec",  // Brighter
+        "#f7faff",  // Brighter
+        "#cfdff0"   // Brighter
+    ];
+
+
 
 
     return (<>
-        {!shaderCompiled && <Loader />}
+        {/* {!shaderCompiled && <Loader />} */}
         <div className="canvas__wrapper">
 
             <Canvas
@@ -246,8 +262,8 @@ const GL = (props: glProps) => {
                 eventPrefix="client"
 
             >
-                {/* <WordCloud /> */}
 
+                {/* <WordCloud words={words} colors={colors} /> */}
                 {loaded &&
                     <CameraControls
                         infinityDolly={false}
@@ -256,7 +272,7 @@ const GL = (props: glProps) => {
                         polarAngle={Math.PI / 2}
                         azimuthAngle={0}
                         maxDistance={25}
-                        enabled={loaded}
+                        enabled={true}
                         distance={25}
                         minDistance={25}
                         minPolarAngle={0}
@@ -276,22 +292,13 @@ const GL = (props: glProps) => {
                 />
                 <NewHead4 scroll={props.scroll} />
 
-                {/* <Plane active={true} image={"/images/Brainbasics.jpg"} /> */}
 
                 <Environment background={false} preset="apartment" blur={0} />
 
 
 
-                {/* <Model_Hands scroll={props.scroll} /> */}
-                {/* <Mountain scroll={props.scroll} /> */}
-
-                {/* <MorphingMesh position={[10, 0, -10]} textureUrl={"/images/Brainbasics.jpg"} count={1} />
-                <MorphingMesh position={[10, 0, 10]} textureUrl={"/images/Brainbasics.jpg"} count={1} />
-                <MorphingMesh position={[-10, 0, -10]} textureUrl={"/images/Brainbasics.jpg"} count={1} />
-                <MorphingMesh position={[-10, 0, 10]} textureUrl={"/images/Brainbasics.jpg"} count={1} /> */}
-
                 <ambientLight intensity={0.2} />
-                {/* <Model scroll={props.scroll} /> */}
+
 
             </Canvas>
         </div>
