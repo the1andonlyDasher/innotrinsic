@@ -163,7 +163,7 @@ export function NewHead4(props: HeadHandsProps) {
       ((pvAtom?.width / window.innerWidth) * viewport.width) / 2 -
       viewport.width / 2 +
       (pvAtom?.left / window.innerWidth) * viewport.width,
-      -s(7.5, viewport.width / 1.3, 14) -
+      -s(7.5, viewport.width / 1.35, 14) -
       ((pvAtom?.height / window.innerHeight) * viewport.height) / 2 +
       viewport.height / 2 -
       (pvAtom?.top / window.innerHeight) * viewport.height,
@@ -259,7 +259,7 @@ export function NewHead4(props: HeadHandsProps) {
     }
   }, [isInPage]);
   return (
-    <group {...props}  {...props} position={pos} dispose={null} scale={s(5, scl[0] / 1.5, 10)} rotation={[0, -Math.PI / 1.15, 0]}>
+    <group {...props}  {...props} position={pos} dispose={null} scale={s(6, scl[0] * s(0.5, viewport.width / 30, 0.8), 10)} rotation={[0, -Math.PI / 1.15, 0]}>
       <group rotation={[0, -0.3, 0]} scale={1}>
         <primitive object={nodes.Bone} />
         <Model scroll={props.scroll} />
