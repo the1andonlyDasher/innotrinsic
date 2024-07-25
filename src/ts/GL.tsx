@@ -290,8 +290,9 @@ const GL = (props: glProps) => {
                     attach="background"
                     size={1024}
                 />
-                <NewHead4 scroll={props.scroll} />
-
+                <Suspense fallback={null}>
+                    <NewHead4 scroll={props.scroll} />
+                </Suspense>
 
                 <Environment background={false} preset="apartment" blur={0} />
 
