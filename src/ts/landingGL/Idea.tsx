@@ -23,6 +23,8 @@ import { useSearchParams } from "next/navigation";
 import MorphingMesh from "./Bubble";
 import { transition as t } from '../utils';
 import CustomBillboard from "../CustomBillboard";
+import { ShaderMaterial } from "three";
+import BShader from "./BubbleShader";
 
 const materialVariants = {
     visible: { opacity: 1 },
@@ -52,6 +54,7 @@ interface IdeaProps {
     children?: any;
     index: number;
     scroll: MutableRefObject<number>;
+    ShaderMaterialRef: MutableRefObject<ShaderMaterial>
 }
 
 const Idea: FunctionComponent<IdeaProps> = (props) => {
@@ -433,7 +436,16 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 focused={searchParams.get("focusGroup") !== null}
                                 inactive={searchParams.get("neuron") !== null && searchParams.get("neuron") !== props.text}
                                 textureUrl={"/images/business_img.jpg"}
-                                count={1} />
+                                count={1}>
+                                <BShader
+                                    textureUrl={"/images/business_img.jpg"}
+                                    count={1}
+                                    clicked={clicked}
+                                    focused={searchParams.get("focusGroup") !== null}
+                                    inactive={searchParams.get("neuron") !== null && searchParams.get("neuron") !== props.text}
+
+                                />
+                            </MorphingMesh>
 
                             <Suspense fallback={null}>
                                 <motion3d.group

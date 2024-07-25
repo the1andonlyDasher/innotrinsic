@@ -14,6 +14,7 @@ import { Public } from "@/3DModels/Public";
 import { Sport } from "@/3DModels/Sport";
 import { useThree } from "@react-three/fiber";
 import { useRouter } from "next/router";
+import BubbleShader from "./BubbleShader";
 
 interface IdeaCloudProps {
     centerPoint: [number, number, number];
@@ -129,8 +130,11 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
         }
     }, [searchParams]);
 
+    const shaderMaterialRef: any = useRef(null)
+
     return (
         <group ref={group} position={props.centerPoint}>
+            <BubbleShader ref={shaderMaterialRef} count={0} clicked={false} inactive={false} focused={false} textureUrl={"/images/business_img.jpg"} />
             <Instances >
                 <sphereGeometry args={[0.35, 30, 30]} />
                 <motion3d.meshStandardMaterial
@@ -147,6 +151,7 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
                 {numIdeas.map((data: any, i: number) =>
                     <group key={i}>
                         <Idea
+                            ShaderMaterialRef={shaderMaterialRef}
                             scroll={props.scroll}
                             active={searchParams.get("neuron") === data.text ? true : false}
                             delayFactor={i + 1 / 10}

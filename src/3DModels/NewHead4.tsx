@@ -9,18 +9,18 @@ import { GLTF } from 'three-stdlib'
 import { motion as motion3d } from "framer-motion-3d"
 import { useThree } from '@react-three/fiber'
 import { useAtom } from 'jotai'
-import { productViewer, globalTarget, orbitTarget, loc } from '../ts/atoms'
-import { size as s } from '../ts/utils';
 import { useRouter } from 'next/router'
-import IdeaCloud from '../ts/landingGL/IdeaCloud'
 import { useAnimation } from 'framer-motion'
 import { useSearchParams } from 'next/navigation'
 import { SkinnedMesh } from 'three/src/objects/SkinnedMesh.js'
 import { Bone } from 'three/src/objects/Bone.js'
 import { Model } from './GhostHand'
 import { Mesh } from 'three/src/objects/Mesh.js'
+import { size as s } from "../ts/utils"
 import * as THREE from 'three';
 import { extend } from '@react-three/fiber';
+import { productViewer, globalTarget, orbitTarget, loc } from '@/ts/atoms'
+import IdeaCloud from '@/ts/landingGL/IdeaCloud'
 
 const GoldShader = <shaderMaterial
   uniforms={{
@@ -233,7 +233,7 @@ export function NewHead4(props: HeadHandsProps) {
         setDisposed(false);
         setIsInPage(true);
       }
-    } else if (router.pathname.includes("/einsatzgebiete")) {
+    } else if (router.pathname === "/einsatzgebiete") {
       if (searchParams.get("view") && !searchParams.get("focusGroup")) {
         brain_material_controls.start("hide")
       } else if (searchParams.get("view") && searchParams.get("focusGroup")) {
@@ -241,7 +241,8 @@ export function NewHead4(props: HeadHandsProps) {
           setIsInPage(false), setDisposed(true)
         });
       } else {
-        setIsInPage(true), setDisposed(false)
+        brain_mesh_controls.start("enter")
+        brain_material_controls.start("enter")
       }
     }
     else {
@@ -249,7 +250,6 @@ export function NewHead4(props: HeadHandsProps) {
         setIsInPage(false), setDisposed(true)
       });
     }
-    console.log("REEEEEEEEEEEEEEEEE")
   }, [router.pathname, props.scroll.current, searchParams]);
 
   useEffect(() => {

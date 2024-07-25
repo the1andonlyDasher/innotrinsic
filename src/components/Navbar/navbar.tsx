@@ -203,13 +203,13 @@ const Navbar = ({ contentContainer, navbar, legals }: any) => {
         <Navigation>
           <HomeBtn contentContainer={contentContainer} />
           {navbar.map((i: any, index: number) => (
-            <NavItem icon={i[1]} clickLink={null} key={i[0]} name={i[0]} href={i[2] === false && index === 0 ? "/" : i[2] === true ? `#${i[0].toLowerCase()}` : `${i[0].toLowerCase()}`} />
+            <NavItem icon={i[1]} clickLink={null} key={i[0]} name={i[0]} href={i[2] === false ? `${i[0].toLowerCase()}` : `#${i[0].toLowerCase()}`} />
           ))}
         </Navigation>
         <MobileNav>
           <HomeBtn contentContainer={contentContainer} />
           {navbar.map((i: any, index: number) => (
-            <Mnav toggle={() => toggleOpen()} icon={i[1]} clickLink={null} key={i[0]} name={i[0]} href={i[2] === false && index === 0 ? "/" : i[2] === true ? `#${i[0].toLowerCase()}` : `${i[0].toLowerCase()}`} />
+            <Mnav toggle={() => toggleOpen()} icon={i[1]} clickLink={null} key={i[0]} name={i[0]} href={i[2] === false ? `${i[0].toLowerCase()}` : `#${i[0].toLowerCase()}`} />
           ))}
           {legals.map((i: any, index: number) => (
             <Mnav secondary toggle={() => toggleOpen()} key={i} name={i} href={`${i.toLowerCase()}`} />

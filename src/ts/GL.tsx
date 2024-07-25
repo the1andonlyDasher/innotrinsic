@@ -251,7 +251,7 @@ const GL = (props: glProps) => {
 
 
     return (<>
-        {/* {!shaderCompiled && <Loader />} */}
+        {!shaderCompiled && <Loader />}
         <div className="canvas__wrapper">
 
             <Canvas
