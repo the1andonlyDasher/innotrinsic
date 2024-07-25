@@ -70,7 +70,7 @@ export const NavItem = ({ href, name, clickLink, icon }: NavItemProps, ...props:
           duration: 0.75
         }}
       >
-        <Link aria-label={name} data-name={name + router.pathname.replace(/^\/(.*)/, (match, p1) => p1.charAt(0).toUpperCase() + p1.slice(1))} scroll={false} className={isShrunk ? `nav-link black` : `nav-link`} href={`${href}`} onClick={clickLink}>{name}{icon && <FontAwesomeIcon
+        <Link aria-label={name} data-name={name + router.pathname.replace(/^\/(.*)/, (match, p1) => p1.charAt(0).toUpperCase() + p1.slice(1))} className={isShrunk ? `nav-link black` : `nav-link`} href={`${href}`} onClick={clickLink}>{name}{icon && <FontAwesomeIcon
           className='ml-2 text-sm max-h-4' icon={icon} />}</Link>
       </motion.li>
     </>

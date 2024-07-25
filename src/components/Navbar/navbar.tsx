@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { MouseEvent } from "react";
 import HomeBtn from "./HomeBtn";
+import Home from '../../pages/index';
 
 
 const Navbar = ({ contentContainer, navbar, legals }: any) => {
@@ -148,7 +149,7 @@ const Navbar = ({ contentContainer, navbar, legals }: any) => {
             aria-label="Home"
             aria-current="page"
             className="company__name"
-            passHref
+
             href="/"
           >
             <div className="flex flex-row gap-4 items-center" onClick={handleClick}>
@@ -207,7 +208,7 @@ const Navbar = ({ contentContainer, navbar, legals }: any) => {
           ))}
         </Navigation>
         <MobileNav>
-          <HomeBtn contentContainer={contentContainer} />
+          <Mnav toggle={() => toggleOpen()} icon={null} clickLink={null} name={"Home"} href={"/"} />
           {navbar.map((i: any, index: number) => (
             <Mnav toggle={() => toggleOpen()} icon={i[1]} clickLink={null} key={i[0]} name={i[0]} href={i[2] === false ? `${i[0].toLowerCase()}` : `#${i[0].toLowerCase()}`} />
           ))}

@@ -34,17 +34,17 @@ const HomeBtn: React.FC<HomeBtnProps> = ({ imageUrl, contentContainer }) => {
     };
 
     return (
-        <nav>
-            <Link className='nav-link' href="/" passHref>
-                <div className="wrapper-link" onClick={handleClick}>
-                    {imageUrl ? (
-                        <img src={imageUrl} alt="Home" />
-                    ) : (
-                        'Home'
-                    )}
-                </div>
-            </Link>
-        </nav>
+
+        <Link className='nav-link' href="/" passHref>
+            <div className="wrapper-link" onClick={handleClick}>
+                {imageUrl ? (
+                    <img src={imageUrl} alt="Home" />
+                ) : (
+                    'Home'
+                )}
+            </div>
+        </Link>
+
     );
 };
 

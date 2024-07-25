@@ -222,7 +222,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                 setTimeout(() => {
                     setIsInPage(false);
                     setDisposed(true);
-                }, 500);
+                }, 0);
             });
         };
 
@@ -231,6 +231,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                 if (disposed) {
                     setDisposed(false);
                     setIsInPage(true);
+                    enterHomePage();
                 } else {
                     enterHomePage();
                 }
