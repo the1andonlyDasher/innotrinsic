@@ -16,7 +16,7 @@ type GLTFResult = GLTF & {
     brain: THREE.Mesh
   }
   materials: {}
-  animations: GLTFAction[]
+  animations: any[]
 }
 
 export function Model(props: JSX.IntrinsicElements['group']) {
