@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { MouseEvent } from "react";
 import HomeBtn from "./HomeBtn";
 import Home from '../../pages/index';
+import { targetColorsNavTitle, addColors } from "@/ts/bgColors";
 
 
 const Navbar = ({ contentContainer, navbar, legals }: any) => {
@@ -55,54 +56,15 @@ const Navbar = ({ contentContainer, navbar, legals }: any) => {
     exit: { scale: 0, opacity: 0 },
   }
 
-  const targetColors: any = {
-    landing: "#ffffff",
-    landingBusiness: "#32689C",
-    business: "#32689C",
-    "/": "#ffffff",
-    science: "#506c00",
-    slider: "#006d8b",
-    symbols: "#506c00",
-    perspective: "#506c00",
-    braincare: "#506c00",
-    universal: "#506c00",
-    architekt: "#506c00",
-    freund: "#506c00",
-    head: "#506c00",
-    services: "#506c00",
-    faq: "#506c00",
-    different: "#506c00",
-    mountain: "#506c00",
-  }
-
-  const addColors: any = {
-    landing: "#ffffff",
-    landingBusiness: "#B38224",
-    "/": "#ffffff",
-    slider: "#b32424",
-    business: "#B38224",
-    science: "#7e9b2e",
-    symbols: "#506c00",
-    perspective: "#506c00",
-    braincare: "#506c00",
-    universal: "#506c00",
-    architekt: "#506c00",
-    freund: "#506c00",
-    head: "#506c00",
-    services: "#506c00",
-    faq: "#506c00",
-    different: "#506c00",
-    mountain: "#506c00",
-  }
 
 
   const [isOpen, toggleOpen] = useCycle(false, true);
   const [location, setLocation] = useAtom(loc);
-  const [nextColor1, setNextColor1] = useState(targetColors[`${location}`])
+  const [nextColor1, setNextColor1] = useState(targetColorsNavTitle[`${location}`])
   const [nextColor2, setNextColor2] = useState(addColors[`${location}`])
 
   useEffect(() => {
-    setNextColor1(targetColors[`${location}`])
+    setNextColor1(targetColorsNavTitle[`${location}`])
     setNextColor2(addColors[`${location}`])
   }, [location]);
 
