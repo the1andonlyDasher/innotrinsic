@@ -37,37 +37,38 @@ export default function MainLayout({ preview, children, navbar, legals, t }: any
 
     const handExitComplete = () => {
 
-        if (typeof window !== "undefined") {
-            window.scrollTo(0, 0);
-            ref.current.scrollTo(0, 0)
-            // Get the hash from the url
-            const hashId = window.location.hash;
+        setTimeout(() => {
+            if (typeof window !== "undefined") {
+                window.scrollTo(0, 0);
+                ref.current.scrollTo(0, 0)
+                // Get the hash from the url
+                const hashId = window.location.hash;
 
-            if (hashId) {
-                // Use the hash to find the first element with that id
-                const element = document.querySelector(`${hashId}`);
+                if (hashId) {
+                    // Use the hash to find the first element with that id
+                    const element = document.querySelector(`${hashId}`);
 
-                if (element) {
-                    // Smooth scroll to that elment
-                    element.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                        inline: "nearest",
-                    });
-                    // console.log("scrollToHash");
+                    if (element) {
+                        // Smooth scroll to that elment
+                        element.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                            inline: "nearest",
+                        });
+                        // console.log("scrollToHash");
+                    }
+                }
+                else {
+                    window.scrollTo(0, 0)
+                    // console.log("scrollTop")
                 }
             }
-            // else {
-            //   window.scrollTo(0,0)
-            //   // console.log("scrollTop")
-            // }
-        }
+        }, 200)
     };
 
     const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
         const target = e.currentTarget;
         if (e.currentTarget instanceof HTMLDivElement) {
-            // console.log(scroll.current.toFixed(1))
             scroll.current = target.scrollTop / (target.scrollHeight - window.innerHeight)
             setGScroll(scroll.current)
         }
@@ -87,7 +88,7 @@ export default function MainLayout({ preview, children, navbar, legals, t }: any
             </div>
         </div>
         <div className="top-0 left-0 h-[100px] content-grid">
-            <Navbar className={`navbar`} navbar={navbar} legals={legals} />
+            <Navbar contentContainer={ref} className={`navbar`} navbar={navbar} legals={legals} />
         </div>
         <div ref={ref} className="main"
             onScroll={handleScroll}
@@ -95,6 +96,7 @@ export default function MainLayout({ preview, children, navbar, legals, t }: any
             <AnimatePresence
                 mode="wait"
                 initial={true}
+                onExitComplete={handExitComplete}
             >
                 <motion.div
                     key={router.route}

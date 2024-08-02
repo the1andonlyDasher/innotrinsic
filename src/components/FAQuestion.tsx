@@ -1,4 +1,4 @@
-import { forwardRef, useState } from "react";
+import { ReactNode, forwardRef, useState } from "react";
 import Section from "./Section";
 import { AnimationProps, Variant, Variants, motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +9,8 @@ type serviceType = {
     title: string;
     description?: string;
     borderBottom: boolean;
+    children?: ReactNode;
+    titleClass?: string;
 }
 
 
@@ -48,28 +50,30 @@ const FAQuestion = (props: serviceType) => {
                     hide: { transitionEnd: { display: "none" }, opacity: 0, transition: { display: { delay: 0.125 }, opacity: { duration: 0.125 }, when: "beforeChildren" } },
                 }}
 
-                className={`p-4 my-2 border border-transparent ${props.borderBottom && "border-b-[#32689C]"} h-auto grid grid-cols-1 justif-start grid-rows-1 gap-x-4  w-full origin-right`}>
+                className={`faq border border-transparent ${props.borderBottom && "border-b-[#32689C]"} `}>
 
-                <motion.dl className="flex flex-col col-span-1 w-full">
+                <motion.div className="faq__content">
                     <motion.div
                         onClick={() => { setClicked(!clicked) }}
-                        className="flex gap-6 cursor-pointer justify-start flex-row items-center">
+                        className="faq__trigger">
                         <motion.div
-                            className="origin-center"
+
                             variants={arrow_variants}
                             animate={clicked ? "open" : "closed"}>
 
-                            <FontAwesomeIcon className="text-[#32689C] text-xl origin-center" icon={faPlus} scale={5} />
+                            <FontAwesomeIcon icon={faPlus} />
 
                         </motion.div>
-                        <dl className="m-0 w-auto text-[#32689C] font-bold text-xl md:text-2xl">
+                        <div className={`faq__title ${props.titleClass}`}>
                             {props.title}
-                        </dl>
+                        </div>
 
                     </motion.div>
-                </motion.dl>
-                <motion.div variants={desc_variants} animate={clicked ? "open" : "closed"} className="grid overflow-hidden w-full col-span-1  border-t border-[#32689C]  items-start">
-                    <p className="m-0 overflow-hidden w-full leading-9">{props.description}</p>
+                </motion.div>
+                <motion.div variants={desc_variants} animate={clicked ? "open" : "closed"} className="faq__answer-wrapper">
+                    {props.description && <p className="faq__answer">{props.description}</p>}
+
+                    {props.children && <div className="faq__answer">{props.children}</div>}
                 </motion.div>
             </motion.div>
         </motion.div>

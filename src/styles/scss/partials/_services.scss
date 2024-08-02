@@ -35,6 +35,13 @@
   -webkit-transition: 0.5s ease-in-out;
 }
 
+.services__grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(800px, 1fr));
+  row-gap: 2rem;
+}
+
 .base__list {
   list-style-type: none;
   width: 100%;

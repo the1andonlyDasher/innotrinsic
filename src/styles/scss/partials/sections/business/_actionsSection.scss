@@ -1,0 +1,86 @@
+@use "../../../media-queries" as *;
+/* base classes */
+
+%flex-full {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+%absolute-full {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+%top-left-full {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+%trans {
+  transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  -webkit-transition: 0.5s ease-in-out;
+}
+
+%no-space {
+  padding: 0;
+  margin: 0;
+}
+
+%flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+%rel {
+  position: relative;
+}
+
+%col {
+  flex-direction: column;
+}
+
+%row {
+  flex-direction: row;
+}
+
+/* base classes */
+
+.actions__wrapper {
+  @extend %flex-full, %col;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  p,
+  h3 {
+    color: #32689c;
+    text-align: center;
+    width: 100%;
+  }
+  h3 {
+    font-weight: 700;
+  }
+}
+
+.actions__answer {
+  @extend %flex-full, %col;
+  gap: 1rem;
+  color: #32689c;
+  padding: 1rem;
+  h4 {
+    color: #32689c;
+    font-weight: 700;
+    font-style: italic;
+    font-family: "Poppins";
+    font-size: var(--fs-text);
+  }
+}

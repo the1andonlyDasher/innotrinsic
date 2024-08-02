@@ -1,9 +1,6 @@
 import {
-    Billboard,
-    GradientTexture,
     Instance,
     Outlines,
-    QuadraticBezierLine,
     Text,
     useCursor,
 } from "@react-three/drei";
@@ -12,16 +9,22 @@ import { useAnimation } from "framer-motion";
 import { motion as motion3d } from "framer-motion-3d";
 import {
     FunctionComponent,
+    MutableRefObject,
     Suspense,
     useEffect,
     useRef,
     useState,
 } from "react";
-import { useAtom } from "jotai";
-import { currentDistance, globalTarget, orbitTarget } from "../atoms";
+
 import { useRouter } from "next/router";
-import { Vector3 as V3 } from "@/ts/threeExport/math/Vector3";
+
 import { useSearchParams } from "next/navigation";
+
+import MorphingMesh from "./Bubble";
+import { transition as t } from '../utils';
+import CustomBillboard from "../CustomBillboard";
+import { ShaderMaterial } from "three";
+import BShader from "./BubbleShader";
 
 const materialVariants = {
     visible: { opacity: 1 },
@@ -50,6 +53,8 @@ interface IdeaProps {
     active: boolean;
     children?: any;
     index: number;
+    scroll: MutableRefObject<number>;
+    ShaderMaterialRef: MutableRefObject<ShaderMaterial>
 }
 
 const Idea: FunctionComponent<IdeaProps> = (props) => {
@@ -69,6 +74,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
     // states
     const [hovered, setHover] = useState(false);
     const [clicked, setClicked] = useState(false);
+
     const [disposed, setDisposed] = useState(false);
     const [isInPage, setIsInPage] = useState(false);
     const [r, setR] = useState(((Math.PI * 1.15) / props.r) * props.index);
@@ -89,34 +95,28 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
     // cursor state
     useCursor(hovered);
 
-    // atoms
-    const [orbTarget, setOrbitTarget] = useAtom(globalTarget);
-    const [distance, setDistance] = useAtom(currentDistance);
-
     // random
     const rand =
         Math.round(Math.random()) === 1
             ? +Math.max(0.1, 0.1 + Math.random() * 0.1)
             : -Math.max(0.1, 0.1 + Math.random() * 0.1);
 
-    // render loop
-    useFrame((state) => {
-        line.current.setPoints(props.centerPoint, idea.current.position);
-    });
+    // // render loop
+    // useFrame((state) => {
+    //     line.current.setPoints(props.centerPoint, idea.current.position);
+    //     line.current.needsUpdate = true;
+    // });
+
 
     //uef for router state change
     useEffect(() => {
-        if (router.pathname === "/einsatzgebiete" || router.pathname === "/" &&
-            searchParams.get("view") === null) {
+        if (router.pathname === "/" && !searchParams.get("view")) {
             setClicked(false);
             setHover(false);
-            // console.log(line.current);
         }
+
     }, [router.pathname, searchParams]);
 
-    useEffect(() => {
-        console.log(clicked, hovered)
-    }, [clicked, hovered]);
     // UEF for hover state
     useEffect(() => {
         sphereControls.start(
@@ -134,14 +134,14 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                 : clicked && !hovered
                     ? {
                         scale: Math.max(0.75, Math.min(viewport.width / 20, 0.9)),
-                        y: 0.9,
-                        z: -0.2,
+                        y: 0.5,
+                        z: 0.2,
+
                     }
                     : !clicked && hovered
                         ? { scale: 0.75, y: 0.5, z: 0 }
                         : { scale: 0.65, y: 0.3, z: 0 }
         );
-
         controls.start(
             hovered && clicked
                 ? "enter"
@@ -152,13 +152,9 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                         : "exit"
         );
         textMatControls.start(
-            hovered && clicked
-                ? "enter"
-                : clicked && !hovered
-                    ? "enter"
-                    : !clicked && hovered
-                        ? "enter"
-                        : "initial"
+            searchParams.get("focusGroup") ? "exit" :
+                searchParams.get("neuron") === props.text && clicked ? "clicked" :
+                    searchParams.get("neuron") && !clicked ? "hide" : hovered ? "enter" : "initial"
         );
         // hovered && clicked
         //     ? subGroupControls.stop()
@@ -171,28 +167,14 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
         //                 y: position[1] + rand,
         //                 z: position[2] + rand,
         //             });
-    }, [hovered, clicked]);
+    }, [hovered, clicked, searchParams]);
+
+
 
 
     useEffect(() => {
-        // set positions of sphere in circle or in curve above head
-        if (router.pathname === "/") {
-
-            subGroupControls.start({
-                x: Math.cos(((Math.PI * 1.15) / props.r) * props.index) * radius,
-                y: Math.sin(((Math.PI * 1.15) / props.r) * props.index) * radius / 1.45,
-                z: 0
-            });
-
-        } else {
-            subGroupControls.start({
-                x: Math.sin(((Math.PI * 2) / props.r) * props.index) * radius,
-                y: 0,
-                z: Math.cos(((Math.PI * 2) / props.r) * props.index) * radius
-            })
-            groupControls.start(searchParams.get("test") ? "exit" : "enter");
-            setClicked(searchParams.get("neuron") === props.text ? true : false);
-        };
+        groupControls.start(searchParams.get("test") ? "exit" : "enter");
+        setClicked(searchParams.get("neuron") === props.text ? true : false);
         sphereControls.start(
             !clicked
                 ? { scale: 1 }
@@ -200,123 +182,169 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                     ? { scale: 1 }
                     : { scale: 1.5 }
         );
-        if (clicked) {
-            textMatControls.start("hide")
-        } else if (searchParams.get("neuron") === props.text) {
-            textMatControls.start("enter")
-        } else textMatControls.start("initial")
 
     }, [searchParams]);
 
+    // UEF for mounting and visibility for scrolling on index page
     useEffect(() => {
-        setOrbitTarget;
-    }, []);
+        const enterHomePage = () => {
+            handleEnter(
+                Math.cos(((Math.PI * 1.15) / props.r) * props.index) * radius,
+                Math.sin(((Math.PI * 1.15) / props.r) * props.index) * radius / 1.45,
+                0,
+                0.5
+            );
+        };
 
-    // UEF for mounting and visibility
-    useEffect(() => {
-        if ((router.pathname === "/einsatzgebiete" || router.pathname === "/")) {
-            setTimeout(() => {
+        const enterEinsatzgebietePage = () => {
+            handleEnter(
+                Math.sin(((Math.PI * 2) / props.r) * props.index) * radius,
+                0,
+                Math.cos(((Math.PI * 2) / props.r) * props.index) * radius,
+                0.5
+            );
+        };
+
+        const handleEnter = (x: any, y: any, z: any, delay: any) => {
+            subGroupControls.start({
+                x: x,
+                y: y,
+                z: z,
+                transition: t({ delay: delay })
+            });
+        };
+
+        const handleExit = (delay: any) => {
+            textMatControls.start("exit");
+            sphereControls.start({ scale: 0 });
+            subGroupControls.start({ x: 0, y: 0, z: 0, transition: t({ delay: delay }) });
+            groupControls.start("exit").then(() => {
+                setTimeout(() => {
+                    setIsInPage(false);
+                    setDisposed(true);
+                }, 0);
+            });
+        };
+
+        if (router.pathname === "/") {
+            if (props.scroll.current < 0.015) {
+                if (disposed) {
+                    setDisposed(false);
+                    setIsInPage(true);
+                    enterHomePage();
+                } else {
+                    enterHomePage();
+                }
+            } else {
+                handleExit(0.0);
+            }
+        } else if (router.pathname === "/einsatzgebiete") {
+            if (disposed) {
                 setDisposed(false);
                 setIsInPage(true);
-            }, 800);
+                enterEinsatzgebietePage();
+            } else {
+                enterEinsatzgebietePage();
+            }
         } else {
-            setTimeout(() => {
-                groupControls.start("exit").then(() => {
-                    setIsInPage(false), setDisposed(true);
-                });
-            }, 100);
+            handleExit(0.5);
         }
-    }, [router.pathname]);
+    }, [router.pathname, props.scroll.current]);
+
+
+
+
+    const [groupVisible, setGroupVisible] = useState(true)
+    useEffect(() => {
+        if (searchParams.get("focusGroup")) {
+            setTimeout(() => { setGroupVisible(false) }, 1300)
+        } else {
+            setGroupVisible(true)
+        }
+    }, [searchParams]);
 
     useEffect(() => {
         if (isInPage) {
             groupControls.start("enter");
+            sphereControls.start({ scale: 1, transition: t({ delay: 0.5 }) });
+            textMatControls.start("initial")
         }
     }, [isInPage]);
 
-    const p: any = new V3();
+
     return (
         <>
+
             <motion3d.group
                 initial="initial"
                 variants={groupVariants}
-                visible={!disposed}
+                // visible={!disposed}
                 animate={groupControls}
-                transition={{
-                    type: "spring",
-                    duration: 0.5,
-                    damping: 20,
-                    stifness: 60,
-                    restDetla: 0.01,
-                    delay: props.delayFactor / 10,
-                }}
+                transition={t({ delay: props.delayFactor / 10 })}
             >
+
                 <motion3d.group
                     ref={idea}
                     initial={{
                         x: position[0],
                         y: position[1],
                         z: position[2],
-
                     }}
-                    animate={
-                        subGroupControls
-
-                    }
-                    transition={{
-                        type: "spring",
-                        damping: 10,
-                        stiffness: 40,
-                        restDelta: 0.001
-                    }}
+                    animate={subGroupControls}
+                // transition={transition({ delay: 0 })}
                 >
-                    <Billboard>
+                    <CustomBillboard >
+
                         <motion3d.group
                             animate={textControls}
-                            transition={{
-                                type: "spring",
-                                damping: 10,
-                                stifness: 60,
-                                restDetla: 0.001,
-                            }}
+                            transition={t({ delay: 0 })}
+                            visible={groupVisible}
+
                         >
+
                             <Text
                                 lookAt={() => [0, 0, -5]}
-                                scale={Math.max(0.35, Math.min(viewport.width / 20, 0.45))}
+                                scale={Math.max(0.35, Math.min(viewport.width / 20, 0.4))}
                                 textAlign="center"
+                                maxWidth={clicked ? 10 : 0.4}
+                                lineHeight={1.2}
+                                position={[0, 0.1, 0]}
                                 anchorX="center"
+                                overflowWrap="normal"
                                 strokeWidth={0}
-                                renderOrder={5}
+
                                 anchorY="bottom"
-                                font="/fonts/montserrat-alternates-v17-latin-800.ttf"
+                                font="/fonts/poppins-v21-latin-800.ttf"
                             >
                                 <motion3d.meshBasicMaterial
+                                    color={"#475946"}
                                     toneMapped={false}
                                     initial="initial"
                                     animate={textMatControls}
+                                    exit="exit"
                                     variants={{
-                                        initial: { opacity: 1, color: "#4e5c68" },
-                                        hide: { opacity: 0.2, color: "#4e5c68" },
+                                        initial: { opacity: 1, color: "#475946" },
+                                        hide: { opacity: 0.1, color: "#475946" },
                                         enter: { opacity: 1, color: "#ffffff" },
-                                        exit: { opacity: 0.2, color: "#4e5c68" },
+                                        clicked: { opacity: 0, color: "#ffffff" },
+                                        exit: { opacity: 0, color: "#475946" },
                                     }}
                                 />
                                 {`${props.text}`}
                             </Text>
+
                         </motion3d.group>
-                    </Billboard>
-                    <motion3d.group
-                        animate={sphereControls}
-                        transition={{
-                            type: "spring",
-                            damping: 10,
-                            stiffness: 50,
-                            restDelta: 0.001,
-                        }}
-                    >
-                        <Billboard>
+
+                        <motion3d.group
+                            animate={sphereControls}
+                            transition={
+                                t({ delay: 0 })
+                            }
+                            visible={groupVisible}
+                        >
+                            {/* <Billboard>
                             <motion3d.mesh
-                                renderOrder={clicked ? 0 : -1}
+                          
                                 variants={circleVariants}
                                 animate={
                                     hovered && clicked
@@ -349,104 +377,117 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                     />
                                 </motion3d.meshStandardMaterial>
                             </motion3d.mesh>
-                        </Billboard>
-                        <Instance
-                            name={props.text}
-                            ref={instance}
+                        </Billboard> */}
+                            <Instance
+                                name={props.text}
+                                ref={instance}
+                                onClick={(e) => (
+                                    searchParams.get("view") ? null :
 
-                            onClick={(e) => (
-                                e.stopPropagation(),
+                                        router.push(
+                                            router.pathname === "/" ? router.pathname :
+                                                router.pathname + `?view=true&neuron=${props.text}`,
+                                            undefined,
+                                            {
+                                                shallow: true,
+                                            }
+                                        )
+                                )}
+                                onPointerMissed={(e) => (
 
-                                router.push(
-                                    router.pathname === "/" ?
-                                        router.pathname :
-                                        router.pathname + `?view=true&neuron=${props.text}`
-                                    ,
-                                    undefined,
-                                    {
-                                        shallow: true,
-                                    }
-                                )
-                            )}
-                            onPointerMissed={(e) =>
-                                // setClicked(false),
-                                // setDistance(1),
-                                // setOrbitTarget({ x: 0, y: 1, z: 0 }),
-
-                                searchParams.get("view") !== null &&
-                                router.replace(router.pathname === "/" ?
-                                    "/" :
-                                    router.pathname, undefined, { shallow: true })
-                            }
-                            onPointerOver={(e) => (
-                                e.stopPropagation(),
-                                setHover(searchParams.get("view") !== null ? false : true)
-                            )}
-                            onPointerOut={(e) => setHover(false)}
-                        >
-                            {hovered ? (
-                                <Outlines
-                                    angle={0}
-                                    color={"#ffffff"}
-                                    thickness={0.02}
-                                    transparent
-                                    opacity={clicked ? 0.2 : 1}
-                                    toneMapped={false}
-                                />
-                            ) : searchParams.get("neuron") === props.text ? (
-                                <Outlines
-                                    angle={0}
-                                    transparent
-                                    color={"#ffffff"}
-                                    opacity={clicked ? 0.2 : 1}
-                                    thickness={0.03}
-                                    toneMapped={false}
-                                />
-                            ) : null}
-                        </Instance>
-                        <Suspense fallback={null}>
-                            <motion3d.group
-                                initial={{ scale: 0 }}
-                                animate={
-                                    clicked
-                                        ? {
-                                            scale: 1,
-                                            transition: {
-                                                type: "spring",
-                                                damping: 10,
-                                                stiffness: 50,
-                                                restDelta: 0.01,
-                                                delay: 0.5,
-                                            },
-                                        }
-                                        : { scale: 0 }
+                                    searchParams.get("focusGroup") ? null :
+                                        searchParams.get("view") !== null &&
+                                        router.replace(
+                                            router.pathname === "/" ? "/" : router.pathname,
+                                            undefined,
+                                            { shallow: true }
+                                        ))
                                 }
+                                onPointerOver={(e) => (
+                                    e.stopPropagation(),
+                                    setHover(searchParams.get("view") !== null ? false : true)
+                                )}
+                                onPointerOut={(e) => setHover(false)}
+                                position={[0, 0, 0]}
                             >
-                                {props.children}
-                            </motion3d.group>
-                        </Suspense>
-                    </motion3d.group>
-                </motion3d.group>
+
+                                {hovered ? (
+                                    <Outlines
+                                        angle={0}
+                                        color={"#ffffff"}
+                                        thickness={0.02}
+                                        transparent
+                                        opacity={clicked ? 0.2 : 1}
+                                        toneMapped={false}
+                                    />
+                                ) : searchParams.get("neuron") === props.text ? (
+                                    <Outlines
+                                        angle={0}
+                                        transparent
+                                        color={"#ffffff"}
+                                        opacity={clicked ? 0.2 : 1}
+                                        thickness={0.03}
+                                        toneMapped={false}
+                                    />
+                                ) : null}
+
+                            </Instance>
+                            <MorphingMesh
+                                position={[0, 0, 0]}
+                                clicked={clicked}
+                                focused={searchParams.get("focusGroup") !== null}
+                                inactive={searchParams.get("neuron") !== null && searchParams.get("neuron") !== props.text}
+                                textureUrl={"/images/business_img.jpg"}
+                                count={1}
+                            />
+
+
+                            <Suspense fallback={null}>
+                                <motion3d.group
+                                    initial={{ scale: 0 }}
+                                    animate={
+                                        clicked
+                                            ? {
+                                                scale: 1,
+                                                transition: {
+                                                    type: "spring",
+                                                    damping: 10,
+                                                    stiffness: 50,
+                                                    restDelta: 0.01,
+                                                    delay: 0.5,
+                                                },
+                                            }
+                                            : { scale: 0 }
+                                    }
+                                >
+                                    {props.children}
+                                </motion3d.group>
+                            </Suspense>
+                        </motion3d.group>
+                    </CustomBillboard>
+                </motion3d.group >
+                {/* 
                 {idea && (
                     <QuadraticBezierLine
                         dashed
+                        visible={!searchParams.get("focusGroup")}
+                        color={searchParams.get("neuron") === props.text ? "#ffffff" : "#a3b57a"}
                         dashScale={10}
                         lineWidth={3}
                         start={idea.current?.position}
                         end={props.centerPoint}
                         ref={line}
-                        isMaterial
                         opacity={
-                            searchParams.get("neuron") === null
-                                ? 1
-                                : searchParams.get("neuron") !== props.text
-                                    ? 0.2
-                                    : 1
+                            searchParams.get("neuron")
+                                ? 0.2
+                                : 1
                         }
                         transparent
-                    ></QuadraticBezierLine>
-                )}
-            </motion3d.group>
+                    />
+                )
+                } */}
+            </motion3d.group >
+
         </>
     );
 };

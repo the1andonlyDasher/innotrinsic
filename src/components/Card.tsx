@@ -45,8 +45,8 @@ const Card: FunctionComponent<Props> = (props) => {
                 {props.icon && <FontAwesomeIcon icon={props.icon} />}
                 {props.img && <Image width={100} height={100} alt={props.img} src={props.img} />}
             </motion.div>
-            <motion.div variants={variants} className={`card__header ${inter.className} text-[#506c00]`}>{props.header}</motion.div>
-            <motion.p variants={variants} className='text-small'>{props.text}</motion.p>
+            <motion.div variants={variants} className={"card__header"}>{props.header}</motion.div>
+            {props.text && <motion.p variants={variants} className='text-small'>{props.text}</motion.p>}
 
         </motion.div >
     );

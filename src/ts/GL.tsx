@@ -1,44 +1,48 @@
 import {
     CameraControls,
     Environment,
-    Float,
     GradientTexture,
-    OrbitControls,
-    Shadow,
-    Stats,
+
+
 } from "@react-three/drei";
 import {
     Canvas,
     extend,
     ReactThreeFiber,
-    useThree,
 } from "@react-three/fiber";
-import { Suspense, forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Suspense, forwardRef, useEffect, useRef, useState } from "react";
 import { RoundedPlaneGeometry } from "maath/geometry";
 import * as geometry from "maath/geometry";
 import {
-    currentDistance,
+
+    glReady,
     globalTarget,
     loc,
     orbitTarget,
+
 } from "./atoms";
 import { useAtom } from "jotai";
 import {
     animate,
+    motion,
     useAnimation,
 } from "framer-motion";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
-import { Mountain } from "@/Mountain";
-import ContactGL from "./contactGL/ContactGL";
-import BGText from "./BGText";
-import { motion as motion3d } from "framer-motion-3d"
-import Background from "./Background";
-import Human from "./landingGL/Human";
-import { Neurons } from "@/Neurons2";
-import { Bloom, DepthOfField, EffectComposer, Noise, ToneMapping, Vignette } from '@react-three/postprocessing'
-import { Model_Hands } from "@/Hands";
-import { Model, Neuron } from "@/Neuron5";
+
+
+
+import { NewHead4 } from "@/3DModels/NewHead4";
+import { Model } from "@/3DModels/BrainOnly";
+import CustomBezierLine from "./CustomLine";
+import Game from "./ModuleSpiel";
+import WordCloud from "./brainBasicsGL/WordCloud";
+
+import { AmbientLight } from "three";
+import { targetColors } from "./bgColors";
+
+
+
 
 declare global {
     namespace JSX {
@@ -71,23 +75,6 @@ const palette: any =
 }
 
 
-const targetColors: any = {
-    landing: ["#698151", "#A5C791"],
-    "/": ["#ffffff", "#fffde1"],
-    science: ["#ffffff", "#fffde1"],
-    symbols: ["#ffffff", "#fffde1"],
-    perspective: ["#ffffff", "#fffde1"],
-    braincare: ["#ffffff", "#fffde1"],
-    universal: ["#ffffff", "#fffde1"],
-    architekt: ["#ffffff", "#fffde1"],
-    freund: ["#ffffff", "#fffde1"],
-    head: ["#ffffff", "#fffde1"],
-    services: ["#ffffff", "#fffde1"],
-    faq: ["#ffffff", "#fffde1"],
-    different: ["#ffffff", "#fffde1"],
-    mountain: ["#ffffff", "#fffde1"],
-}
-
 
 const GL = (props: glProps) => {
     const router = useRouter();
@@ -97,16 +84,20 @@ const GL = (props: glProps) => {
     const searchParams = useSearchParams();
     const controls = useAnimation();
     const primitiveRef = useRef<any>(!null);
-    const [currentColor1, setColor1] = useState("#fffcef")
-    const [currentColor2, setColor2] = useState("#96c972")
+
+    const [currentColor1, setColor1] = useState("#c5cf8f")
+    const [currentColor2, setColor2] = useState("#89B069")
+    const [currentColor3, setColor3] = useState("#699051")
     const [controlsEnabled, setControlsEnabled] = useState(false)
     const [nextColor1, setNextColor1] = useState(targetColors[`${location}`][0])
     const [nextColor2, setNextColor2] = useState(targetColors[`${location}`][1])
+    const [nextColor3, setNextColor3] = useState(targetColors[`${location}`][2])
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         setNextColor1(targetColors[`${location}`][0])
         setNextColor2(targetColors[`${location}`][1])
+        setNextColor3(targetColors[`${location}`][2])
     }, [location]);
 
     useEffect(() => {
@@ -124,7 +115,14 @@ const GL = (props: glProps) => {
             restDelta: 0.001,
             onUpdate: (latest) => setColor2(latest),
         });
-    }, [nextColor1, nextColor2]);
+        animate(currentColor3, nextColor3, {
+            type: "spring",
+            stiffness: 30,
+            damping: 10,
+            restDelta: 0.001,
+            onUpdate: (latest) => setColor3(latest),
+        });
+    }, [nextColor1, nextColor2, nextColor3]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -138,51 +136,70 @@ const GL = (props: glProps) => {
 
 
 
-    useEffect(() => {
-        console.log(props.eventSource.current)
-    }, []);
 
     useEffect(() => {
-        cameraControls.current?.zoomTo(
-            searchParams.get("view") !== null ? 3 : 1,
-            true
-        );
-    }, [searchParams]);
-
-    useEffect(() => {
-        cameraControls.current?.setTarget(gTarget.x, gTarget.y, gTarget.z, true);
-        // controls.start({ x: target.x, y: target.y, z: target.z })
-
+        cameraControls.current?.setTarget(gTarget.x, gTarget.y - 1, gTarget.z, true);
     }, [gTarget]);
 
     let coneRotation: any;
     coneRotation = coneRotation === undefined ? Math.PI * 3 : coneRotation;
     var i = 0;
 
-    function resolveConnect(pathname: any) {
-        return new Promise((resolve) => {
-            if (pathname === "/einsatzgebiete") {
+    function resolveConnect(pathname: string, searchParams: any) {
+        return new Promise(() => {
+            if (pathname === "/einsatzgebiete" && !searchParams.get("focusGroup") || searchParams.get("focus")) {
                 setLoaded(true)
                 cameraControls.current?.connect(props.eventSource.current)
             } else {
                 cameraControls.current?.disconnect()
             }
-
-
         })
     }
 
-    async function resetCamera(pathname: string) {
+    async function resetCamera(pathname: string, searchParams: any) {
         cameraControls.current?.rotateTo(0, Math.PI / 2, true),
-            cameraControls.current?.zoomTo(1, true)
-        await resolveConnect(pathname)
+            await resolveConnect(pathname, searchParams)
     }
 
+    async function moveCamera(pathname: string, searchParams: any) {
+        await resolveConnect(pathname, searchParams)
+    }
+
+
+
     useEffect(() => {
-        resetCamera(router.pathname);
+        cameraControls.current?.zoomTo(
+            searchParams.get("view") && !searchParams.get("focusGroup") ? 3 :
+                searchParams.get("view") && searchParams.get("focusGroup") ? 3 :
+                    1,
+            true
+        );
+    }, [searchParams]);
+
+    useEffect(() => {
+        moveCamera(router.pathname, searchParams)
+    }, [searchParams]);
+
+    useEffect(() => {
+        resetCamera(router.pathname, searchParams);
     }, [router.pathname]);
 
-    return (
+    const [shaderCompiled, setShaderCompiled] = useAtom(glReady);
+
+    // Custom loader component
+    const Loader = () => {
+        return (
+            <motion.div initial={{ display: "flex", opacity: 1 }} animate={shaderCompiled ? { opacity: 0, transitionEnd: { display: "none" } } : { display: "flex", opacity: 1 }} className="fixed z-50 top-0 left-0 bg-gradient-to-bl from-[#698151] to-[#A5C791] text-white font-header font-semibold text-2xl flex flex-col justify-center items-center w-full h-full" >
+                Loading...
+            </motion.div>
+        );
+    };
+
+
+
+
+    return (<>
+        {/* {!shaderCompiled && <Loader />} */}
         <div className="canvas__wrapper">
 
             <Canvas
@@ -191,25 +208,11 @@ const GL = (props: glProps) => {
                 gl={{ antialias: true }}
                 eventSource={props.eventSource}
                 eventPrefix="client"
-            >
-                {/* <motion3d.mesh initial={{ x: target.x, y: target.y, z: target.z }} ref={primitiveRef} animate={controls}>
-                    <boxGeometry args={[3, 3, 3]} />
-                    <meshStandardMaterial color="beige" />
-                </motion3d.mesh> */}
-                {/* <Stats /> */}
-                {/* <OrbitControls
-                    // makeDefault={}
-                    ref={cameraControls}
-                    maxDistance={25}
-                    enableZoom={false}
-                    position={[10, 10, 1]}
-                    minDistance={10}
 
-                    minPolarAngle={0}
-                    maxPolarAngle={Math.PI / 2}
-                    minAzimuthAngle={-Math.PI / 2}
-                    maxAzimuthAngle={Math.PI / 2}
-                /> */}
+            >
+                <directionalLight intensity={2} />
+
+
                 {loaded &&
                     <CameraControls
                         infinityDolly={false}
@@ -218,58 +221,38 @@ const GL = (props: glProps) => {
                         polarAngle={Math.PI / 2}
                         azimuthAngle={0}
                         maxDistance={25}
-                        enabled={loaded}
+                        enabled={true}
                         distance={25}
-                        minDistance={10}
+                        minDistance={25}
                         minPolarAngle={0}
                         maxPolarAngle={Math.PI / 2}
                         minAzimuthAngle={-Math.PI / 2}
                         maxAzimuthAngle={Math.PI / 2}
                     />}
-
-
-                {/* <Neuron
-                    scroll={props.scroll} /> */}
-
-
-
+                {/* <Stats showPanel={0} /> */}
+                {/* <Game /> */}
                 <GradientTexture
-                    stops={[0, 1]}
-                    // colors={["#f6fff0", "#e5fcfc"]}
-                    // colors={["#e5fcfc", "#E5F9A9"]}
-                    // colors={["#e5fcfc", "#F8F3E0"]}
-                    // colors={["#C8E99B", "#B0E431"]}
-                    // colors={["#e5fcfc", "#96c972"]}
-                    colors={[currentColor1, currentColor2]}
-                    rotation={-0.95}
+                    stops={[0, 0.5, 1]}
+                    width={100}
+                    colors={[currentColor1, currentColor2, currentColor3]}
+                    rotation={Math.PI / -2.5}
                     attach="background"
                     size={1024}
                 />
-                <Environment preset="apartment" blur={0} />
-                {/* <ambientLight intensity={1.5} />
-                <directionalLight intensity={2.5} color={"#BDED4C"} /> */}
+                <Suspense fallback={null}>
+                    <NewHead4 scroll={props.scroll} />
+                </Suspense>
 
-                {/* <Model_Hands scroll={props.scroll} /> */}
+                <Environment background={false} preset="apartment" blur={0} />
 
-                {/* <mesh>
-                    <boxGeometry args={[3, 3, 3]} />
-                    <meshStandardMaterial color="beige" />
-                </mesh> */}
-                {/* <Mountain scroll={props.scroll} /> */}
-                {/* <Suspense>
-                    <Float floatIntensity={0.1} rotationIntensity={0.5}>
-                        <Human scroll={props.scroll} />
-                       
 
-                    </Float>
-                </Suspense> */}
-                {/* <BGText /> */}
 
-                {/* <ContactGL /> */}
                 <ambientLight intensity={0.2} />
-                {/* <Mountain scroll={props.scroll} /> */}
+
+
             </Canvas>
         </div>
+    </>
     );
 };
 

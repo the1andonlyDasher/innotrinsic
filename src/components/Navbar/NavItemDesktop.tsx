@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Work_Sans } from "next/font/google";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { useRouter } from 'next/router';
 
 
 
@@ -32,6 +33,7 @@ type NavItemProps = {
 
 export const NavItem = ({ href, name, clickLink, icon }: NavItemProps, ...props: any) => {
   const [isShrunk, setShrunk] = useState(false);
+  const router = useRouter()
   useEffect(() => {
     const handler = () => {
       setShrunk((isShrunk) => {
@@ -68,7 +70,7 @@ export const NavItem = ({ href, name, clickLink, icon }: NavItemProps, ...props:
           duration: 0.75
         }}
       >
-        <Link aria-label={name} data-name={name} scroll={false} className={isShrunk ? `nav-link black` : `nav-link`} href={`${href}`} onClick={clickLink}>{name}{icon && <FontAwesomeIcon
+        <Link aria-label={name} data-name={name + router.pathname.replace(/^\/(.*)/, (match, p1) => p1.charAt(0).toUpperCase() + p1.slice(1))} className={isShrunk ? `nav-link black` : `nav-link`} href={`${href}`} onClick={clickLink}>{name}{icon && <FontAwesomeIcon
           className='ml-2 text-sm max-h-4' icon={icon} />}</Link>
       </motion.li>
     </>

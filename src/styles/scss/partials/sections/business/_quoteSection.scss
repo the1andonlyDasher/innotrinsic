@@ -1,0 +1,73 @@
+@use "../../../media-queries" as *;
+/* base classes */
+
+%flex-full {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+%absolute-full {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+%top-left-full {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+%trans {
+  transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  -webkit-transition: 0.5s ease-in-out;
+}
+
+%no-space {
+  padding: 0;
+  margin: 0;
+}
+
+%flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* base classes */
+.quote__wrapper {
+  --size: clamp(2rem, 50vw, 25rem);
+  position: relative;
+  @extend %flex-center;
+  width: auto;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(1rem, 10vw, 2rem);
+
+  &::after {
+    content: "”";
+    position: absolute;
+    top: calc(-0.5 * var(--size));
+    left: 0rem;
+    color: #b38224;
+    font-size: var(--size);
+    overflow: visible;
+    @include mq(xl) {
+      left: -5rem;
+    }
+  }
+}
+.quote {
+  width: auto;
+  color: #053563;
+  font-family: var(--fonts-header);
+  margin: 0;
+}

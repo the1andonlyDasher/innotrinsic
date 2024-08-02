@@ -20,7 +20,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/ts/landingGL/ShakeHands.tsx"
+    "src/ts/landingGL/ShakeHands.tsx",
+    "next-sitemap.js"
   ],
   "exclude": ["node_modules"]
 }
