@@ -44,14 +44,6 @@
 
 /* base classes */
 
-#c54 {
-  display: none;
-  width: 100%;
-  @include mq(large) {
-    display: block;
-  }
-}
-
 .glInput {
   font-family: "Inter";
   width: 250px;
@@ -69,14 +61,6 @@
   &:focus {
     outline: none;
     box-shadow: none !important;
-  }
-}
-
-#c55 {
-  width: 100%;
-  display: block;
-  @include mq(large) {
-    display: none;
   }
 }
 
@@ -170,7 +154,7 @@ form :is(input, select, textarea) {
   font-size: var(--fs-text);
   min-height: 3rem;
   background-color: hsl(0, 0%, 100%);
-  border: 1px solid hsl(48, 37%, 90%);
+  border: 1px solid hsl(0, 0%, 84%);
 
   color: var(--clr-contrast-400);
   font-weight: 500;
