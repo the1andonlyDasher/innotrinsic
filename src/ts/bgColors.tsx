@@ -3,7 +3,7 @@ export const targetColors: any = {
     landing: ["#c5cf8f", "#89B069", "#699051"],
     landingBusiness: ["#ccf1fa", "#97b9c1", "#6790a5"],
     business: ["#e3f9ff", "#fffde1", "#fbffe1"],
-    "/": ["#ffffff", "#fffde1", "#f6ffe1"],
+    "/": ["#c5cf8f", "#89B069", "#699051"],
     science: ["#ffffff", "#fffffe", "#fffffa"],
     slider: ["#ffffff", "#fffffe", "#fffffa"],
     symbols: ["#ffffff", "#fffffe", "#fffffa"],
