@@ -46,8 +46,8 @@ const swipePower = (offset: number, velocity: number) => {
 };
 
 interface textObject {
-    title: string;
-    text: string;
+    title: string | null;
+    text: string | null;
 }
 
 interface carouselProps {

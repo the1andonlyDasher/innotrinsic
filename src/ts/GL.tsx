@@ -39,6 +39,7 @@ import Game from "./ModuleSpiel";
 import WordCloud from "./brainBasicsGL/WordCloud";
 
 import { AmbientLight } from "three";
+import { targetColors } from "./bgColors";
 
 
 
@@ -73,24 +74,7 @@ const palette: any =
     white: "#f8f3e0"
 }
 
-const targetColors: any = {
-    landing: ["#c5cf8f", "#89B069", "#699051"],
-    landingBusiness: ["#ccf1fa", "#97b9c1", "#6790a5"],
-    business: ["#e3f9ff", "#fffde1", "#fbffe1"],
-    "/": ["#ffffff", "#fffde1", "#f6ffe1"],
-    science: ["#ffffff", "#fffffe", "#fffffa"],
-    symbols: ["#ffffff", "#fffffe", "#fffffa"],
-    perspective: ["#ffffff", "#fffffe", "#fffffa"],
-    braincare: ["#ffffff", "#fffffe", "#fffffa"],
-    universal: ["#ffffff", "#fffffe", "#fffffa"],
-    architekt: ["#ffffff", "#fffffe", "#fffffa"],
-    freund: ["#ffffff", "#fffffe", "#fffffa"],
-    head: ["#ffffff", "#fffffe", "#fffffa"],
-    services: ["#ffffff", "#fffffe", "#fffffa"],
-    faq: ["#ffffff", "#fffffe", "#fffffa"],
-    different: ["#ffffff", "#fffffe", "#fffffa"],
-    mountain: ["#ffffff", "#fffffe", "#fffffa"],
-}
+
 
 const GL = (props: glProps) => {
     const router = useRouter();

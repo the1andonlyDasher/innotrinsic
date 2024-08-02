@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const names = [
     // ["Einsatzgebiete", null, false],
-    // ["Business", null, false],
+    ["Business", null, false],
     ["Kontakt", faCalendar, true]
   ];
   const legals_names = ["Impressum", "Datenschutz"]
