@@ -4,14 +4,28 @@ Command: npx gltfjsx@6.4.1 public/texturedHand.glb --types --output src/3DModels
 */
 
 import * as THREE from "three";
-import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  MutableRefObject,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { glReady } from "@/ts/atoms";
 import { useAtom } from "jotai";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { Color, Mesh, MeshStandardMaterial, ShaderMaterial, Texture, Vector2, Vector3 } from "three";
+import {
+  Color,
+  Mesh,
+  MeshStandardMaterial,
+  ShaderMaterial,
+  Texture,
+  Vector2,
+  Vector3,
+} from "three";
 import { lerp } from "three/src/math/MathUtils.js";
 import { useFrame } from "@react-three/fiber";
 
@@ -82,27 +96,31 @@ void main() {
 
 type GLTFResult = GLTF & {
   nodes: {
-    Shape_IndexedFaceSet001: THREE.SkinnedMesh
-    Bone: THREE.Bone
-    Bone001: THREE.Bone
-    Bone002: THREE.Bone
-    Bone003: THREE.Bone
-    Bone004: THREE.Bone
-    Bone017: THREE.Bone
-  }
+    Shape_IndexedFaceSet001: THREE.SkinnedMesh;
+    Bone: THREE.Bone;
+    Bone001: THREE.Bone;
+    Bone002: THREE.Bone;
+    Bone003: THREE.Bone;
+    Bone004: THREE.Bone;
+    Bone017: THREE.Bone;
+  };
   materials: {
-    Arms__Standard_: THREE.MeshStandardMaterial
-  }
-  animations: any[]
-}
+    Arms__Standard_: THREE.MeshStandardMaterial;
+  };
+  animations: any[];
+};
 
 type HandProps = {
   scroll: MutableRefObject<number>;
   useCustomShader?: boolean;
-  props?: JSX.IntrinsicElements['group'];
+  props?: JSX.IntrinsicElements["group"];
 };
 
-export function ShaderHand({ scroll, useCustomShader = true, ...props }: HandProps) {
+export function ShaderHand({
+  scroll,
+  useCustomShader = true,
+  ...props
+}: HandProps) {
   const { nodes, materials } = useGLTF("/texturedHand.glb") as GLTFResult;
   const shaderRef = useRef<ShaderMaterial>(null);
   const [shaderCompiled, setShaderCompiled] = useAtom(glReady);
@@ -111,10 +129,12 @@ export function ShaderHand({ scroll, useCustomShader = true, ...props }: HandPro
   const [disposed, setDisposed] = useState(true);
 
   useEffect(() => {
-    router.pathname === "/" ? setTimeout(() => { setDisposed(false) }, 200) :
-      setDisposed(true)
-
-  }, [router.pathname])
+    router.pathname === "/"
+      ? setTimeout(() => {
+        setDisposed(false);
+      }, 200)
+      : setDisposed(true);
+  }, [router.pathname]);
 
   const handleShaderCompiled = () => {
     setShaderCompiled(true);
@@ -125,27 +145,37 @@ export function ShaderHand({ scroll, useCustomShader = true, ...props }: HandPro
       opacity: { value: 0.0 },
       uCameraPosition: { value: new Vector3(0, 1.5, 30) },
       uLightDirection1: { value: new Vector3(-20, 5, -15) },
-      uLightDirection2: { value: new Vector3(-18, -20, 15) }
+      uLightDirection2: { value: new Vector3(-18, -20, 15) },
     }),
     []
   );
 
   useFrame(() => {
     if (shaderRef.current) {
-      const targetOpacity = router.pathname === "/" ? (scroll.current > 0.015 ? 0 : 1) : router.pathname ===
-        "/einsatzgebiete" && searchParams.get("focusGroup") ? 1 : 0;
+      const targetOpacity =
+        router.pathname === "/"
+          ? scroll.current > 0.015
+            ? 0
+            : 1
+          : router.pathname === "/einsatzgebiete" &&
+            searchParams.get("focusGroup")
+            ? 1
+            : 0;
       uniforms.opacity.value = lerp(uniforms.opacity.value, targetOpacity, 0.1);
       shaderRef.current.needsUpdate = true;
     }
   });
 
   return (
-    <group visible={!disposed} scale={1} position={[0.6, 0.6, 0.15]} rotation={[Math.PI / -1.0, 1.9, -0.3]} {...props} dispose={null}>
-
-      <mesh
-        geometry={nodes.Shape_IndexedFaceSet001.geometry}
-      >
-
+    <group
+      visible={!disposed}
+      scale={1}
+      position={[0.6, 0.6, 0.15]}
+      rotation={[Math.PI / -0.99, 1.9, 0]}
+      {...props}
+      dispose={null}
+    >
+      <mesh geometry={nodes.Shape_IndexedFaceSet001.geometry}>
         <shaderMaterial
           attach="material"
           ref={shaderRef}
@@ -157,9 +187,7 @@ export function ShaderHand({ scroll, useCustomShader = true, ...props }: HandPro
           depthWrite
           onBeforeCompile={handleShaderCompiled}
         />
-
       </mesh>
-
     </group>
   );
 }
