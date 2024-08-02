@@ -242,6 +242,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
             if (disposed) {
                 setDisposed(false);
                 setIsInPage(true);
+                enterEinsatzgebietePage();
             } else {
                 enterEinsatzgebietePage();
             }
@@ -311,17 +312,18 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 anchorX="center"
                                 overflowWrap="normal"
                                 strokeWidth={0}
-                                color={"#475946"}
+
                                 anchorY="bottom"
                                 font="/fonts/poppins-v21-latin-800.ttf"
                             >
                                 <motion3d.meshBasicMaterial
+                                    color={"#475946"}
                                     toneMapped={false}
                                     initial="initial"
                                     animate={textMatControls}
                                     exit="exit"
                                     variants={{
-                                        initial: { opacity: 1, color: "#475946", transition: t({ delay: 0.5 }) },
+                                        initial: { opacity: 1, color: "#475946" },
                                         hide: { opacity: 0.1, color: "#475946" },
                                         enter: { opacity: 1, color: "#ffffff" },
                                         clicked: { opacity: 0, color: "#ffffff" },
@@ -430,23 +432,15 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 ) : null}
 
                             </Instance>
-
                             <MorphingMesh
                                 position={[0, 0, 0]}
                                 clicked={clicked}
                                 focused={searchParams.get("focusGroup") !== null}
                                 inactive={searchParams.get("neuron") !== null && searchParams.get("neuron") !== props.text}
                                 textureUrl={"/images/business_img.jpg"}
-                                count={1}>
-                                <BShader
-                                    textureUrl={"/images/business_img.jpg"}
-                                    count={1}
-                                    clicked={clicked}
-                                    focused={searchParams.get("focusGroup") !== null}
-                                    inactive={searchParams.get("neuron") !== null && searchParams.get("neuron") !== props.text}
+                                count={1}
+                            />
 
-                                />
-                            </MorphingMesh>
 
                             <Suspense fallback={null}>
                                 <motion3d.group

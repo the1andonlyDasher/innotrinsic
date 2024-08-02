@@ -1,43 +1,49 @@
-import React, { useRef, useMemo, FC, forwardRef } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
-import { TextureLoader, ShaderMaterial } from "three";
-import * as THREE from "three";
-import { size } from "../utils";
+import React, { useRef, useMemo, useEffect, useState, FC, forwardRef } from "react";
+import { extend, ReactThreeFiber, useFrame } from "@react-three/fiber";
+import { TextureLoader, Color, Texture } from "three";
 import { lerp } from "three/src/math/MathUtils.js";
+import { useTexture } from "@react-three/drei";
+import SharedShader from "./SharedShader";
+import CustomShaderMaterial from "./CustomShaderMaterial";
+
+
+extend({ CustomShaderMaterial })
+
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            customShaderMaterial: ReactThreeFiber.Object3DNode<CustomShaderMaterial, typeof CustomShaderMaterial>
+        }
+    }
+}
 
 interface BubbleShaderProps {
     textureUrl: string;
-    count: number;
     clicked: boolean;
     inactive: boolean;
     focused: boolean;
 }
 
-const BubbleShader: FC<BubbleShaderProps> = ({
+const BubbleShader: FC<BubbleShaderProps> = forwardRef<typeof SharedShader, BubbleShaderProps>(({
     textureUrl,
     clicked,
     focused,
-    inactive,
-}) => {
-    const shaderRef = useRef<THREE.ShaderMaterial>(null);
-
-
-    const imageTexture = useMemo(() => new TextureLoader().load(textureUrl), [textureUrl]);
-    const cloudTexture = useMemo(() => new TextureLoader().load("/images/clouds.webp"), []);
-    const maskTexture = useMemo(() => new TextureLoader().load("/images/clouds_mask.webp"), []);
-
+    inactive
+}, ref) => {
+    const shaderRef = useRef<typeof SharedShader>(null);
+    const [texture1, texture2, texture3] = useTexture([textureUrl, "/images/clouds.webp", "/images/clouds_mask.webp"])
 
 
     const uniforms = useMemo(() => ({
-        uImage: { value: imageTexture },
+        uImage: { value: texture1 },
         uActive: { value: 0.0 },
         uFocused: { value: 0.0 },
         uInactive: { value: 0.0 },
-        uMask: { value: maskTexture },
-        uCloud: { value: cloudTexture },
+        uMask: { value: texture3 },
+        uCloud: { value: texture2 },
         uTime: { value: 0 },
-        uBeigeColor: { value: new THREE.Color(0xf5f5dc) },
-    }), [imageTexture, maskTexture, cloudTexture]);
+        uBeigeColor: { value: new Color(0xf5f5dc) },
+    }), [texture1, texture2, texture3]);
 
     useFrame((state) => {
         if (shaderRef.current) {
@@ -52,9 +58,14 @@ const BubbleShader: FC<BubbleShaderProps> = ({
         }
     });
 
+    if (!texture1 || !texture2 || !texture3) {
+        return null; // or a loading indicator
+    }
+
     return (
-        <shaderMaterial
-            ref={shaderRef}
+        <customShaderMaterial
+
+            ref={ref || shaderRef}
             vertexShader={`
                 #include <morphtarget_pars_vertex>
                 varying vec2 vUv;
@@ -150,11 +161,8 @@ const BubbleShader: FC<BubbleShaderProps> = ({
             attach="material"
         />
     );
-};
+});
 
-const BShader = forwardRef<THREE.ShaderMaterial, BubbleShaderProps>((props, ref) => (
-    <BubbleShader {...props} />
-));
-BShader.displayName = "BubbleShader";
+BubbleShader.displayName = "BubbleShader";
 
-export default BShader;
+export default BubbleShader;

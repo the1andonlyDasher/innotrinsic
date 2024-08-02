@@ -21,6 +21,9 @@ import * as THREE from 'three';
 import { extend } from '@react-three/fiber';
 import { productViewer, globalTarget, orbitTarget, loc } from '@/ts/atoms'
 import IdeaCloud from '@/ts/landingGL/IdeaCloud'
+import { ShaderHand } from './texHand'
+import { TexturedHand } from './texHand2'
+import WordCloud from '@/ts/brainBasicsGL/WordCloud'
 
 const GoldShader = <shaderMaterial
   uniforms={{
@@ -115,6 +118,48 @@ const material2Variants = {
     },
   },
 };
+
+
+const words = [
+  "Think",
+  "Act",
+  "Move",
+  "Motivation",
+  "Satisfaction",
+  "Flexible",
+  "Exzellenz",
+  "Kreativität",
+  "Entscheiden",
+  "Problemlösung",
+  "Adaptability",
+  "Fokus",
+  "Resilienz",
+  "Kollaboration",
+  "Courage",
+  "Engagement",
+  "Effizienz",
+  "Productivity"
+]
+const colors = [
+  "#e9f3ff",  // Brighter
+  "#f4f9ff",  // Brighter
+  "#f2ffdf",  // Brighter
+  "#c6dfe8",  // Brighter
+  "#c0c8b2",  // Brighter
+  "#f0f7ff",  // Brighter
+  "#e7f1ff",  // Brighter
+  "#dfedb6",  // Brighter
+  "#ecf8ff",  // Brighter
+  "#e3ffb6",  // Brighter
+  "#d5ebff",  // Brighter
+  "#f5f8ff",  // Brighter
+  "#f9ffdb",  // Brighter
+  "#dde5f0",  // Brighter
+  "#fdffec",  // Brighter
+  "#f7faff",  // Brighter
+  "#cfdff0"   // Brighter
+];
+
 
 export function NewHead4(props: HeadHandsProps) {
   const { nodes, materials } = useGLTF('/newHead4.glb') as GLTFResult
@@ -223,6 +268,8 @@ export function NewHead4(props: HeadHandsProps) {
 
   const brain_mesh_controls = useAnimation();
 
+  // enter animations
+
   useEffect(() => {
     if (router.pathname === "/") {
       if ((props.scroll.current > 0.015)) {
@@ -232,6 +279,8 @@ export function NewHead4(props: HeadHandsProps) {
       } else {
         setDisposed(false);
         setIsInPage(true);
+        brain_mesh_controls.start("enter")
+        brain_material_controls.start("enter")
       }
     } else if (router.pathname === "/einsatzgebiete") {
       if (searchParams.get("view") && !searchParams.get("focusGroup")) {
@@ -241,9 +290,17 @@ export function NewHead4(props: HeadHandsProps) {
           setIsInPage(false), setDisposed(true)
         });
       } else {
+        setDisposed(false);
+        setIsInPage(true);
         brain_mesh_controls.start("enter")
         brain_material_controls.start("enter")
       }
+    }
+    else if (router.pathname === "/business") {
+      setDisposed(false);
+      setIsInPage(true);
+      brain_mesh_controls.start("enter")
+      brain_material_controls.start("enter")
     }
     else {
       brain_material_controls.start("hidden").then(() => {
@@ -252,21 +309,21 @@ export function NewHead4(props: HeadHandsProps) {
     }
   }, [router.pathname, props.scroll.current, searchParams]);
 
-  useEffect(() => {
-    if (isInPage) {
-      brain_mesh_controls.start("enter")
-      brain_material_controls.start("enter")
-    }
-  }, [isInPage]);
+
   return (
     <group {...props}  {...props} position={pos} dispose={null} scale={s(6, scl[0] * s(0.5, viewport.width / 30, 0.8), 10)} rotation={[0, -Math.PI / 1.15, 0]}>
       <group rotation={[0, -0.3, 0]} scale={1}>
         <primitive object={nodes.Bone} />
-        <Model scroll={props.scroll} />
+        {/* <Model scroll={props.scroll} /> */}
+
+        <ShaderHand scroll={props.scroll} />
+        <TexturedHand />
+
         {/* <skinnedMesh geometry={nodes.Shape_IndexedFaceSet001.geometry} material={nodes.Shape_IndexedFaceSet001.material} skeleton={nodes.Shape_IndexedFaceSet001.skeleton} >{MyShaderMaterial}</skinnedMesh> */}
       </group>
       <Float floatIntensity={0.1} rotationIntensity={0.1}>
         <group scale={1} rotation={[0, -Math.PI / 0.85, 0]} position={[0.075, -0.6, 0.1]}>
+          {/* <WordCloud active={router.pathname === "/business"} words={words} colors={colors} /> */}
           <motion3d.group variants={brainVariants} initial="initial" animate={brain_mesh_controls} visible={!disposed}>
             <pointLight intensity={15} color={"#ffde5b"} position={[0.2, 1.5, 0]} />
             <mesh geometry={nodes.base.geometry} material={nodes.base.material} position={[0.137, 1.743, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.337, 0.325, 0.308]} >{brain_material}</mesh>

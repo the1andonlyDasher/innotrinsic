@@ -10,63 +10,85 @@ import { useCustomCursor } from '../utils';
 interface WordProps {
     children: string;
     position: [number, number, number];
+    active: boolean;
     color: string;
 }
 
-const Word: FC<WordProps> = ({ children, color, ...props }) => {
+const Word: FC<WordProps> = ({ children, color, active, ...props }) => {
     const fontProps = { font: '/fonts/poppins-v21-latin-700.ttf', fontSize: 2.5, letterSpacing: -0.05, lineHeight: 1, 'material-toneMapped': false };
     const ref = useRef<any>(null);
     let myState = useRef<string>("");
     useCustomCursor(myState.current === "hovered" ? true : false, 'pointer');
 
-    // Random animation properties
-    const delay = 1 + Math.random() * 5;
-    const duration = 6 + Math.random() * 4;
-    const opacity = Math.random();
-    const scale = 0.5 + Math.random() * 0.8;
+    const still = useMemo(() => {
+        const delay = Math.random() / 2;
+        return {
+            y: 0,
+            scale: 0,
+            transition: {
+                scale: {
+                    ease: 'easeInOut',
+                    delay: delay,
+                },
+                y: {
+                    ease: 'easeInOut',
+                    delay: delay,
+                },
+            },
 
-    const floating = {
-        y: [0, scale, -scale, 0], // Float up and down
-        scale: [1, scale, 1],
-        transition: {
-            scale: {
-                duration: duration,
-                repeat: Infinity,
-                repeatType: 'loop',
-                ease: 'easeInOut',
-                delay: delay,
+        };
+    }, []);
+    const floating = useMemo(() => {
+        const delay = 1 + Math.random() * 5;
+        const duration = 6 + Math.random() * 4;
+        const scale = 0.5 + Math.random() * 0.8;
+        return {
+            y: [0, scale, -scale, 0],
+            scale: [1, scale, 1],
+            transition: {
+                scale: {
+                    duration: duration,
+                    repeat: Infinity,
+                    repeatType: 'loop',
+                    ease: 'easeInOut',
+                    delay: delay,
+                },
+                y: {
+                    duration: 20 + duration,
+                    repeat: Infinity,
+                    repeatType: 'loop',
+                    ease: 'easeInOut',
+                    delay: delay,
+                },
             },
-            y: {
-                duration: 20 + duration,
-                repeat: Infinity,
-                repeatType: 'loop',
-                ease: 'easeInOut',
-                delay: delay,
+        };
+    }, []);
+
+    const opacityChange = useMemo(() => {
+        const opacity = Math.random();
+        return {
+            opacity: [1, opacity, 1],
+            transition: {
+                opacity: {
+                    duration: 6 + Math.random() * 4,
+                    repeat: Infinity,
+                    repeatType: 'loop',
+                    ease: 'easeInOut',
+                    delay: 1 + Math.random() * 5,
+                },
             },
-        },
-    };
-    const opacityChange = {
-        opacity: [1, opacity, 1],
-        transition: {
-            opacity: {
-                duration: duration,
-                repeat: Infinity,
-                repeatType: 'loop',
-                ease: 'easeInOut',
-                delay: delay,
-            },
-        },
-    };
+        };
+    }, []);
 
     return (
-        <motion3d.group
-            {...props}
-            animate={floating}
-
+        <motion3d.group {...props}
+            animate={
+                active ?
+                    floating :
+                    still}
         >
             <CustomBillboard>
                 <Text
-
                     ref={ref}
                     scale={0.2}
                     onClick={() => console.log('clicked')}
@@ -79,20 +101,18 @@ const Word: FC<WordProps> = ({ children, color, ...props }) => {
     );
 };
 
+
 // WordCloud Component
 interface WordCloudProps {
     words: string[];
     colors: string[];
+    active: boolean;
 }
 
-const WordCloud: FC<WordCloudProps> = ({ words, colors }) => {
+const WordCloud: FC<WordCloudProps> = ({ words, colors, active }) => {
     const { viewport } = useThree();
 
     // states
-    const [hovered, setHover] = useState(false);
-    const [clicked, setClicked] = useState(false);
-    const [disposed, setDisposed] = useState(false);
-    const [isInPage, setIsInPage] = useState(false);
     const r = (size: number, index: number) => ((Math.PI * 2) / size) * index;
     const radius = Math.max(2.25, Math.min(viewport.width / 10, 5.5));
 
@@ -102,10 +122,11 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors }) => {
     const repeatedColors = useMemo(() => Array.from({ length: desiredCount }, (_, index) => colors[index % colors.length]), [colors, desiredCount]);
 
     return (
-        <>
+        <motion3d.group position={[0, 1.9, 0]} scale={0.125}>
             <motion3d.group position={[0, -2, 0]}>
                 {Array.from({ length: 9 }).map((_, index: number) => (
                     <Word
+                        active={active}
                         color={repeatedColors[index]}
                         key={index}
                         position={[
@@ -121,6 +142,7 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors }) => {
             <motion3d.group position={[0, 0, 0]}>
                 {Array.from({ length: 15 }).map((_, index: number) => (
                     <Word
+                        active={active}
                         color={repeatedColors[index]}
                         key={index}
                         position={[
@@ -136,6 +158,7 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors }) => {
             <motion3d.group position={[0, 2, 0]}>
                 {Array.from({ length: 9 }).map((_, index: number) => (
                     <Word
+                        active={active}
                         color={repeatedColors[index]}
                         key={index}
                         position={[
@@ -148,7 +171,7 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors }) => {
                     </Word>
                 ))}
             </motion3d.group>
-        </>
+        </motion3d.group>
     );
 }
 

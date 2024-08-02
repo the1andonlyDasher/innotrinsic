@@ -2,7 +2,7 @@ import React, { useRef, useMemo, useLayoutEffect, FC, useState, ReactNode, Mutab
 import { useFrame, useThree } from "@react-three/fiber";
 import { motion as motion3d } from "framer-motion-3d";
 import * as THREE from "three";
-import { ShaderMaterial, TextureLoader } from "three";
+import BubbleShader from "./BubbleShader";
 import { size } from "../utils";
 import { lerp } from "three/src/math/MathUtils.js";
 
@@ -13,14 +13,17 @@ interface MorphingMeshProps {
     inactive: boolean;
     focused: boolean;
     position: [number, number, number]
-    children: ReactNode
+
 }
 
 const MorphingMesh: FC<MorphingMeshProps> = ({
     count,
     clicked,
     position,
-    children
+    textureUrl,
+    inactive,
+    focused
+
 }) => {
 
 
@@ -100,7 +103,12 @@ const MorphingMesh: FC<MorphingMeshProps> = ({
                     position={[0, 0, 0]}
                 // position={pos}
                 >
-                    {children}
+                    <BubbleShader
+                        textureUrl={textureUrl}
+                        clicked={clicked}
+                        focused={focused}
+                        inactive={inactive}
+                    />
                 </motion3d.mesh>
             ))}
         </group>

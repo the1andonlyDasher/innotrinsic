@@ -38,6 +38,9 @@ import CustomBezierLine from "./CustomLine";
 import Game from "./ModuleSpiel";
 import WordCloud from "./brainBasicsGL/WordCloud";
 
+import { AmbientLight } from "three";
+
+
 
 
 declare global {
@@ -75,18 +78,18 @@ const targetColors: any = {
     landingBusiness: ["#ccf1fa", "#97b9c1", "#6790a5"],
     business: ["#e3f9ff", "#fffde1", "#fbffe1"],
     "/": ["#ffffff", "#fffde1", "#f6ffe1"],
-    science: ["#ffffff", "#fffde1", "#fffde1"],
-    symbols: ["#ffffff", "#fffde1", "#fffde1"],
-    perspective: ["#ffffff", "#fffde1", "#fffde1"],
-    braincare: ["#ffffff", "#fffde1", "#fffde1"],
-    universal: ["#ffffff", "#fffde1", "#fffde1"],
-    architekt: ["#ffffff", "#fffde1", "#fffde1"],
-    freund: ["#ffffff", "#fffde1", "#fffde1"],
-    head: ["#ffffff", "#fffde1", "#fffde1"],
-    services: ["#ffffff", "#fffde1", "#fffde1"],
-    faq: ["#ffffff", "#fffde1", "#fffde1"],
-    different: ["#ffffff", "#fffde1", "#fffde1"],
-    mountain: ["#ffffff", "#fffde1", "#fffde1"],
+    science: ["#ffffff", "#fffffe", "#fffffa"],
+    symbols: ["#ffffff", "#fffffe", "#fffffa"],
+    perspective: ["#ffffff", "#fffffe", "#fffffa"],
+    braincare: ["#ffffff", "#fffffe", "#fffffa"],
+    universal: ["#ffffff", "#fffffe", "#fffffa"],
+    architekt: ["#ffffff", "#fffffe", "#fffffa"],
+    freund: ["#ffffff", "#fffffe", "#fffffa"],
+    head: ["#ffffff", "#fffffe", "#fffffa"],
+    services: ["#ffffff", "#fffffe", "#fffffa"],
+    faq: ["#ffffff", "#fffffe", "#fffffa"],
+    different: ["#ffffff", "#fffffe", "#fffffa"],
+    mountain: ["#ffffff", "#fffffe", "#fffffa"],
 }
 
 const GL = (props: glProps) => {
@@ -207,51 +210,11 @@ const GL = (props: glProps) => {
         );
     };
 
-    const words = [
-        "Think",
-        "Act",
-        "Move",
-        "Motivation",
-        "Satisfaction",
-        "Flexible",
-        "Exzellenz",
-        "Kreativität",
-        "Entscheiden",
-        "Problemlösung",
-        "Adaptability",
-        "Fokus",
-        "Resilienz",
-        "Kollaboration",
-        "Courage",
-        "Engagement",
-        "Effizienz",
-        "Productivity"
-    ]
-    const colors = [
-        "#e9f3ff",  // Brighter
-        "#f4f9ff",  // Brighter
-        "#f2ffdf",  // Brighter
-        "#c6dfe8",  // Brighter
-        "#c0c8b2",  // Brighter
-        "#f0f7ff",  // Brighter
-        "#e7f1ff",  // Brighter
-        "#dfedb6",  // Brighter
-        "#ecf8ff",  // Brighter
-        "#e3ffb6",  // Brighter
-        "#d5ebff",  // Brighter
-        "#f5f8ff",  // Brighter
-        "#f9ffdb",  // Brighter
-        "#dde5f0",  // Brighter
-        "#fdffec",  // Brighter
-        "#f7faff",  // Brighter
-        "#cfdff0"   // Brighter
-    ];
-
 
 
 
     return (<>
-        {!shaderCompiled && <Loader />}
+        {/* {!shaderCompiled && <Loader />} */}
         <div className="canvas__wrapper">
 
             <Canvas
@@ -262,8 +225,9 @@ const GL = (props: glProps) => {
                 eventPrefix="client"
 
             >
+                <directionalLight intensity={2} />
 
-                {/* <WordCloud words={words} colors={colors} /> */}
+
                 {loaded &&
                     <CameraControls
                         infinityDolly={false}

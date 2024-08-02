@@ -11,9 +11,9 @@ import { useSearchParams } from "next/navigation";
 interface HeroSectionBusinessProps { }
 
 const variants = {
-    initial: { y: 20, filter: "blur(20px)", opacity: 0 },
-    enter: { y: 0, filter: "blur(0px)", opacity: 1, delay: 1 },
-    exit: { y: 20, filter: "blur(20px)", opacity: 0 },
+    initial: { x: 20, filter: "blur(20px)", opacity: 0 },
+    enter: { x: 0, filter: "blur(0px)", opacity: 1, delay: 1 },
+    exit: { x: -20, filter: "blur(20px)", opacity: 0 },
 };
 
 const variants_words = {
@@ -24,7 +24,7 @@ const variants_words = {
 
 const HeroSectionBusiness: FunctionComponent<HeroSectionBusinessProps> = () => {
     const searchParams = useSearchParams();
-    const [pvAtom, setPVAtom] = useAtom(mountainViewer);
+    const [pvAtom, setPVAtom] = useAtom(productViewer);
     const lpViewer = useRef<any>(!null);
     const inView = useInView(lpViewer, { margin: "0px", amount: 0.1 });
     const setCoords = () => {
@@ -115,7 +115,7 @@ const HeroSectionBusiness: FunctionComponent<HeroSectionBusinessProps> = () => {
                 <motion.div className="left__wrapper">
                     <motion.header variants={variants} className="landing__header">
                         <strong className="business">Neuro</strong>loyal
-                        <AnimatePresence initial mode="wait">
+                        <AnimatePresence initial mode="popLayout">
                             <MotionConfig transition={{ type: "tween", ease: "easeInOut", duration: 0.5 }}>
                                 <motion.div
                                     key={header1}
@@ -151,7 +151,6 @@ const HeroSectionBusiness: FunctionComponent<HeroSectionBusinessProps> = () => {
                     ref={lpViewer}
                     className="right__wrapper viewer"
                 ></motion.div>
-                {/* HERO SECTION ENDE */}
             </motion.div>
         </Sec>
     );
