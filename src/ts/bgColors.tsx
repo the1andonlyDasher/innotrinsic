@@ -1,3 +1,4 @@
+// diese Farben sind für die jeweiligen sections
 export const targetColors: any = {
     landing: ["#c5cf8f", "#89B069", "#699051"],
     landingBusiness: ["#ccf1fa", "#97b9c1", "#6790a5"],
@@ -19,7 +20,7 @@ export const targetColors: any = {
     mountain: ["#ffffff", "#fffffe", "#fffffa"],
 }
 
-
+// diese Farben ändern den ersten teil des Navigationstitels
 export const targetColorsNavTitle: any = {
     landing: "#ffffff",
     landingBusiness: "#32689C",
@@ -40,6 +41,7 @@ export const targetColorsNavTitle: any = {
     mountain: "#506c00",
 }
 
+// diese Farben ändern den zweiten Teil des Navigationstitels (also Business, Dashboard etc)
 export const addColors: any = {
     landing: "#ffffff",
     landingBusiness: "#B38224",
