@@ -64,7 +64,7 @@
     gap: 4rem;
   }
   h3 {
-    font-weight: 800;
+    font-weight: 700;
     text-align: center;
     color: #506c00;
   }
@@ -101,5 +101,54 @@
   .section-description {
     width: auto;
     color: #506c00;
+  }
+}
+
+.icons__title {
+  text-decoration: underline;
+}
+
+.icons__pictureSection {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.icons__picture {
+  width: 50%;
+  max-width: 100%;
+  border-radius: 40px;
+  padding: 32px;
+}
+
+.icons__picture img {
+  width:100%;
+  border-radius: 20px;
+}
+.icons__text-section_new {
+  width: 50%;
+  padding: 32px;
+}
+
+.icons__text-section_new h4 {
+  color:#506c00;
+  margin-bottom: 10px;
+}
+
+/* Styles for mobile (small screens) */
+@media (max-width: 768px) {
+  .icons__pictureSection {
+      flex-direction: column; /* Stack items vertically */
+  }
+
+  .icons__picture,
+  .icons__text-section_new {
+      width: 100%; /* Full width for each element */
+      padding: 20px 5px;
+  }
+
+  .icons__pictureSection:nth-child(odd) .icons__picture {
+      order: -1; /* Image first for odd blocks */
   }
 }

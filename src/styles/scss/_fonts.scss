@@ -52,15 +52,15 @@
   src: url("/fonts/poppins-v21-latin-900.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
-/* didact-gothic-regular - latin */
+/* OpenSans-regular - latin */
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: "Didact Gothic";
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: 400;
-  src: url("/fonts/didact-gothic-v20-latin-regular.woff2") format("woff2"),
+  src: url("/fonts/OpenSans-Regular-webfont.woff2") format("woff2"),
     /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-      url("/fonts/didact-gothic-v20-latin-regular.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
+      url("/fonts/OpenSans-Regular.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
 }
 
 /* telex-regular - latin */
@@ -75,5 +75,5 @@
 $fonts: (
   header: "Poppins",
   sub: "Telex",
-  text: "Didact Gothic",
+  text: "Open Sans",
 );
