@@ -42,7 +42,7 @@ export interface ModuleSet {
     second: ModuleGroup;
     third: ModuleGroup;
     fourth: ModuleGroup;
-    fifth: ModuleGroup;
+    // fifth: ModuleGroup;
 }
 
 export const moduleSet = atom<ModuleSet>({
@@ -54,27 +54,27 @@ export const moduleSet = atom<ModuleSet>({
     },
     second: {
         NeuroloyalZumNeu: { label: "Neruoloyal zum Neu", size: [0, 0, 0], position: [-2, 0, 0], svgSrc: "/images/Rastergrafik4.png", textColor: "hsl(39, 66%, 57%)", color: "#f4e5ca", UID: 20 },
-        NeuroloyalPlanen: { label: "Neuroloyal Planen", size: [4.75, 2, 1], position: [0, -1.5, 0], svgSrc: "/images/Rastergrafik5.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 21 },
+        NeuroloyalPlanen: { label: "Neuroloyal Planen", size: [7.125, 2, 1], position: [0, -1.375, 0], svgSrc: "/images/Rastergrafik5.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 21 },
         FocusMe: { label: "Focus Me", size: [0, 0, 0], position: [4.75, -2.5, 0], svgSrc: "/images/Rastergrafik3.png", textColor: "hsl(210, 7%, 57%)", color: "#C0C4C8", UID: 22 },
         FocusOutside: { label: "Focus Outside", size: [0, 0, 0], position: [-2, -5, 0], svgSrc: "/images/Rastergrafik2.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 23 },
     },
     third: {
-        NeuroloyalZumNeu: { label: "Neruoloyal zum Neu", size: [2.25, 1.01, 1], position: [-2.5, -2.5, 0], svgSrc: "/images/Rastergrafik4.png", textColor: "hsl(39, 66%, 57%)", color: "#f4e5ca", UID: 31 },
-        NeuroloyalPlanen: { label: "Neuroloyal Planen", size: [2.25, 1.01, 1], position: [2.5, -0.25, 0], svgSrc: "/images/Rastergrafik5.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 32 },
-        FocusOutside: { label: "Focus Outside", size: [2.25, 1.01, 1], position: [-2.5, -0.25, 0], svgSrc: "/images/Rastergrafik2.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 33 },
+        NeuroloyalZumNeu: { label: "Neruoloyal zum Neu", size: [2.33, 2.01, 1], position: [-4.75, -1.375, 0], svgSrc: "/images/Rastergrafik4.png", textColor: "hsl(39, 66%, 57%)", color: "#f4e5ca", UID: 31 },
+        NeuroloyalPlanen: { label: "Neuroloyal Planen", size: [2.33, 2.01, 1], position: [0, -1.375, 0], svgSrc: "/images/Rastergrafik5.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 32 },
+        FocusOutside: { label: "Focus Outside", size: [2.33, 2.01, 1], position: [4.75, -1.375, 0], svgSrc: "/images/Rastergrafik2.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 33 },
     },
     fourth: {
-        FocusMe: { label: "Focus Me", size: [4.75, 0.666, 1], position: [0, 0, 0], svgSrc: "/images/Rastergrafik3.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 40 },
-        FocusOutside: { label: "Focus Outside", size: [4.75, 0.666, 1], position: [0, -1.5, 0], svgSrc: "/images/Rastergrafik2.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 41 },
-        NeuroloyalZumNeu: { label: "Neruoloyal zum Neu", size: [4.75, 0.666, 1], position: [0, -3, 0], svgSrc: "/images/Rastergrafik4.png", textColor: "hsl(39, 66%, 57%)", color: "#f4e5ca", UID: 42 },
+        FocusMe: { label: "Focus Me", size: [2.33, 2.01, 1], position: [-4.75, -1.375, 0], svgSrc: "/images/Rastergrafik3.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 40 },
+        FocusOutside: { label: "Focus Outside", size: [2.33, 2.01, 1], position: [0, -1.375, 0], svgSrc: "/images/Rastergrafik2.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 41 },
+        NeuroloyalZumNeu: { label: "Neruoloyal zum Neu", size: [2.33, 2.01, 1], position: [4.75, -1.375, 0], svgSrc: "/images/Rastergrafik4.png", textColor: "hsl(39, 66%, 57%)", color: "#f4e5ca", UID: 42 },
     },
-    fifth: {
-        NeuroloyalZumNeu: { label: "Neruoloyal zum Neu", size: [1.5, 1, 1], position: [-3.2, -2.5, 0], svgSrc: "/images/Rastergrafik4.png", textColor: "hsl(39, 66%, 57%)", color: "#f4e5ca", UID: 51 },
-        NeuroloyalPlanen: { label: "Neuroloyal Planen", size: [1.5, 1, 1], position: [0, -0.25, 0], svgSrc: "/images/Rastergrafik5.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 52 },
-        FocusOutside: { label: "Focus Outside", size: [1.5, 1, 1], position: [0, -2.5, 0], svgSrc: "/images/Rastergrafik2.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 53 },
-        WhyToGo: { label: "Let's go?! Why to go?", size: [1.5, 1, 1], position: [-3.2, -0.25, 0], svgSrc: "/images/Rastergrafik7.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 54 },
-        BrainBasics: { label: "BrainBasics - Know How to go", size: [1.5, 1, 1], position: [3.2, -0.25, 0], svgSrc: "/images/Rastergrafik7.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 55 },
-    }
+    // fifth: {
+    //     NeuroloyalZumNeu: { label: "Neruoloyal zum Neu", size: [2.33, 1, 1], position: [-4.75, -0.25, 0], svgSrc: "/images/Rastergrafik4.png", textColor: "hsl(39, 66%, 57%)", color: "#f4e5ca", UID: 51 },
+    //     NeuroloyalPlanen: { label: "Neuroloyal Planen", size: [2.33, 1, 1], position: [0, -0.25, 0], svgSrc: "/images/Rastergrafik5.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 52 },
+    //     FocusOutside: { label: "Focus Outside", size: [2.33, 1, 1], position: [4.75, -0.25, 0], svgSrc: "/images/Rastergrafik2.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 53 },
+    //     WhyToGo: { label: "Let's go?! Why to go?", size: [3.5, 1.01, 1], position: [3.65, -2.5, 0], svgSrc: "/images/Rastergrafik7.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 54 },
+    //     BrainBasics: { label: "BrainBasics - Know How to go", size: [3.5, 1.01, 1], position: [-3.65, -2.5, 0], svgSrc: "/images/Rastergrafik7.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 55 },
+    // }
 });
 
 

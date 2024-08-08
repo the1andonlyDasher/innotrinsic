@@ -43,6 +43,7 @@ export { MeshBasicMaterial } from "three/src/materials/MeshBasicMaterial.js";
 export class MeshDepthMaterial {}
 export class PointsMaterial {}
 export class BufferGeometryLoader {}
+export { BufferGeometryUtils } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 export { AnimationLoader } from "three/src/loaders/AnimationLoader.js";
 // export { CompressedTextureLoader } from "three/src/loaders/CompressedTextureLoader.js";
 export class CompressedTextureLoader {}

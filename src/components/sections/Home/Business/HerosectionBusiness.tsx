@@ -26,7 +26,7 @@ const HeroSectionBusiness: FunctionComponent<HeroSectionBusinessProps> = () => {
     const searchParams = useSearchParams();
     const [pvAtom, setPVAtom] = useAtom(productViewer);
     const lpViewer = useRef<any>(!null);
-    const inView = useInView(lpViewer, { margin: "0px", amount: 0.1 });
+
     const setCoords = () => {
         const { width, height, left, top } =
             lpViewer?.current.getBoundingClientRect();
@@ -115,7 +115,7 @@ const HeroSectionBusiness: FunctionComponent<HeroSectionBusinessProps> = () => {
                 <motion.div className="left__wrapper">
                     <motion.header variants={variants} className="landing__header">
                         <strong className="business">Neuro</strong>loyal
-                        <AnimatePresence initial mode="popLayout">
+                        <AnimatePresence initial mode="wait">
                             <MotionConfig transition={{ type: "tween", ease: "easeInOut", duration: 0.5 }}>
                                 <motion.div
                                     key={header1}

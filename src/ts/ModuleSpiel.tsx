@@ -334,6 +334,7 @@ const Module: React.FC<ModuleProps> = ({
     const texture = useTexture(svgSrc);
     const [active, setActive] = useState(true);
     const [clicked, setClick] = useState(false);
+    const [currentModuleSet, setModuleSet] = useAtom(moduleSet);
     //atoms
     const [currentModule, setCurrentModule] = useAtom(openModule);
 
@@ -392,7 +393,9 @@ const Module: React.FC<ModuleProps> = ({
                             color="hsl(52, 22%, 86%)"
                         >
                         </Outlines>
-                        <mesh position={[-0.9, 0, 0.6]} rotation={[0, 0, 0]}>
+                        <mesh scale={size[1] === 2 ? 1.7 : size[1] === 2.01 ? 1.125 : 1}
+                            position={size[1] === 2 ? [-2, 0, 0.6] : size[1] === 2.01 ? [0, 0.4, 0.6] : [-0.9, 0, 0.6]}
+                            rotation={[0, 0, 0]}>
                             <planeGeometry args={[1 / 1.5, 0.8]} />
                             <meshBasicMaterial color={textColor} alphaMap={texture} toneMapped={false} transparent map={texture} alphaTest={0.0125} />
                         </mesh>
@@ -401,19 +404,19 @@ const Module: React.FC<ModuleProps> = ({
                                 size[1] === 1.01 // four
                                     ? [size[0] / 13, size[1] / 3.5, 1]
                                     : size[1] === 2 // big one
-                                        ? [0.25, 0.5, 2]
+                                        ? [0.4, 0.45, 2]
                                         : size[1] === 0.666
                                             ? [0.1, 0.666, 1] // three ones
-                                            : [0.23, 0.35, 1]
+                                            : [0.2375, 0.25, 1]
                             }
-                            position={[0.35, 0, 0.6]}
+                            position={size[1] === 2 ? [1, 0, 0.6] : size[1] === 2.01 ? [0, -0.4, 0.6] : [0.35, 0, 0.6]}
                             maxWidth={
                                 size[1] === 1.01 // four
                                     ? size[0] * 2
                                     : size[1] === 2 // big one
-                                        ? size[0] / 2
+                                        ? size[0] * 2
                                         : size[1] === 0.666
-                                            ? size[0] * 3 // three ones
+                                            ? size[0] * 2 // three ones
                                             : size[0] * 4
                             }
                             anchorY="middle"
@@ -474,9 +477,10 @@ const Game: React.FC = () => {
             setMS(Object.entries(currentModuleSet.third));
         } else if (globalIndex === 3) {
             setMS(Object.entries(currentModuleSet.fourth));
-        } else {
-            setMS(Object.entries(currentModuleSet.fifth));
         }
+        //else {
+        //     setMS(Object.entries(currentModuleSet.fifth));
+        // }
     }, [globalIndex]);
 
     return (

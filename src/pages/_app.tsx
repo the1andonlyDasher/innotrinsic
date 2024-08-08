@@ -8,8 +8,8 @@ import Head from "next/head";
 export default function App({ Component, pageProps }: AppProps) {
 
   const names = [
-    // ["Einsatzgebiete", null, false],
-    // ["Business", null, false],
+    ["Einsatzgebiete", null, false],
+    ["Business", null, false],
     ["Kontakt", faCalendar, true]
   ];
   const legals_names = ["Impressum", "Datenschutz"]

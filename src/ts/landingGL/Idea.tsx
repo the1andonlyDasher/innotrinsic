@@ -21,7 +21,7 @@ import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
 
 import MorphingMesh from "./Bubble";
-import { transition as t } from '../utils';
+import { transition as t, transition } from '../utils';
 import CustomBillboard from "../CustomBillboard";
 import { ShaderMaterial } from "three";
 import BShader from "./BubbleShader";
@@ -119,28 +119,20 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
 
     // UEF for hover state
     useEffect(() => {
-        sphereControls.start(
-            hovered && clicked
-                ? { scale: 1.5 }
-                : clicked && !hovered
-                    ? { scale: 1.5 }
-                    : !clicked && hovered
-                        ? { scale: 1.5 }
-                        : { scale: 1 }
-        );
+
         textControls.start(
             hovered && clicked
-                ? { scale: 0.75, y: 0.9, z: -0.2 }
+                ? { scale: 0.75, y: 0.9, z: -0.2, transition: t({ delay: 0 }) }
                 : clicked && !hovered
                     ? {
                         scale: Math.max(0.75, Math.min(viewport.width / 20, 0.9)),
                         y: 0.5,
-                        z: 0.2,
+                        z: 0.2, transition: t({ delay: 0 })
 
                     }
                     : !clicked && hovered
-                        ? { scale: 0.75, y: 0.5, z: 0 }
-                        : { scale: 0.65, y: 0.3, z: 0 }
+                        ? { scale: 0.75, y: 0.5, z: 0, transition: t({ delay: 0 }) }
+                        : { scale: 0.65, y: 0.3, z: 0, transition: t({ delay: 0.5 }) }
         );
         controls.start(
             hovered && clicked
@@ -156,17 +148,6 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                 searchParams.get("neuron") === props.text && clicked ? "clicked" :
                     searchParams.get("neuron") && !clicked ? "hide" : hovered ? "enter" : "initial"
         );
-        // hovered && clicked
-        //     ? subGroupControls.stop()
-        //     : clicked && !hovered
-        //         ? subGroupControls.stop()
-        //         : !clicked && hovered
-        //             ? subGroupControls.stop()
-        //             : subGroupControls.start({
-        //                 x: position[0] + rand,
-        //                 y: position[1] + rand,
-        //                 z: position[2] + rand,
-        //             });
     }, [hovered, clicked, searchParams]);
 
 
@@ -177,9 +158,9 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
         setClicked(searchParams.get("neuron") === props.text ? true : false);
         sphereControls.start(
             !clicked
-                ? { scale: 1 }
+                ? { scale: 1, transition: t({ delay: 0.5 }) }
                 : searchParams.get("neuron") !== props.text
-                    ? { scale: 1 }
+                    ? { scale: 1, transition: t({ delay: 0.5 }) }
                     : { scale: 1.5 }
         );
 
@@ -231,9 +212,13 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                 if (disposed) {
                     setDisposed(false);
                     setIsInPage(true);
-                    enterHomePage();
+                    setTimeout(() => {
+                        enterHomePage();
+                    }, 500)
                 } else {
-                    enterHomePage();
+                    setTimeout(() => {
+                        enterHomePage();
+                    }, 500)
                 }
             } else {
                 handleExit(0.0);
@@ -242,9 +227,13 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
             if (disposed) {
                 setDisposed(false);
                 setIsInPage(true);
-                enterEinsatzgebietePage();
+                setTimeout(() => {
+                    enterEinsatzgebietePage();
+                }, 500)
             } else {
-                enterEinsatzgebietePage();
+                setTimeout(() => {
+                    enterEinsatzgebietePage();
+                }, 500)
             }
         } else {
             handleExit(0.5);
@@ -280,7 +269,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                 variants={groupVariants}
                 // visible={!disposed}
                 animate={groupControls}
-                transition={t({ delay: props.delayFactor / 10 })}
+                transition={t({ delay: 0.5 + props.delayFactor / 10 })}
             >
 
                 <motion3d.group
@@ -297,7 +286,6 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
 
                         <motion3d.group
                             animate={textControls}
-                            transition={t({ delay: 0 })}
                             visible={groupVisible}
 
                         >
@@ -337,9 +325,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
 
                         <motion3d.group
                             animate={sphereControls}
-                            transition={
-                                t({ delay: 0 })
-                            }
+
                             visible={groupVisible}
                         >
                             {/* <Billboard>

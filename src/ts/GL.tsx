@@ -2,7 +2,7 @@ import {
     CameraControls,
     Environment,
     GradientTexture,
-
+    Stats
 
 } from "@react-three/drei";
 import {
@@ -40,6 +40,7 @@ import WordCloud from "./brainBasicsGL/WordCloud";
 
 import { AmbientLight } from "three";
 import { targetColors } from "./bgColors";
+import Camouflage from "./brainBasicsGL/Camouflage";
 
 
 
@@ -199,7 +200,7 @@ const GL = (props: glProps) => {
 
 
     return (<>
-        {!shaderCompiled && <Loader />}
+        {/* {!shaderCompiled && <Loader />} */}
         <div className="canvas__wrapper">
 
             <Canvas
@@ -211,7 +212,6 @@ const GL = (props: glProps) => {
 
             >
                 <directionalLight intensity={2} />
-
 
                 {loaded &&
                     <CameraControls
@@ -229,8 +229,8 @@ const GL = (props: glProps) => {
                         minAzimuthAngle={-Math.PI / 2}
                         maxAzimuthAngle={Math.PI / 2}
                     />}
-                {/* <Stats showPanel={0} /> */}
-                {/* <Game /> */}
+                <Stats />
+                <Game />
                 <GradientTexture
                     stops={[0, 0.5, 1]}
                     width={100}

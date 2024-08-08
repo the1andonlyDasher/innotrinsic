@@ -1,30 +1,31 @@
-import * as THREE from "three";
+
 import React from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { useFrame } from "@react-three/fiber";
 import { lerp } from "three/src/math/MathUtils.js";
 import { useRouter } from "next/router";
+import { AnimationClip, Group, Mesh, MeshStandardMaterial } from "three";
 
 type ActionName = "Shape_IndexedFaceSet002";
 
-interface GLTFAction extends THREE.AnimationClip {
+interface GLTFAction extends AnimationClip {
   name: ActionName;
 }
 
 type GLTFResult = GLTF & {
   nodes: {
-    Shape_IndexedFaceSet001: THREE.Mesh;
+    Shape_IndexedFaceSet001: Mesh;
   };
   materials: {
-    Arms__Standard_: THREE.MeshStandardMaterial;
+    Arms__Standard_: MeshStandardMaterial;
   };
   animations: GLTFAction[];
 };
 
 export function TexturedHand(props: JSX.IntrinsicElements["group"]) {
-  const group = React.useRef<THREE.Group>(null);
-  const mesh = React.useRef<THREE.Mesh>(null);
+  const group = React.useRef<Group>(null);
+  const mesh = React.useRef<Mesh>(null);
   const router = useRouter();
   const { nodes, materials, animations } = useGLTF(
     "/texturedHand2.glb"
@@ -64,7 +65,7 @@ export function TexturedHand(props: JSX.IntrinsicElements["group"]) {
       visible={!disposed}
       ref={group}
       scale={1}
-      position={[0.6, 0.6, 0.15]}
+      position={[0.6, 0.7, 0.15]}
       rotation={[Math.PI / -0.99, 1.9, 0]}
       {...props}
       dispose={null}

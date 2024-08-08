@@ -118,15 +118,17 @@ const Navbar = ({ contentContainer, navbar, legals }: any) => {
             href="/"
           >
             <div className="flex flex-row gap-4 items-center" onClick={handleClick}>
+
               <svg
                 className="navbar__logo"
                 xmlns="http://www.w3.org/2000/svg"
                 xmlSpace="preserve"
-                width={324.962}
-                height={323}
+                width="100%"
+                height="100%"
                 viewBox="0 0 85.98 85.46"
               >
                 <g
+
                   style={{
                     fill: "none",
                   }}
@@ -144,7 +146,7 @@ const Navbar = ({ contentContainer, navbar, legals }: any) => {
 
               <motion.div className="navbar__text">
 
-                <motion.div animate={{ color: nextColor1 }} className={`main-name `}>
+                <motion.div animate={{ color: nextColor1, y: 0, x: 0 }} className={`main-name `}>
                   MY InnoTrinsic
                 </motion.div>
                 <AnimatePresence mode="wait">
