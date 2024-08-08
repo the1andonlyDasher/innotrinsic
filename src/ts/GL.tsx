@@ -2,7 +2,7 @@ import {
     CameraControls,
     Environment,
     GradientTexture,
-
+    Stats
 
 } from "@react-three/drei";
 import {
@@ -229,7 +229,7 @@ const GL = (props: glProps) => {
                         minAzimuthAngle={-Math.PI / 2}
                         maxAzimuthAngle={Math.PI / 2}
                     />}
-                {/* <Stats showPanel={0} /> */}
+                <Stats showPanel={0} />
                 {/* <Game /> */}
                 <GradientTexture
                     stops={[0, 0.5, 1]}

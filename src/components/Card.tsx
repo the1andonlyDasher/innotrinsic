@@ -39,7 +39,7 @@ interface Props {
 
 const Card: FunctionComponent<Props> = (props) => {
     return (
-        <motion.div initial="initial" whileInView="animate" variants={blurVariants} className="relative z-10 backdrop-blur-xl card" >
+        <motion.div initial="initial" whileInView="animate" viewport={{ once: true }} variants={blurVariants} className="relative z-10 backdrop-blur-xl card" >
             <motion.div variants={variants} className='card__icon'>
                 {props.children}
                 {props.icon && <FontAwesomeIcon icon={props.icon} />}
