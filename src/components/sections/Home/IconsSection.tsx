@@ -18,22 +18,10 @@ const variants = {
     exit: { y: 20, filter: "blur(20px)", opacity: 0 },
 };
 
-const variants2 = {
+const parentVariants = {
     initial: { y: 20, filter: "blur(20px)", opacity: 0 },
-    enter: { y: 0, filter: "blur(0px)", opacity: 1 },
-    exit: { y: 20, filter: "blur(20px)", opacity: 0 },
-};
-
-const blurVariants = {
-    initial: { opacity: 0 },
-    animate: {
-        opacity: 1,
-        transition: { staggerChildren: 0.1, when: "afterChildren" },
-    },
-    exit: {
-        opacity: 0,
-        transition: { staggerChildren: 0.1, when: "afterChildren" },
-    },
+    enter: { y: 0, filter: "blur(0px)", opacity: 1, transition: { staggerChildren: 0.2, when: "beforeChildren" } },
+    exit: { y: 20, filter: "blur(20px)", opacity: 0, transition: { staggerChildren: 0.1, when: "afterChildren", staggerDirection: -1 } },
 };
 
 const IconsSection: FunctionComponent<IconsSectionProps> = () => {
@@ -41,7 +29,7 @@ const IconsSection: FunctionComponent<IconsSectionProps> = () => {
     return (
         <motion.div
             id="mehr"
-            viewport={{ amount: 0.1, once: false, margin: "0px" }}
+            viewport={{ amount: 0.1, once: true, margin: "0px" }}
             initial="initial"
             whileInView="enter"
             variants={{
@@ -58,7 +46,7 @@ const IconsSection: FunctionComponent<IconsSectionProps> = () => {
             }}
             className="breakout icons__wrapper"
         >
-            <motion.div variants={variants} className="icons__card-wrapper">
+            <motion.div variants={variants} viewport={{ once: true }} className="icons__card-wrapper">
                 <Card header={`Neurowissen\n-schaftlich\nbasiert`}>
                     <NeuroSVG />
                 </Card>
@@ -97,11 +85,11 @@ const IconsSection: FunctionComponent<IconsSectionProps> = () => {
 
 
             </motion.div>
-            <motion.div className="icons__pictureSection">
-                <motion.div className="icons__picture">
+            <motion.div variants={parentVariants} initial="initial" whileInView="enter" viewport={{ once: true }} className="icons__pictureSection">
+                <motion.div variants={variants} className="icons__picture">
                     <Image width={500} height={300} alt="Neuroloyaler Perspektivenwechsel." src="/images/perspektivenwechsel.jpg" />
                 </motion.div>
-                <motion.div className="icons__text-section_new">
+                <motion.div variants={variants} className="icons__text-section_new">
                     <motion.h4 variants={variants} className="section-description">
                         Neuroloyaler Perspektiven-Wechsel
                     </motion.h4>
@@ -116,9 +104,9 @@ const IconsSection: FunctionComponent<IconsSectionProps> = () => {
                     </motion.p>
                 </motion.div>
             </motion.div>
-            <motion.div className="icons__pictureSection">
-                
-                <motion.div className="icons__text-section_new">
+            <motion.div variants={parentVariants} initial="initial" whileInView="enter" viewport={{ once: true }} className="icons__pictureSection">
+
+                <motion.div variants={variants} className="icons__text-section_new">
                     <motion.h4 variants={variants} className="section-description">
                         Alltagsarchitekt Gehirn
                     </motion.h4>
@@ -132,45 +120,45 @@ const IconsSection: FunctionComponent<IconsSectionProps> = () => {
                         Unternehmensalltag und im Leben jedes Menschen unterstützen können.
                     </motion.p>
                 </motion.div>
-                <motion.div className="icons__picture">
+                <motion.div variants={variants} className="icons__picture">
                     <Image width={500} height={300} alt="Alltagsarchitekt Gehirn." src="/images/alltagsarchitekt-gehirn.jpg" />
                 </motion.div>
             </motion.div>
-            <motion.div className="icons__pictureSection">
-                <motion.div className="icons__picture">
+            <motion.div variants={parentVariants} initial="initial" whileInView="enter" viewport={{ once: true }} className="icons__pictureSection">
+                <motion.div variants={variants} className="icons__picture">
                     <Image width={500} height={300} alt="Neuroloyaler Perspektivenwechsel." src="/images/gehirn-besterfreund.jpg" />
                 </motion.div>
-                <motion.div className="icons__text-section_new">
+                <motion.div variants={variants} className="icons__text-section_new">
                     <motion.h4 variants={variants} className="section-description">
                         Das Gehirn wird zum besten Freund.
                     </motion.h4>
                     <motion.p variants={variants}>
-                    Mit einem respektvollen Blick auf die Natur des Menschen gehen wir
-                    neue Wege der Kooperation und Kollaboration mit dem mächtigsten Organ
-                    des Körpers. Ähnlich wie wir für unsere physische Gesundheit sorgen,
-                    zeigen wir Wege auf, wie das hochkomplexe Gehirn optimal genutzt
-                    werden kann. Das Gehirn wird zum besten Freund, der uns unterstützt
-                    und begleitet.
+                        Mit einem respektvollen Blick auf die Natur des Menschen gehen wir
+                        neue Wege der Kooperation und Kollaboration mit dem mächtigsten Organ
+                        des Körpers. Ähnlich wie wir für unsere physische Gesundheit sorgen,
+                        zeigen wir Wege auf, wie das hochkomplexe Gehirn optimal genutzt
+                        werden kann. Das Gehirn wird zum besten Freund, der uns unterstützt
+                        und begleitet.
                     </motion.p>
                 </motion.div>
             </motion.div>
-            <motion.div className="icons__pictureSection">
-                
-                <motion.div className="icons__text-section_new">
+            <motion.div variants={parentVariants} initial="initial" whileInView="enter" viewport={{ once: true }} className="icons__pictureSection">
+
+                <motion.div variants={variants} className="icons__text-section_new">
                     <motion.h4 variants={variants} className="section-description">
-                    BrainCare pragmatisch und mit Struktur
+                        BrainCare pragmatisch und mit Struktur
                     </motion.h4>
                     <motion.p variants={variants}>
-                    Als verlässlicher Partner von Menschen und Organisationen haben wir
-                    aus dem Wissen der Neurowissenschaften ein neuroloyales
-                    Strukturprinzip entwickelt, um Menschen und Organisationen für diese
-                    Komplexität zu sensibilisieren und neuroloyales Handeln mit BrainCare
-                    zu ermöglichen. Unsere pragmatischen Strukturen und Bausteine sind
-                    bedarfsgerecht, zielgenau, flexibel und leicht erlernbar - für jeden
-                    nutzbar und anwendbar.
+                        Als verlässlicher Partner von Menschen und Organisationen haben wir
+                        aus dem Wissen der Neurowissenschaften ein neuroloyales
+                        Strukturprinzip entwickelt, um Menschen und Organisationen für diese
+                        Komplexität zu sensibilisieren und neuroloyales Handeln mit BrainCare
+                        zu ermöglichen. Unsere pragmatischen Strukturen und Bausteine sind
+                        bedarfsgerecht, zielgenau, flexibel und leicht erlernbar - für jeden
+                        nutzbar und anwendbar.
                     </motion.p>
                 </motion.div>
-                <motion.div className="icons__picture">
+                <motion.div variants={variants} className="icons__picture">
                     <Image width={500} height={300} alt="Neuroloyaler Perspektivenwechsel." src="/images/braincare.jpg" />
                 </motion.div>
             </motion.div>
