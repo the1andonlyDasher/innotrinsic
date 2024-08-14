@@ -155,6 +155,10 @@ const ContactForm = ({ props }: ContactProps) => {
     return (
         <>
             <section className="form-section" id={props.id}>
+                <div className="container-form">
+                <div className="image-wrapper">
+                <img src="/images/gehirn-briefe.jpg" alt="Description"/>
+                </div>
                 <div className="form-wrapper">
                     <h3 data-before={props.title} className="font-bold">{props.title}</h3>
                     <p>{props.subtitle}</p>
@@ -181,7 +185,7 @@ const ContactForm = ({ props }: ContactProps) => {
                     >
                         <input type="hidden" name="contact_number"></input>
                         <motion.div variants={variants}>
-                            <label htmlFor="name">Name:</label>
+                            {/* <label htmlFor="name">Name:</label> */}
                             <input
                                 type="text"
                                 id="name"
@@ -194,7 +198,7 @@ const ContactForm = ({ props }: ContactProps) => {
                             />
                         </motion.div>
                         <motion.div variants={variants}>
-                            <label htmlFor="email">E-Mail:</label>
+                            {/* <label htmlFor="email">E-Mail:</label> */}
                             <input
                                 type="email"
                                 id="email"
@@ -208,7 +212,7 @@ const ContactForm = ({ props }: ContactProps) => {
                             />
                         </motion.div>
                         <motion.div variants={variants}>
-                            <label htmlFor="message">Nachricht</label>
+                            {/* <label htmlFor="message">Nachricht</label> */}
                             <textarea
                                 value={message}
                                 placeholder={"Was können wir für Sie tun?"}
@@ -229,6 +233,8 @@ const ContactForm = ({ props }: ContactProps) => {
                         </motion.button>
                     </motion.form>
                 </div>
+                </div>
+                
             </section>
         </>
     );
