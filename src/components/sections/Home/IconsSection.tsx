@@ -39,7 +39,7 @@ const blurVariants = {
 const IconsSection: FunctionComponent<IconsSectionProps> = () => {
     const [location, setLocation] = useAtom(loc);
     return (
-        <motion.div
+        <div className="background-wrapper"><motion.div
             id="mehr"
             viewport={{ amount: 0.1, once: false, margin: "0px" }}
             initial="initial"
@@ -175,48 +175,7 @@ const IconsSection: FunctionComponent<IconsSectionProps> = () => {
                 </motion.div>
             </motion.div>
 
-            {/* <motion.div variants={variants} className="icons__text-section">
-                <motion.h4 variants={variants} className="section-description">
-                    Alltagsarchitekt Gehirn
-                </motion.h4>
-                <motion.p variants={variants}>
-                    MY InnoTrinsic konzentriert sich auf das Gehirn und seine enorme
-                    Komplexität, die einen entscheidenden Einfluss auf unser Handeln,
-                    unsere Leistungsfähigkeit, unser Wohlbefinden und das Wachstum von
-                    Organisationen und Gesellschaft hat. Wir schöpfen aus den
-                    Neurowissenschaften und der Neuropsychologie, um dieses Wissen in
-                    praktische Strukturen und Methoden zu überführen, die im
-                    Unternehmensalltag und im Leben jedes Menschen unterstützen können.
-                </motion.p>
-            </motion.div>
-            <motion.div variants={variants} className="icons__text-section">
-                <motion.h4 variants={variants} className="section-description">
-                    Das Gehirn wird zum besten Freund
-                </motion.h4>
-                <motion.p variants={variants}>
-                    Mit einem respektvollen Blick auf die Natur des Menschen gehen wir
-                    neue Wege der Kooperation und Kollaboration mit dem mächtigsten Organ
-                    des Körpers. Ähnlich wie wir für unsere physische Gesundheit sorgen,
-                    zeigen wir Wege auf, wie das hochkomplexe Gehirn optimal genutzt
-                    werden kann. Das Gehirn wird zum besten Freund, der uns unterstützt
-                    und begleitet.
-                </motion.p>
-            </motion.div>
-            <motion.div variants={variants} className="icons__text-section">
-                <motion.h4 variants={variants} className="section-description">
-                    BrainCare pragmatisch und mit Struktur
-                </motion.h4>
-                <motion.p variants={variants}>
-                    Als verlässlicher Partner von Menschen und Organisationen haben wir
-                    aus dem Wissen der Neurowissenschaften ein neuroloyales
-                    Strukturprinzip entwickelt, um Menschen und Organisationen für diese
-                    Komplexität zu sensibilisieren und neuroloyales Handeln mit BrainCare
-                    zu ermöglichen. Unsere pragmatischen Strukturen und Bausteine sind
-                    bedarfsgerecht, zielgenau, flexibel und leicht erlernbar - für jeden
-                    nutzbar und anwendbar.
-                </motion.p>
-            </motion.div> */}
-        </motion.div>
+        </motion.div></div>
     );
 };
 

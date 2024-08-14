@@ -152,3 +152,21 @@
       order: -1; /* Image first for odd blocks */
   }
 }
+
+.background-wrapper {
+  position: relative;
+  width: 100vw; /* Full viewport width */
+  margin-left: calc(-50vw + 50%); /* Center the wrapper within the content grid */
+  background: #f8f3e0; /* Background color or image */
+  padding: 20px 0; /* Adjust padding as needed */
+  box-sizing: border-box; /* Include padding in width calculation */
+  overflow: hidden; /* Hide overflow content */
+}
+
+/* Adjust the content within the background-wrapper */
+#mehr {
+  max-width: var(--content-max-width); /* Limit width based on content grid max width */
+  margin: 0 auto; /* Center content */
+  position: relative; /* For potential absolute positioning adjustments */
+  z-index: 1; /* Ensure content appears above background */
+}
