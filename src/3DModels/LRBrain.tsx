@@ -58,7 +58,7 @@ export function LRBrain(props: JSX.IntrinsicElements['group']) {
 
   useFrame((state) => {
     if (pointsRef.current && !disposed) {
-      uniforms.uRadius.value = lerp(uniforms.uRadius.value, router.pathname === "/business" ? 2.0 : 1.0, 0.15)
+      uniforms.uRadius.value = lerp(uniforms.uRadius.value, router.pathname === "/business/brainbackgrounds" ? 2.0 : 1.0, 0.15)
       pointsRef.current.material.uniforms.uTime.value = state.clock.elapsedTime;
     }
   });
@@ -70,7 +70,7 @@ export function LRBrain(props: JSX.IntrinsicElements['group']) {
 
 
   useEffect(() => {
-    if (router.pathname === "/business") {
+    if (router.pathname === "/business/brainbackgrounds") {
       setTimeout(() => {
         setDisposed(false), setInPage(true)
 

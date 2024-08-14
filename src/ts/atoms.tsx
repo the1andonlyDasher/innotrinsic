@@ -1,5 +1,4 @@
 
-import BrainBasics from '@/pages/business/brainbasics'
 import { Vector3 } from '@react-three/fiber'
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'

@@ -1,8 +1,5 @@
-import { loc } from "@/ts/atoms";
-import { motion, MotionConfig } from "framer-motion";
-import { useAtom } from "jotai";
+import { motion } from "framer-motion";
 import { FunctionComponent, useEffect, useState } from "react";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { transition, useMediaQuery } from "@/ts/utils";
 
@@ -183,7 +180,8 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                             transition: transition({ delay: 2 }),
                         }}
                         viewport={{ once: true }}
-                        src="/images/karin-bild.jpg"
+                        src="/images/stoothtiger.jpeg"
+                        // src="/images/karin-bild.jpg"
                         width={709}
                         height={709}
                         alt="Bild von Dr. Karin Koert-Lehmann"
@@ -200,10 +198,13 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                     />
                     <motion.img
                         className="avatar absolute top-0"
-                        initial={{ opacity: 0.5 }}
+                        initial={{ opacity: 0 }}
                         whileInView={{
-                            opacity: [0.5, 0],
-                            transition: transition({ delay: 2 }),
+                            opacity: [0, 0.5, 0],
+                            transition: {
+                                times: [0, 0.5, 1],
+                                delay: 2
+                            },
                             transitionEnd: { display: "none" },
                         }}
                         viewport={{ once: true }}
@@ -212,6 +213,17 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                         height={709}
                         alt="Bild von Dr. Karin Koert-Lehmann"
                     />
+                    {variantsBrain && <motion.img
+                        className="avatar absolute top-0 "
+                        variants={variantsBrain}
+                        initial="initial"
+                        whileInView="enter"
+                        viewport={{ once: true }}
+                        src="/images/brain.webp"
+                        width={709}
+                        height={709}
+                        alt="Bild von Ulrike Corneliussen"
+                    />}
                     <motion.h5
                         initial={{ opacity: 0, filter: "blur(20px)" }}
                         whileInView={{ opacity: 1, filter: "blur(0px)", transition: { delay: 2.5 } }}
@@ -234,7 +246,8 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                             transition: transition({ delay: 2 }),
                         }}
                         viewport={{ once: true }}
-                        src="/images/ulrike-bild.webp"
+                        src="/images/stoothtiger.jpeg"
+                        // src="/images/ulrike-bild.webp"
                         width={709}
                         height={709}
                         alt="Bild von Ulrike Corneliussen"
@@ -251,10 +264,13 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                     />
                     <motion.img
                         className="avatar absolute top-0"
-                        initial={{ opacity: 0.5 }}
+                        initial={{ opacity: 0 }}
                         whileInView={{
-                            opacity: [0.5, 0],
-                            transition: transition({ delay: 2 }),
+                            opacity: [0, 0.5, 0],
+                            transition: {
+                                times: [0, 0.5, 1],
+                                delay: 2
+                            },
                             transitionEnd: { display: "none" },
                         }}
                         viewport={{ once: true }}
@@ -273,6 +289,7 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                         }}
                         viewport={{ once: true }}
                     />
+
                     {variantsBrain && <motion.img
                         className="avatar absolute top-0 "
                         variants={variantsBrain}

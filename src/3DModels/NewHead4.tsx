@@ -277,8 +277,8 @@ export function NewHead4(props: HeadHandsProps) {
 
   useFrame(() => {
 
-    if (glassRef.current && router.pathname === "/business") {
-      glassRef.current.opacity = lerp(glassRef.current.opacity, router.pathname === "/business" ? 1 : 0, 0.15)
+    if (glassRef.current && router.pathname === "/business/brainbackgrounds") {
+      glassRef.current.opacity = lerp(glassRef.current.opacity, router.pathname === "/business/brainbackgrounds" ? 1 : 0, 0.15)
     }
   })
 
@@ -309,7 +309,7 @@ export function NewHead4(props: HeadHandsProps) {
         brain_mesh_controls.start("enter");
         brain_material_controls.start("enter");
       }
-    } else if (router.pathname === "/business") {
+    } else if (router.pathname === "/business/brainbackgrounds") {
       setDisposed(false);
       setIsInPage(true);
       brain_mesh_controls.start("enter");
@@ -336,7 +336,7 @@ export function NewHead4(props: HeadHandsProps) {
     />
   );
 
-  const mat = router.pathname === "/business" ? glass_material : brain_material;
+  const mat = router.pathname === "/business/brainbackgrounds" ? glass_material : brain_material;
 
 
 
@@ -365,7 +365,7 @@ export function NewHead4(props: HeadHandsProps) {
           position={[0.075, -0.6, 0.1]}
         >
           <WordCloud
-            active={router.pathname === "/business"}
+            active={router.pathname === "/business/brainbackgrounds"}
             words={words}
             colors={colors}
           />

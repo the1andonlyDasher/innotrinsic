@@ -2,7 +2,8 @@
 export const targetColors: any = {
     landing: ["#c5cf8f", "#89B069", "#699051"],
     landingBusiness: ["#ccf1fa", "#97b9c1", "#6790a5"],
-    business: ["#e3f9ff", "#fffde1", "#fbffe1"],
+    business: ["#ccf1fa", "#97b9c1", "#6790a5"],
+    "/business/brainbackgrounds": ["#ccf1fa", "#97b9c1", "#6790a5"],
     "/": ["#c5cf8f", "#89B069", "#699051"],
     science: ["#ffffff", "#fffffe", "#fffffa"],
     slider: ["#ffffff", "#fffffe", "#fffffa"],

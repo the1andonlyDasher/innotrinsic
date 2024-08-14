@@ -95,11 +95,14 @@ const GL = (props: glProps) => {
     const [nextColor3, setNextColor3] = useState(targetColors[`${location}`][2])
     const [loaded, setLoaded] = useState(false);
 
+
+
     useEffect(() => {
         setNextColor1(targetColors[`${location}`][0])
         setNextColor2(targetColors[`${location}`][1])
         setNextColor3(targetColors[`${location}`][2])
-    }, [location]);
+        console.log(`${location}`)
+    }, [location, router.pathname]);
 
     useEffect(() => {
         animate(currentColor1, nextColor1, {
@@ -123,6 +126,7 @@ const GL = (props: glProps) => {
             restDelta: 0.001,
             onUpdate: (latest) => setColor3(latest),
         });
+
     }, [nextColor1, nextColor2, nextColor3]);
 
     useEffect(() => {
