@@ -15,60 +15,60 @@ const variants = {
 };
 
 const outerDesktopVariantsKarin = {
-    initial: { translateX: "50%" },
+    initial: { translateX: "0%" },
     enter: { translateX: "0%", transition: transition({ delay: 2 }) },
 };
 
 const outerMobileVariantsKarin = {
-    initial: { translateY: "50%" },
+    initial: { translateY: "0%" },
     enter: { translateY: "0%", transition: transition({ delay: 2 }) },
 };
 
 const outerDesktopVariantsUlrike = {
-    initial: { translateX: "-50%" },
+    initial: { translateX: "0%" },
     enter: { translateX: "0%", transition: transition({ delay: 2 }) },
 };
 
 const outerMobileVariantsUlrike = {
-    initial: { translateY: "-50%" },
+    initial: { translateY: "0%" },
     enter: { translateY: "0%", transition: transition({ delay: 2 }) },
 };
 
 const varaintsBrainMobile = {
-    initial: { opacity: 1, y: 0 },
+    initial: { opacity: 1 },
     enter: {
         opacity: 0,
-        y: -63,
+
         transition: { opacity: { delay: 1.1 } },
         transitionEnd: { display: "none" },
     }
 }
 
 const varaintsBrainDekstop = {
-    initial: { opacity: 1, y: 0 },
+    initial: { opacity: 1 },
     enter: {
         opacity: 0,
-        y: -75,
+
         transition: { opacity: { delay: 1.1 } },
         transitionEnd: { display: "none" },
     }
 }
 
 const varaintsHandMobile = {
-    initial: { opacity: 1, y: 0 },
+    initial: { opacity: 1 },
     enter: {
         opacity: 0,
-        y: 63,
+
         transition: { delay: 0.5 },
         transitionEnd: { display: "none" },
     }
 }
 
 const varaintsHandDekstop = {
-    initial: { opacity: 1, y: 0 },
+    initial: { opacity: 1 },
     enter: {
         opacity: 0,
-        y: 75,
+
         transition: { delay: 0.5 },
         transitionEnd: { display: "none" },
     }
@@ -263,38 +263,8 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                         height={709}
                         alt="Bild von Ulrike Corneliussen"
                     />
-                    <motion.div
-                        className="avatar absolute top-0 bg-white w-[250px] h-[250px] lg:w-[300px] lg:h-[300px]"
-                        initial={{ scale: 1.025 }}
-                        whileInView={{
-                            opacity: 0,
-                            transition: transition({ delay: 1 }),
-                            transitionEnd: { display: "none" },
-                        }}
-                        viewport={{ once: true }}
-                    />
-                    {variantsBrain && <motion.img
-                        className="avatar absolute top-0 "
-                        variants={variantsBrain}
-                        initial="initial"
-                        whileInView="enter"
-                        viewport={{ once: true }}
-                        src="/images/brain.webp"
-                        width={709}
-                        height={709}
-                        alt="Bild von Ulrike Corneliussen"
-                    />}
-                    {variantsHand && <motion.img
-                        className="avatar absolute top-0"
-                        src="/images/hand.webp"
-                        variants={variantsHand}
-                        initial="initial"
-                        whileInView="enter"
-                        viewport={{ once: true }}
-                        width={709}
-                        height={709}
-                        alt="Bild von Ulrike Corneliussen"
-                    />}
+
+
                     <motion.h5
                         initial={{ opacity: 0, filter: "blur(20px)" }}
                         whileInView={{ opacity: 1, filter: "blur(0px)", transition: { delay: 2.5 } }}
