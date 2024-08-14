@@ -143,10 +143,11 @@ form .input {
 
 form label {
   padding-bottom: var(--space-xs);
-  font-size: clamp(0.75rem, 10vw, 1.35rem);
-  color: var(--clr-contrast-700);
+  font-size: clamp(0.75rem, 10vw, 1.125rem);
+  color: #545944;
   font-weight: 600;
   font-family: var(--fonts-text);
+  opacity: 0;
 }
 
 form :is(input, select, textarea) {
@@ -227,7 +228,6 @@ section.form-section {
   padding-top: 100px;
 }
 
-
 .form-wrapper {
   display: flex;
   flex-direction: column;
@@ -273,7 +273,8 @@ section.form-section {
   height: 100vh;
 }
 
-.image-wrapper, .form-wrapper {
+.image-wrapper,
+.form-wrapper {
   flex: 1;
   display: flex;
   align-items: center;
@@ -294,10 +295,11 @@ section.form-section {
 /* Responsive Design */
 @media (max-width: 768px) {
   .container-form {
-      flex-direction: column;
+    flex-direction: column;
   }
-  
-  .image-wrapper, .form-wrapper {
-      width: 100%;
+
+  .image-wrapper,
+  .form-wrapper {
+    width: 100%;
   }
 }
