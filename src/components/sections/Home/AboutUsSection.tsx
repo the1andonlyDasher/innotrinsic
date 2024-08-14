@@ -1,8 +1,5 @@
-import { loc } from "@/ts/atoms";
-import { motion, MotionConfig } from "framer-motion";
-import { useAtom } from "jotai";
+import { motion } from "framer-motion";
 import { FunctionComponent, useEffect, useState } from "react";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { transition, useMediaQuery } from "@/ts/utils";
 
@@ -15,60 +12,60 @@ const variants = {
 };
 
 const outerDesktopVariantsKarin = {
-    initial: { translateX: "0%" },
+    initial: { translateX: "50%" },
     enter: { translateX: "0%", transition: transition({ delay: 2 }) },
 };
 
 const outerMobileVariantsKarin = {
-    initial: { translateY: "0%" },
+    initial: { translateY: "50%" },
     enter: { translateY: "0%", transition: transition({ delay: 2 }) },
 };
 
 const outerDesktopVariantsUlrike = {
-    initial: { translateX: "0%" },
+    initial: { translateX: "-50%" },
     enter: { translateX: "0%", transition: transition({ delay: 2 }) },
 };
 
 const outerMobileVariantsUlrike = {
-    initial: { translateY: "0%" },
+    initial: { translateY: "-50%" },
     enter: { translateY: "0%", transition: transition({ delay: 2 }) },
 };
 
 const varaintsBrainMobile = {
-    initial: { opacity: 1 },
+    initial: { opacity: 1, y: 0 },
     enter: {
         opacity: 0,
-
+        y: -63,
         transition: { opacity: { delay: 1.1 } },
         transitionEnd: { display: "none" },
     }
 }
 
 const varaintsBrainDekstop = {
-    initial: { opacity: 1 },
+    initial: { opacity: 1, y: 0 },
     enter: {
         opacity: 0,
-
+        y: -75,
         transition: { opacity: { delay: 1.1 } },
         transitionEnd: { display: "none" },
     }
 }
 
 const varaintsHandMobile = {
-    initial: { opacity: 1 },
+    initial: { opacity: 1, y: 0 },
     enter: {
         opacity: 0,
-
+        y: 63,
         transition: { delay: 0.5 },
         transitionEnd: { display: "none" },
     }
 }
 
 const varaintsHandDekstop = {
-    initial: { opacity: 1 },
+    initial: { opacity: 1, y: 0 },
     enter: {
         opacity: 0,
-
+        y: 75,
         transition: { delay: 0.5 },
         transitionEnd: { display: "none" },
     }
@@ -183,6 +180,7 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                             transition: transition({ delay: 2 }),
                         }}
                         viewport={{ once: true }}
+                        // src="/images/stoothtiger.jpeg"
                         src="/images/karin-bild.jpg"
                         width={709}
                         height={709}
@@ -200,10 +198,14 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                     />
                     <motion.img
                         className="avatar absolute top-0"
-                        initial={{ opacity: 0.5 }}
+                        initial={{ opacity: 0 }}
                         whileInView={{
-                            opacity: [0.5, 0],
-                            transition: transition({ delay: 2 }),
+                            opacity: [0, 1, 1, 0],
+                            transition: {
+                                times: [0, 0.3, 0.8, 1],
+                                delay: 2,
+                                duration: 3,
+                            },
                             transitionEnd: { display: "none" },
                         }}
                         viewport={{ once: true }}
@@ -212,6 +214,17 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                         height={709}
                         alt="Bild von Dr. Karin Koert-Lehmann"
                     />
+                    {variantsBrain && <motion.img
+                        className="avatar absolute top-0 "
+                        variants={variantsBrain}
+                        initial="initial"
+                        whileInView="enter"
+                        viewport={{ once: true }}
+                        src="/images/brain.webp"
+                        width={709}
+                        height={709}
+                        alt="Bild von Ulrike Corneliussen"
+                    />}
                     <motion.h5
                         initial={{ opacity: 0, filter: "blur(20px)" }}
                         whileInView={{ opacity: 1, filter: "blur(0px)", transition: { delay: 2.5 } }}
@@ -234,6 +247,7 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                             transition: transition({ delay: 2 }),
                         }}
                         viewport={{ once: true }}
+                        // src="/images/stoothtiger.jpeg"
                         src="/images/ulrike-bild.webp"
                         width={709}
                         height={709}
@@ -251,20 +265,56 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                     />
                     <motion.img
                         className="avatar absolute top-0"
-                        initial={{ opacity: 0.5 }}
+                        initial={{ opacity: 0 }}
                         whileInView={{
-                            opacity: [0.5, 0],
-                            transition: transition({ delay: 2 }),
+                            opacity: [0, 1, 1, 0],
+                            transition: {
+                                times: [0, 0.3, 0.8, 1],
+                                delay: 2,
+                                duration: 3,
+                            },
                             transitionEnd: { display: "none" },
-                        }}
+                        }
+                        }
                         viewport={{ once: true }}
                         src="/images/ulrike_brain.webp"
                         width={709}
                         height={709}
                         alt="Bild von Ulrike Corneliussen"
                     />
+                    <motion.div
+                        className="avatar absolute top-0 bg-white w-[250px] h-[250px] lg:w-[300px] lg:h-[300px]"
+                        initial={{ scale: 1.025 }}
+                        whileInView={{
+                            opacity: 0,
+                            transition: transition({ delay: 1 }),
+                            transitionEnd: { display: "none" },
+                        }}
+                        viewport={{ once: true }}
+                    />
 
-
+                    {variantsBrain && <motion.img
+                        className="avatar absolute top-0 "
+                        variants={variantsBrain}
+                        initial="initial"
+                        whileInView="enter"
+                        viewport={{ once: true }}
+                        src="/images/brain.webp"
+                        width={709}
+                        height={709}
+                        alt="Bild von Ulrike Corneliussen"
+                    />}
+                    {variantsHand && <motion.img
+                        className="avatar absolute top-0"
+                        src="/images/hand.webp"
+                        variants={variantsHand}
+                        initial="initial"
+                        whileInView="enter"
+                        viewport={{ once: true }}
+                        width={709}
+                        height={709}
+                        alt="Bild von Ulrike Corneliussen"
+                    />}
                     <motion.h5
                         initial={{ opacity: 0, filter: "blur(20px)" }}
                         whileInView={{ opacity: 1, filter: "blur(0px)", transition: { delay: 2.5 } }}

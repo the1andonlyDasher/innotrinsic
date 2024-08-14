@@ -21,6 +21,8 @@ interface ContactProps {
     props: Props;
 }
 
+
+
 const ContactForm = ({ props }: ContactProps) => {
     const form = useRef<HTMLFormElement>(null);
     const [email, setEmail] = useState("");
@@ -31,6 +33,7 @@ const ContactForm = ({ props }: ContactProps) => {
     const controlsForm = useAnimationControls();
     const messageControls = useAnimationControls();
     const inView = useInView(form, { once: false, margin: "0px", amount: 0.1 });
+
 
     useEffect(() => {
         inView && controlsForm.start("enter")
@@ -46,13 +49,21 @@ const ContactForm = ({ props }: ContactProps) => {
         initial: { opacity: 0 },
         enter: {
             opacity: 1,
+            display: "flex",
             transition: { staggerChildren: 0.1, when: "beforeChildren", duration: 0.125 },
         },
         exit: {
             opacity: 0,
+
             transition: { staggerChildren: 0.1, when: "afterChildren" },
         },
     };
+
+    const bgImageVariants = {
+        initial: { scale: 0, opacity: 0 },
+        enter: { scale: 1, opacity: 1 },
+        exit: { scale: 0, opacity: 0 },
+    }
 
     const messageVariants = {
         initial: { opacity: 0 },
@@ -61,7 +72,7 @@ const ContactForm = ({ props }: ContactProps) => {
     };
 
     const sequence = async () => {
-        await controlsForm.start("exit");
+        await controlsForm.start("exit").then(() => controlsForm.start({ display: "none" }));
         return await messageControls.start("enter");
     };
 
@@ -70,6 +81,7 @@ const ContactForm = ({ props }: ContactProps) => {
     const bringBackform = async (e: any) => {
         e.preventDefault();
         await messageControls.start("exit").then(() => {
+            messageControls.start({ display: "none" })
             setFormReady(true);
         });
         return await controlsForm.start("enter");
@@ -156,12 +168,22 @@ const ContactForm = ({ props }: ContactProps) => {
         <>
             <section className="form-section" id={props.id}>
                 <div className="container-form">
-                    <div className="image-wrapper">
-                        <img src="/images/gehirn-briefe.jpg" alt="Description" />
-                    </div>
+                    <motion.div
+                        initial="initial"
+                        whileInView="enter"
+                        exit="exit"
+                        viewport={{ once: false, margin: "0px", amount: 0.1 }}
+                        variants={bgImageVariants}
+                        className="image-wrapper">
+                        <motion.div
+                            className="formBgImage">
+                        </motion.div>
+                    </motion.div>
                     <div className="form-wrapper">
-                        <h3 data-before={props.title} className="font-bold">{props.title}</h3>
-                        <p>{props.subtitle}</p>
+
+                        {props.title && <h3 data-before={props.title} className="font-bold ">{props.title}</h3>}
+                        {props.subtitle && <p>{props.subtitle}</p>}
+
                         <motion.div
                             className="thanks__message"
                             variants={messageVariants}
@@ -191,7 +213,7 @@ const ContactForm = ({ props }: ContactProps) => {
                                     id="name"
                                     name="user_name"
                                     value={firstName}
-                                    placeholder={"Name"}
+                                    placeholder={"Alex Beispielperson"}
                                     onChange={e => setFirstName(e.target.value)}
                                     required
                                 />
@@ -203,7 +225,7 @@ const ContactForm = ({ props }: ContactProps) => {
                                     id="email"
                                     name="user_email"
                                     value={email}
-                                    placeholder="E-Mail"
+                                    placeholder="alex@beispielperson.de"
                                     onChange={e => setEmail(e.target.value)}
                                     required
                                     aria-describedby="emailHelp"
