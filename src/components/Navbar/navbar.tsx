@@ -99,8 +99,8 @@ const Navbar = ({ contentContainer, navbar, legals }: any) => {
 
   return (
     <motion.nav
-      // className={isShrunk ? "navbar shrunk" : "navbar"}
-      className={`navbar`}
+      className={isShrunk ? "navbar shrunk" : "navbar"}
+      // className={`navbar`}
       variants={variants}
       ref={navbarMain}
       initial={false}
@@ -140,7 +140,8 @@ const Navbar = ({ contentContainer, navbar, legals }: any) => {
                     }}
                     transform="scale(.26458)"
                   /> */}
-                  <motion.path animate={{ fill: nextColor1 }} className="st0" d="M324.4,144.8c-0.8-50.9-21.6-91.1-60.2-116.3c-39-25.3-84-28-101.5-28c-37,0-76.2,11.8-105.1,31.6l0.3,0.4
+                  {/* New */}
+                  <motion.path  animate={{ fill: nextColor1 }} class="st0" d="M324.4,144.8c-0.8-50.9-21.6-91.1-60.2-116.3c-39-25.3-84-28-101.5-28c-37,0-76.2,11.8-105.1,31.6l0.3,0.4
                   l-0.3-0.4C20.3,57.8,0.5,95.4,0.5,140.8c0,70.4,26.5,115.6,60,143.2c33.5,27.7,74,37.8,102.2,38.5h0h121.5
                   c8.3,0,15.5-4.7,18.7-12.3c3.3-7.6,1.7-16.1-4-22.1l-32.1-33.4C298.7,234.8,325.3,201.6,324.4,144.8z M253.2,240.5l-65.7-68.4
                   c0,0,0,0,0,0c-5.5-5.8-14-7.6-21.5-4.6c-7.5,3-12.4,10.2-12.4,18.3v78.4c0,6.1,2.7,11.9,7.4,15.9l0,0c4.7,3.9,10.8,5.6,16.9,4.5
