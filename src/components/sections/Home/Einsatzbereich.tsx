@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { openAoA, textContent } from "@/ts/atoms";
+import { imageViewer, openAoA, productViewer, textContent } from "@/ts/atoms";
 import { useAtom } from "jotai";
 import { useSearchParams } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +9,7 @@ import { faArrowRight, faLink, faPersonBurst, faPersonChalkboard } from "@fortaw
 import { useRouter } from "next/router";
 import FAQuestion from '../../FAQuestion';
 import FAQuestionSlim from "@/components/FAQuestionSlim";
+import { content as c } from "@/ts/atoms"
 
 
 const variants = {
@@ -42,9 +43,53 @@ interface EinsatzbereichProps {
 const Einsatzbereich: FC<EinsatzbereichProps> = ({ keyProp, text }) => {
     const [content, setC]: any = useAtom(openAoA)
     const searchParams = useSearchParams()
-    const [tContent,] = useAtom(textContent)
+    const [tContent]: any = useAtom(c)
     const currentContent = tContent[content];
+    const [mainContent, setMainContent] = useState(c)
     const router = useRouter()
+
+    const [pvAtom, setPVAtom] = useAtom(imageViewer);
+    const lpViewer = useRef<any>(!null);
+
+    const setCoords = () => {
+        if (lpViewer.current) {
+            const { width, height, left, top } =
+                lpViewer?.current.getBoundingClientRect();
+            setPVAtom({ width, height, left, top });
+        }
+    };
+
+    useEffect(() => {
+        setCoords();
+    }, [searchParams]);
+
+    useEffect(() => {
+        setCoords();
+    }, []);
+
+    useEffect(() => {
+        if (typeof window !== undefined) {
+            document.body.childNodes[0].childNodes[2].addEventListener(
+                "scroll",
+                setCoords,
+                false
+            );
+        }
+        return () => {
+            document.body.childNodes[0].childNodes[2].removeEventListener(
+                "scroll",
+                setCoords,
+                false
+            );
+        };
+    });
+
+    useEffect(() => {
+        window.addEventListener("resize", setCoords, false);
+        return () => {
+            window.removeEventListener("resize", setCoords, false);
+        };
+    });
 
     useEffect(() => {
         if (searchParams.get("neuron") !== null) {
@@ -59,6 +104,18 @@ const Einsatzbereich: FC<EinsatzbereichProps> = ({ keyProp, text }) => {
         console.log(currentContent)
     }, [content]);
 
+    const [bgColor, setbgColor] = useState("")
+    const colors: any = {
+        Privat: "bg-[#7ca950]",
+        Business: "bg-[#42677f]",
+        Gesellschaft: "bg-[#7a913b]",
+        Sport: "bg-[#907a2c]",
+        "Public Persons": "bg-[#1b394a]",
+    }
+
+    useEffect(() => {
+        setbgColor(colors[content])
+    }, [content]);
 
     return (<>
 
@@ -68,52 +125,43 @@ const Einsatzbereich: FC<EinsatzbereichProps> = ({ keyProp, text }) => {
             animate={text !== null ? "enter" : "exit"}
             exit="exit"
             variants={outerVariants}
-            className="w-full h-full flex flex-col gap-6 items-start justify-end text-white "
+            className="w-full h-full p-10 flex flex-col gap-6 items-start justify-end text-white "
         >
-            {/* <div className="w-full flex flex-row gap-4 text-2xl font-header font-semibold">
-                {searchParams.get("neuron") && <Link href="/einsatzgebiete">Einsatzgebiete</Link>}
-                {searchParams.get("focusGroup") && <Link href={`/einsatzgebiete/?neuron=${searchParams.get("neuron")}`}>{searchParams.get("neuron")}</Link>}
-            </div> */}
             <motion.div
-                className="w-full h-full  flex flex-col gap-6 items-start justify-end text-white "
+                className="w-full h-full flex flex-col gap-6 lg:flex-row items-center justify-center text-white "
                 variants={outerVariants} animate={searchParams.get("focusGroup") === content ? "exit" : "enter"}>
-                <motion.h3 className="font-bold font-header" variants={variants}>{content}</motion.h3>
-                <motion.p variants={variants}>
-                    Lorem ipsum dolor sit amet. Hic forum est, populus properat, set Marcus stat et circumspectat.
-                </motion.p>
-                <motion.div variants={variants} className="flex flex-wrap gap-4">
-                    <Link href={`${router.pathname}?${searchParams}&focusGroup=${content}`} className="btn__alt" shallow>
-                        {searchParams.get("neuron")}<FontAwesomeIcon icon={faArrowRight} />
-                    </Link>
-                    <Link href={`${router.pathname}?${searchParams}&focusGroup=${content}&focus=true`} className="btn__alt" shallow>
-                        Zielgruppen<FontAwesomeIcon icon={faPersonChalkboard} />
-                    </Link>
-                    <Link href={"/einsatzgebiete"} className="btn__outline" shallow>
-                        Zurück
-                    </Link>
+                {/* MAIN CONTENT */}
+                <motion.div className="w-full h-full flex flex-column lg:flex-row justify-evenly">
+                    {/* LEFT WINDOW */}
+                    <motion.div ref={lpViewer} className="w-full h-full flex justify-center items-center "></motion.div>
+                    {/* RIGHT WINDOW */}
+                    <motion.div className={`w-full h-full flex gap-12 justify-center items-start flex-col ${bgColor} px-10 rounded-3xl shadow-sm`}>
+                        {/* UPPER NAVIGATION WITH PILLS */}
+
+                        <ul className="w-full flex flex-row flex-wrap gap-4 list-style-none">
+                            <li className="rounded-full border border-white py-2 px-3">Business</li>
+                            <li className="rounded-full border border-white py-2 px-3">Privat</li>
+                            <li className="rounded-full border border-white py-2 px-3">Gesellschaft</li>
+                            <li className="rounded-full border border-white py-2 px-3">Public Persons</li>
+                            <li className="rounded-full border border-white py-2 px-3">Sport</li>
+                        </ul>
+
+                        <h3 className="text-5xl font-bold">My InnoTrinsic für {content}</h3>
+                        <motion.ul className="flex flex-col gap-4">
+                            {tContent[content] && Object.entries(tContent[content]).map(([key, { title, text }]: any, index: number) => (
+                                <li key={key} className="flex flex-col gap-1">
+                                    <h3 className="text-base font-semibold">{index + 1}. {title}</h3>
+                                    {text && <p className="text-base text-[#d5e0c3]">{text}</p>}
+                                </li>
+                            ))}
+                        </motion.ul>
+                        <motion.div className="button__wrapper">
+                            <Link className={`btn__alt ${bgColor}`} href="/business">Zu My Innotrinsic {content}</Link>
+                            <Link className={`btn__outline hover:${bgColor}`} href="/einsatzgebiete">zurück</Link>
+                        </motion.div>
+                    </motion.div>
                 </motion.div>
             </motion.div>
-
-            <motion.div
-                className=" w-full h-full"
-                variants={outerVariants} initial="initial" animate={searchParams.get("focusGroup") === content ? "enter" : "exit"}>
-                <motion.div variants={variants} className="w-full flex flex-col items-start justify-end gap-6  text-white ">
-                    {/* {content !== "" && Object.entries(currentContent).map(([key, value]: any, index: number) =>
-                        <div className="bg-[#c7e0f0] p-6 rounded-xl w-full" key={index}><h3 className="text-3xl font-bold">{key}</h3>
-                            {Object.values(value).map((item: any, index: number) => <div key={index}>
-                                <FAQuestionSlim title={item.title} borderBottom={false}>
-                                    <ul>
-                                        {item.bulletPoints.map((item: any, index: number) => <li key={index}>{item}</li>)}
-                                    </ul>
-                                </FAQuestionSlim>
-                            </div>)}
-                        </div>)} */}
-                </motion.div>
-
-            </motion.div>
-            <div className="w-full">
-                {searchParams.get("focusGroup") && <Link className="btn__outline" href={`/einsatzgebiete?view=true&neuron=${searchParams.get("neuron")}`}>Zurück zu{searchParams.get("neuron")}</Link>}
-            </div>
         </motion.div>
 
     </>);

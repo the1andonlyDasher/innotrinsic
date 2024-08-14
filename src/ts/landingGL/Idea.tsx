@@ -423,7 +423,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 clicked={clicked}
                                 focused={searchParams.get("focusGroup") !== null}
                                 inactive={searchParams.get("neuron") !== null && searchParams.get("neuron") !== props.text}
-                                textureUrl={"/images/business_img.jpg"}
+                                textureUrl={"/images/business_img2.jpg"}
                                 count={1}
                             />
 

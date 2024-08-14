@@ -30,7 +30,7 @@ import { Model } from "./GhostHand";
 import { Mesh } from "three/src/objects/Mesh.js";
 import { size as s } from "../ts/utils";
 import { extend } from "@react-three/fiber";
-import { productViewer, globalTarget, orbitTarget, loc } from "@/ts/atoms";
+import { productViewer, globalTarget, orbitTarget, loc, imageViewer } from "@/ts/atoms";
 import IdeaCloud from "@/ts/landingGL/IdeaCloud";
 import { ShaderHand } from "./texHand";
 import { TexturedHand } from "./texHand2";
@@ -176,10 +176,12 @@ const colors = [
 export function NewHead4(props: HeadHandsProps) {
   const { nodes, materials } = useGLTF("/highrez_brain.glb") as GLTFResult;
   const [pvAtom, setPVAtom] = useAtom(productViewer);
+  const [ivAtom, setIVAtom] = useAtom(imageViewer);
   const [gTarget, setGTarget] = useAtom(globalTarget);
   const [target, setTarget] = useAtom(orbitTarget);
   const [app, setApp] = useAtom(loc);
   const [pos, setPos] = useState<any>([]);
+  const [pos2, setPos2] = useState<any>([]);
   const [scl, setScale] = useState<any>([]);
   const { viewport, size } = useThree();
   const [w, h] = useAspect(size.width, size.height);
@@ -208,6 +210,8 @@ export function NewHead4(props: HeadHandsProps) {
   const [isInPage, setIsInPage] = useState(false);
   const [disposed, setDisposed] = useState(false);
 
+
+
   useEffect(() => {
     const scale: any = [
       (pvAtom?.width / window.innerWidth) * viewport?.width,
@@ -227,6 +231,7 @@ export function NewHead4(props: HeadHandsProps) {
     setPos(position);
     setScale(scale);
   }, [pvAtom]);
+
 
   const hand2Material = (
     <motion3d.meshStandardMaterial
@@ -271,11 +276,7 @@ export function NewHead4(props: HeadHandsProps) {
   const brain_mesh_controls = useAnimation();
 
   useFrame(() => {
-    if (group.current) {
-      group.current.position.x = lerp(group.current.position.x, pos[0], 0.045)
-      group.current.position.y = lerp(group.current.position.y, pos[1], 0.045)
-      group.current.position.z = lerp(group.current.position.z, pos[2], 0.045)
-    }
+
     if (glassRef.current && router.pathname === "/business") {
       glassRef.current.opacity = lerp(glassRef.current.opacity, router.pathname === "/business" ? 1 : 0, 0.15)
     }

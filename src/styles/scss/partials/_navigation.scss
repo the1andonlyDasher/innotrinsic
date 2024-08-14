@@ -107,6 +107,7 @@
   .main-name,
   .name-add {
     min-width: fit-content;
+    font-size: var(--fs-text);
     font-weight: 700;
     font-family: var(--fonts-header);
   }
@@ -119,7 +120,6 @@
   height: 100%;
   min-width: clamp(2rem, 15vw, 4rem);
   aspect-ratio: 1;
-  width: 200px;
 }
 
 .navbar__logo img {

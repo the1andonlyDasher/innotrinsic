@@ -17,6 +17,7 @@ export const backgroundText = atom<string>("default");
 export const orbitTarget = atom<Vector3 | { x: number; y: number; z: number; }>({ x: 0, y: 0, z: 0 })
 export const load = atom(false)
 export const productViewer = atom<any>(null)
+export const imageViewer = atom<any>(null)
 export const mountainViewer = atom<any>(null)
 export const modulesViewer = atom<any>(null)
 export const globalTarget = atom<Vector3 | { x: number; y: number; z: number; }>({ x: 0, y: 0, z: 0 })
@@ -271,6 +272,72 @@ export const textContent = atom<TextContent>({
         }
     }
 });
+
+export const content = atom<any>({
+    Business: {
+        1: {
+            title: "Neues mit BrainCare für Exzellenz-Ergebnisse",
+            text: "Starten - Umsetzen - Dranbleiben, Innovation, Entwicklung, Projektmanagement, kontinuierliche Verbesserung",
+        },
+        2: {
+            title: "Umbrüche zu Durchbrüchen mit ZufriedenheitsMehrwert",
+            text: "Transformation, ProcessShift, NewTech Adaptation, Adaptive Organisation"
+        },
+        3: {
+            title: "BrainCare-Excellence",
+            text: "Potentiale optimal einbringen und Ressourcen entfalten, High Quality Ideen & Lösungen, Performance Boost"
+        }
+    },
+
+    Gesellschaft: {
+        1: {
+            title: "Neues mit BrainCare für Exzellenz-Ergebnisse",
+            text: "Starten - Umsetzen - Dranbleiben, Innovation, Entwicklung, Projektmanagement, kontinuierliche Verbesserung",
+        },
+        2: {
+            title: "Umbrüche zu Durchbrüchen mit ZufriedenheitsMehrwert",
+            text: "Transformation, ProcessShift, NewTech Adaptation, Adaptive Organisation"
+        },
+        3: {
+            title: "BrainCare-Excellence",
+            text: "Potentiale optimal einbringen und Ressourcen entfalten, High Quality Ideen & Lösungen, Performance Boost"
+        }
+    },
+    Privat: {
+        1: {
+            title: "NeuZeitGestalter & NeuLandEntdecker",
+            text: null,
+        },
+        2: {
+            title: "KrisenWandler & ChancenNutzer",
+            text: null
+        },
+        3: {
+            title: "BerufserNeuerer & JobZufriedenheitsGestalter & RentenStarter",
+            text: null
+        },
+        4: {
+            title: "ZufriedenheitsMacher & AufSichAufpasser",
+            text: null
+        },
+        5: {
+            title: "SelbstWertEntdecker & SelbstbehauptungsErschaffer",
+            text: null
+        },
+        6: {
+            title: "HamsterradDurchbrecher & GewohnheitsVeränderer",
+            text: null
+        },
+        7: {
+            title: "PerspektivenFinder & ZufriedenheitsGestalter",
+            text: null
+        },
+        8: {
+            title: "Gold-im-Kopf-Schürfer & PotenzialNutzer",
+            text: null
+        }
+    }
+})
 
 
 export const openModule = atom<string>("")

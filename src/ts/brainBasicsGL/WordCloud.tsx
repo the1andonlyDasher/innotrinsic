@@ -6,6 +6,7 @@ import CustomBillboard from "../CustomBillboard";
 import { Color, Mesh, Vector3 } from "three";
 import { size, useCustomCursor } from "../utils";
 import AutoSizedText from "./AutoSizedText";
+import { useAnimation } from "framer-motion";
 
 // Word Component
 interface WordProps {
@@ -18,6 +19,7 @@ interface WordProps {
     maxWidth: number;
     minFontSize?: number;
 }
+
 
 const Word: FC<WordProps> = ({ maxWidth,
     minFontSize = 3, children, color, active, isCenter, position, heightDifference, ...props }) => {
@@ -85,7 +87,7 @@ const Word: FC<WordProps> = ({ maxWidth,
     }, []);
 
     const opacityChange = useMemo(() => {
-        const opacity = Math.random();
+        const opacity = Math.random() / 1.25;
         return {
             opacity: [0, opacity, 0, opacity, 0],
             color: [color, "#ffffff", color, "#ffffff", color],
@@ -120,20 +122,58 @@ const Word: FC<WordProps> = ({ maxWidth,
         }
     }, [children, maxWidth, fontSize, minFontSize]);
 
+
+    const [disposed, setDisposed] = useState(true)
+    const [inPage, setInPage] = useState(false)
+    const controls = useAnimation()
+
+    const wordVariants = {
+        initial: { scale: 0 },
+        center: {
+            x: [0, 0, 0],
+            y: heightDifference === 2 ? [-2, -2, -2] : heightDifference === -2 ? [2, 2, 2] : [0, 0, 0],
+            z: [0, 3, 3], scale: [0, 1, 1],
+            transition: {
+                duration: 4, times: [0.1, 0.6, 1]
+            }
+        },
+        floating: floating,
+        exit: still
+    }
+
+
     useEffect(() => {
-        console.log(Math.min(viewport.width / 30, 0.5))
-    }, [viewport.width]);
+        if (active) {
+            setDisposed(false), setInPage(true)
+        } else {
+            controls.start("exit").then(() => {
+                setTimeout(() => {
+                    setDisposed(true), setInPage(false)
+                }, 1500)
+            })
+        }
+    }, [active]);
+
+    useEffect(() => {
+        if (inPage) {
+            if (active && isCenter) {
+                controls.start("center")
+            } else if (active && !isCenter) {
+                controls.start("floating")
+            }
+
+
+        }
+    }, [inPage, active, isCenter])
 
     return (
+
         <motion3d.group
+            visible={!disposed}
             {...props}
-            initial={still}
-            animate={isCenter && active ? {
-                x: [0, 0, 0],
-                y: heightDifference === 2 ? [-2, -2, -2] : heightDifference === -2 ? [2, 2, 2] : [0, 0, 0],
-                z: [0, 3, 3], scale: [0, 1, 1],
-                transition: { duration: 4, times: [0.1, 0.6, 1] }
-            } : active ? floating : still}
+            variants={wordVariants}
+            initial="initial"
+            animate={controls}
         >
             <CustomBillboard>
                 <Text
@@ -149,22 +189,18 @@ const Word: FC<WordProps> = ({ maxWidth,
                     // onClick={() => console.log("clicked")}
                     maxWidth={0.1}
                     renderOrder={2}
-
                 >
                     {children}
-
                     <motion3d.meshBasicMaterial
-
                         toneMapped={false}
-                        // color={color}
                         transparent
                         initial={{ opacity: 0 }}
-                        animate={isCenter && active ? { opacity: [0, 1, 0], color: ["#ff9382", "#183855", "#183855"], transition: { duration: 4, times: [0.2, 0.8, 1] } } : opacityChange}
+                        animate={isCenter && active ? { opacity: [0, 1, 0], color: ["#e6b84d", "#183855", "#183855"], transition: { duration: 4, times: [0.2, 0.8, 1] } } : opacityChange}
                     />
-
                 </Text>
             </CustomBillboard>
         </motion3d.group>
+
     );
 };
 
@@ -180,18 +216,19 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors, active }) => {
     const [centerWordIndex, setCenterWordIndex] = useState<number | null>(null);
     const [isCenter, setIsCenter] = useState<boolean>(false);
 
-    // Helper function to calculate positions
+    // Radius und Position der Wörter
     const r = (size: number, index: number) => ((Math.PI * 2) / size) * index;
     const radius = Math.max(2.25, Math.min(viewport.width / 10, 5.5));
 
-    // Calculate distribution across rings
+    // Wörter über die Ringe gleichmäßig verteilen
     const desiredCount = 18;
     const firstRingCount = Math.min(6, desiredCount); // Max 6 for first ring
     const remainingCount = desiredCount - firstRingCount;
     const secondRingCount = Math.min(remainingCount, 8); // Max 8 for second ring
     const thirdRingCount = remainingCount - secondRingCount; // The rest for third ring
+    const [currentWords, setCurrentWords] = useState<string[]>([]);
 
-    // Repeat words and colors to match the desired count
+    // Wörter so oft wiederholen, dass sie der angegebenen anzahl entsprechen + Farben
     const repeatedWords = useMemo(
         () => Array.from({ length: desiredCount }, (_, index) => words[index % words.length]),
         [words, desiredCount]
@@ -201,7 +238,7 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors, active }) => {
         [colors, desiredCount]
     );
 
-    // Handle center word animation loop
+    // Animation Loop für die Wörter in der Mitte
     useEffect(() => {
         let timeout: NodeJS.Timeout;
         let index = 0;
@@ -210,18 +247,36 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors, active }) => {
             setCenterWordIndex(index);
             setIsCenter(true);
 
-            // Move to the next word after a delay
+            // zum nächsten Wort gehen
             timeout = setTimeout(() => {
                 setIsCenter(false);
                 index = (index + 1) % repeatedWords.length;
-                timeout = setTimeout(loop, 1000); // Delay before showing the next word
-            }, 4000); // Duration of showing each word in the center
+                timeout = setTimeout(loop, 1000); // Delay bevor das nächste Wort kommt
+            }, 4000); // Dauer der animation
         };
 
         loop();
 
         return () => clearTimeout(timeout);
     }, [repeatedWords.length]);
+
+    // Initialize words when component mounts
+    useEffect(() => {
+        setCurrentWords(Array.from({ length: desiredCount }, (_, index) => words[index % words.length]));
+    }, [words, desiredCount]);
+
+    // Handle word swapping
+    useEffect(() => {
+        const swapWords = () => {
+            setCurrentWords((prevWords) =>
+                prevWords.map((word, index) => words[(words.indexOf(word) + 1) % words.length])
+            );
+        };
+
+        const interval = setInterval(swapWords, 5000); // Swap every 5 seconds
+
+        return () => clearInterval(interval); // Clean up on unmount
+    }, [words]);
 
     return (
         <motion3d.group
@@ -238,7 +293,9 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors, active }) => {
         // }}
         >
             {/* Erster Ring */}
-            <motion3d.group position={[0, -2, 0]}>
+            <motion3d.group
+
+                position={[0, -2, 0]}>
                 {Array.from({ length: firstRingCount }).map((_, index) => (
                     <Word
                         maxWidth={15}
@@ -258,7 +315,9 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors, active }) => {
                 ))}
             </motion3d.group>
             {/* Zweiter Ring */}
-            <motion3d.group position={[0, 0, 0]}>
+            <motion3d.group
+
+                position={[0, 0, 0]}>
                 {Array.from({ length: secondRingCount }).map((_, index) => (
                     <Word
                         maxWidth={15}
@@ -278,7 +337,9 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors, active }) => {
                 ))}
             </motion3d.group>
             {/* Dritter Ring */}
-            <motion3d.group position={[0, 2, 0]}>
+            <motion3d.group
+
+                position={[0, 2, 0]}>
                 {Array.from({ length: thirdRingCount }).map((_, index) => (
                     <Word
                         maxWidth={15}

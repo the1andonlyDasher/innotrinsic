@@ -1,0 +1,131 @@
+@use "../../../../media-queries" as *;
+
+/* base classes */
+%flex-full {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+%absolute-full {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+%top-left-full {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+%trans {
+  transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  -webkit-transition: 0.5s ease-in-out;
+}
+
+%no-space {
+  padding: 0;
+  margin: 0;
+}
+
+%flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+%rel {
+  position: relative;
+}
+
+%col {
+  flex-direction: column;
+}
+
+%row {
+  flex-direction: row;
+}
+
+%flex {
+  display: flex;
+}
+
+.system__container {
+  @extend %flex-full, %flex-center, %rel;
+  height: 800px;
+}
+
+.system__legend {
+  @extend %flex-full, %col, %rel;
+  justify-content: center;
+  height: 100%;
+  width: 600px;
+}
+
+.system__circle {
+  @extend %flex;
+  color: white;
+  font-size: var(--fs-header);
+  font-weight: 800;
+  position: absolute;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: right;
+  left: 0;
+  border-radius: 9999px;
+  transform-origin: left;
+  &:first-child {
+    @extend %flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+  }
+  &:last-child {
+    justify-content: center;
+  }
+  label {
+    margin: clamp(2rem, 10vw, 3rem);
+  }
+}
+
+.modalBackdrop {
+  @extend %flex-full, %flex-center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modalContent {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 300px;
+  width: 100%;
+  z-index: 1001;
+}
+
+.system__content {
+  @extend %flex-center, %col;
+  width: 100%;
+  gap: 1rem;
+  padding-bottom: clamp(2rem, 10vw, 5rem);
+  color: #32689c;
+  .system__header {
+    text-align: center;
+    font-family: var(--fonts-header);
+    font-weight: 800;
+  }
+  .system__text {
+    text-align: center;
+    width: 100%;
+  }
+}

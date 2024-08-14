@@ -30,7 +30,7 @@ const MorphingMesh: FC<MorphingMeshProps> = ({
     const { viewport } = useThree();
 
     const planeGeom = useMemo(() => {
-        const geom = new THREE.PlaneGeometry(size(1, viewport.width / 5, 2), size(1, viewport.width / 5, 2) * 0.666, 64, 64);
+        const geom = new THREE.PlaneGeometry(size(1, viewport.width / 5, 2) * 1.2, size(1, viewport.width / 5, 2), 64, 64);
         geom.morphAttributes.position = [];
 
         const sphereFormation: number[] = [];

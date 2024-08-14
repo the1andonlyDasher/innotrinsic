@@ -1,15 +1,26 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { AdditiveBlending, MathUtils, Mesh, MultiplyBlending, Points } from 'three'
 import { useFrame } from '@react-three/fiber'
 import { lerp } from 'three/src/math/MathUtils.js'
 import { useRouter } from 'next/router'
+import { motion } from 'framer-motion-3d'
+import { active } from 'd3'
+import { useAnimation } from 'framer-motion'
+import { transition } from '@/ts/utils'
 
 type GLTFResult = {
   nodes: {
     cerebellum: Mesh
   }
   materials: {}
+}
+
+
+const variants = {
+  initial: { scale: 0 },
+  enter: { scale: 1 },
+  exit: { scale: 0 }
 }
 
 export function LRBrain(props: JSX.IntrinsicElements['group']) {
@@ -20,7 +31,7 @@ export function LRBrain(props: JSX.IntrinsicElements['group']) {
   const pointsRef: any = useRef<Points>(null);
 
   // Determine the number of particles and create a buffer for positions
-  const particleCount = 500; // Increase this number for more particles
+  const particleCount = 200; // Increase this number for more particles
   const particlePositions = useMemo(() => {
     const positions = new Float32Array(particleCount * 3);
     const originalVertices = nodes.cerebellum.geometry.attributes.position.array;
@@ -46,18 +57,53 @@ export function LRBrain(props: JSX.IntrinsicElements['group']) {
   }), []);
 
   useFrame((state) => {
-    if (pointsRef.current) {
-      uniforms.uRadius.value = lerp(uniforms.uRadius.value, router.pathname === "/business" ? 2.0 : 0.0, 0.15)
+    if (pointsRef.current && !disposed) {
+      uniforms.uRadius.value = lerp(uniforms.uRadius.value, router.pathname === "/business" ? 2.0 : 1.0, 0.15)
       pointsRef.current.material.uniforms.uTime.value = state.clock.elapsedTime;
     }
   });
+
+
+  const [disposed, setDisposed] = useState(true)
+  const [inPage, setInPage] = useState(false)
+  const controls = useAnimation()
+
+
+  useEffect(() => {
+    if (router.pathname === "/business") {
+      setTimeout(() => {
+        setDisposed(false), setInPage(true)
+
+      }, 1000)
+    } else {
+      controls.start("exit").then(() => {
+        setTimeout(() => {
+          setDisposed(true), setInPage(false)
+        }, 1500)
+      })
+    }
+  }, [router.pathname]);
+
+  useEffect(() => {
+    if (inPage) {
+
+      controls.start("enter")
+    }
+  }, [inPage])
+
 
   return (<>
     {/* <mesh rotation={[0, -Math.PI / 0.85, 0]}
       position={[0.075, 1.09, 0.075]} geometry={nodes.cerebellum.geometry}>
       <meshStandardMaterial toneMapped={false} wireframe color="navy" />
     </mesh> */}
-    <points renderOrder={1} rotation={[0, -Math.PI / 0.85, 0]}
+    <motion.points
+      visible={!disposed}
+      variants={variants}
+      initial="initial"
+      animate={controls}
+      transition={transition({ delay: 0 })}
+      renderOrder={1} rotation={[0, -Math.PI / 0.85, 0]}
       position={[0.075, 1.09, 0.075]} ref={pointsRef} >
       <bufferGeometry>
         <bufferAttribute
@@ -67,7 +113,10 @@ export function LRBrain(props: JSX.IntrinsicElements['group']) {
           itemSize={3}
         />
       </bufferGeometry>
-      <shaderMaterial
+      <motion.shaderMaterial
+        initial={{ opacity: 0 }}
+        animate={inPage ? { opacity: 1 } : { opacity: 0 }}
+        transition={transition({ delay: 0 })}
         vertexShader={`
           uniform float uTime;
           uniform float uRadius;
@@ -142,7 +191,7 @@ export function LRBrain(props: JSX.IntrinsicElements['group']) {
         blending={AdditiveBlending}
 
       />
-    </points>
+    </motion.points>
   </>
   )
 }
