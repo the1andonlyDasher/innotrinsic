@@ -21,6 +21,8 @@ interface ContactProps {
     props: Props;
 }
 
+
+
 const ContactForm = ({ props }: ContactProps) => {
     const form = useRef<HTMLFormElement>(null);
     const [email, setEmail] = useState("");
@@ -31,6 +33,7 @@ const ContactForm = ({ props }: ContactProps) => {
     const controlsForm = useAnimationControls();
     const messageControls = useAnimationControls();
     const inView = useInView(form, { once: false, margin: "0px", amount: 0.1 });
+
 
     useEffect(() => {
         inView && controlsForm.start("enter")
@@ -46,13 +49,21 @@ const ContactForm = ({ props }: ContactProps) => {
         initial: { opacity: 0 },
         enter: {
             opacity: 1,
+            display: "flex",
             transition: { staggerChildren: 0.1, when: "beforeChildren", duration: 0.125 },
         },
         exit: {
             opacity: 0,
+
             transition: { staggerChildren: 0.1, when: "afterChildren" },
         },
     };
+
+    const bgImageVariants = {
+        initial: { scale: 0, opacity: 0 },
+        enter: { scale: 1, opacity: 1 },
+        exit: { scale: 0, opacity: 0 },
+    }
 
     const messageVariants = {
         initial: { opacity: 0 },
@@ -61,7 +72,7 @@ const ContactForm = ({ props }: ContactProps) => {
     };
 
     const sequence = async () => {
-        await controlsForm.start("exit");
+        await controlsForm.start("exit").then(() => controlsForm.start({ display: "none" }));
         return await messageControls.start("enter");
     };
 
@@ -70,6 +81,7 @@ const ContactForm = ({ props }: ContactProps) => {
     const bringBackform = async (e: any) => {
         e.preventDefault();
         await messageControls.start("exit").then(() => {
+            messageControls.start({ display: "none" })
             setFormReady(true);
         });
         return await controlsForm.start("enter");
@@ -155,80 +167,93 @@ const ContactForm = ({ props }: ContactProps) => {
     return (
         <>
             <section className="form-section" id={props.id}>
-                <div className="form-wrapper">
-                    <h3 data-before={props.title} className="font-bold">{props.title}</h3>
-                    <p>{props.subtitle}</p>
+                <div className="container-form">
                     <motion.div
-                        className="thanks__message"
-                        variants={messageVariants}
                         initial="initial"
-                        animate={messageControls}
+                        whileInView="enter"
                         exit="exit"
-                    >
-                        <h4>Vielen Dank!</h4>
-                        <p>Wir werden Ihre Anfrage schnellstmöglich bearbeiten und uns bei Ihnen melden.</p>
-                        <button className="text-xl py-2 px-6 bg-[#a0c17f] rounded-full hover:text-white hover:bg-[#32689C]" onClick={bringBackform}>
-                            Weitere Email
-                        </button>
+                        viewport={{ once: false, margin: "0px", amount: 0.1 }}
+                        variants={bgImageVariants}
+                        className="image-wrapper">
+                        <motion.div
+                            className="formBgImage">
+                        </motion.div>
                     </motion.div>
-                    <motion.form
-                        ref={form}
-                        onSubmit={sendEmail}
-                        variants={formVariants}
-                        initial="initial"
-                        animate={controlsForm}
-                        exit="exit"
-                    >
-                        <input type="hidden" name="contact_number"></input>
-                        <motion.div variants={variants}>
-                            <label htmlFor="name">Name:</label>
-                            <input
-                                type="text"
-                                id="name"
-                                name="user_name"
-                                // className="bg-[#21212122] rounded-[2px] border border-[#222] text-neutral-50"
-                                value={firstName}
-                                placeholder={"Name"} // ...force the input's value to match the state variable...
-                                onChange={e => setFirstName(e.target.value)}
-                                required
-                            />
+                    <div className="form-wrapper">
+
+                        {props.title && <h3 data-before={props.title} className="font-bold ">{props.title}</h3>}
+                        {props.subtitle && <p>{props.subtitle}</p>}
+
+                        <motion.div
+                            className="thanks__message"
+                            variants={messageVariants}
+                            initial="initial"
+                            animate={messageControls}
+                            exit="exit"
+                        >
+                            <h4>Vielen Dank!</h4>
+                            <p>Wir werden Ihre Anfrage schnellstmöglich bearbeiten und uns bei Ihnen melden.</p>
+                            <button className="text-xl py-2 px-6 bg-[#a0c17f] rounded-full hover:text-white hover:bg-[#32689C]" onClick={bringBackform}>
+                                Weitere Email
+                            </button>
                         </motion.div>
-                        <motion.div variants={variants}>
-                            <label htmlFor="email">E-Mail:</label>
-                            <input
-                                type="email"
-                                id="email"
-                                name="user_email"
-                                // className="bg-[#21212122] rounded-[2px] border border-[#222] text-neutral-50"
-                                value={email}
-                                placeholder="E-Mail"
-                                onChange={e => setEmail(e.target.value)}
-                                required
-                                aria-describedby="emailHelp"
-                            />
-                        </motion.div>
-                        <motion.div variants={variants}>
-                            <label htmlFor="message">Nachricht</label>
-                            <textarea
-                                value={message}
-                                placeholder={"Was können wir für Sie tun?"}
-                                onChange={e => setMessage(e.target.value)}
-                                name="message"
-                                // className="bg-[#21212122] rounded-[2px] border border-[#222] text-neutral-50"
-                                id="message"
-                                required
-                                rows={5}
-                            />
-                        </motion.div>
-                        <motion.div className="flex flex-wrap flex-row items-center text-black gap-2">
-                            <label className="hidden">Cookie Consent</label>
-                            <input title="Cookie Consent" className="w-5 h-5" type="checkbox" checked={cookieConsentIsTrue} onChange={e => handleConsentChange(e)} />Ich habe die<Link className="m-0 p-0 underline" href="/datenschutz">Datenschutzerklärung</Link> gelesen
-                        </motion.div>
-                        <motion.button variants={variants} className="btn__primary" type="submit">
-                            {status}
-                        </motion.button>
-                    </motion.form>
+                        <motion.form
+                            ref={form}
+                            onSubmit={sendEmail}
+                            variants={formVariants}
+                            initial="initial"
+                            animate={controlsForm}
+                            exit="exit"
+                        >
+                            <input type="hidden" name="contact_number"></input>
+                            <motion.div variants={variants}>
+                                <label htmlFor="name">Name:</label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="user_name"
+                                    value={firstName}
+                                    placeholder={"Alex Beispielperson"}
+                                    onChange={e => setFirstName(e.target.value)}
+                                    required
+                                />
+                            </motion.div>
+                            <motion.div variants={variants}>
+                                <label htmlFor="email">E-Mail:</label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="user_email"
+                                    value={email}
+                                    placeholder="alex@beispielperson.de"
+                                    onChange={e => setEmail(e.target.value)}
+                                    required
+                                    aria-describedby="emailHelp"
+                                />
+                            </motion.div>
+                            <motion.div variants={variants}>
+                                <label htmlFor="message">Nachricht</label>
+                                <textarea
+                                    value={message}
+                                    placeholder={"Was können wir für Sie tun?"}
+                                    onChange={e => setMessage(e.target.value)}
+                                    name="message"
+                                    id="message"
+                                    required
+                                    rows={5}
+                                />
+                            </motion.div>
+                            <motion.div className="flex flex-wrap flex-row items-center text-black gap-2">
+                                <label className="hidden">Cookie Consent</label>
+                                <input title="Cookie Consent" className="w-5 h-5" type="checkbox" checked={cookieConsentIsTrue} onChange={e => handleConsentChange(e)} />Ich habe die<Link className="m-0 p-0 underline" href="/datenschutz">Datenschutzerklärung</Link> gelesen
+                            </motion.div>
+                            <motion.button variants={variants} className="btn__primary" type="submit">
+                                {status}
+                            </motion.button>
+                        </motion.form>
+                    </div>
                 </div>
+
             </section>
         </>
     );

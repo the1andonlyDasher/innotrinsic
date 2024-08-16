@@ -285,7 +285,7 @@ a {
 .btn__primary {
   @extend %btn__primary;
   &::after {
-    background-color: #222d1b;
+    background-color: #2e3e21;
   }
   &:active::after,
   &:hover::after {

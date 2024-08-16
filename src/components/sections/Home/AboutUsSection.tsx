@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { FunctionComponent, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { transition, useMediaQuery } from "@/ts/utils";
@@ -199,6 +200,7 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                     <motion.img
                         className="avatar absolute top-0"
                         initial={{ opacity: 0 }}
+                        initial={{ opacity: 0 }}
                         whileInView={{
                             opacity: [0, 0.5, 0],
                             transition: {
@@ -213,6 +215,17 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                         height={709}
                         alt="Bild von Dr. Karin Koert-Lehmann"
                     />
+                    {variantsBrain && <motion.img
+                        className="avatar absolute top-0 "
+                        variants={variantsBrain}
+                        initial="initial"
+                        whileInView="enter"
+                        viewport={{ once: true }}
+                        src="/images/brain.webp"
+                        width={709}
+                        height={709}
+                        alt="Bild von Ulrike Corneliussen"
+                    />}
                     {variantsBrain && <motion.img
                         className="avatar absolute top-0 "
                         variants={variantsBrain}
@@ -265,6 +278,7 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                     <motion.img
                         className="avatar absolute top-0"
                         initial={{ opacity: 0 }}
+                        initial={{ opacity: 0 }}
                         whileInView={{
                             opacity: [0, 0.5, 0],
                             transition: {
@@ -272,7 +286,8 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                                 delay: 2
                             },
                             transitionEnd: { display: "none" },
-                        }}
+                        }
+                        }
                         viewport={{ once: true }}
                         src="/images/ulrike_brain.webp"
                         width={709}
@@ -289,6 +304,7 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                         }}
                         viewport={{ once: true }}
                     />
+
 
                     {variantsBrain && <motion.img
                         className="avatar absolute top-0 "

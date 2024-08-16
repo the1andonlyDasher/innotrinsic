@@ -305,17 +305,17 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                 font="/fonts/poppins-v21-latin-800.ttf"
                             >
                                 <motion3d.meshBasicMaterial
-                                    color={"#475946"}
+                                    color={"#2e3e21"}
                                     toneMapped={false}
                                     initial="initial"
                                     animate={textMatControls}
                                     exit="exit"
                                     variants={{
-                                        initial: { opacity: 1, color: "#475946" },
-                                        hide: { opacity: 0.1, color: "#475946" },
+                                        initial: { opacity: 1, color: "#2e3e21" },
+                                        hide: { opacity: 0.1, color: "#2e3e21" },
                                         enter: { opacity: 1, color: "#ffffff" },
                                         clicked: { opacity: 0, color: "#ffffff" },
-                                        exit: { opacity: 0, color: "#475946" },
+                                        exit: { opacity: 0, color: "#2e3e21" },
                                     }}
                                 />
                                 {`${props.text}`}
