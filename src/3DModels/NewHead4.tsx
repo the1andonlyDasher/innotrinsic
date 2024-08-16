@@ -40,8 +40,9 @@ import Camouflage, {
 } from "@/ts/brainBasicsGL/Camouflage";
 import { AdditiveBlending, Group, MathUtils, Vector2, Vector3 } from "three";
 import * as BufferGeometryUtils from "@/ts/threeExport/BufferGeometryUtils"
-import { LRBrain } from "./LRBrain";
+
 import { lerp } from "three/src/math/MathUtils.js";
+import { LRBrain } from "./LRBrain";
 
 
 const GoldShader = (
@@ -222,7 +223,9 @@ export function NewHead4(props: HeadHandsProps) {
       ((pvAtom?.width / window.innerWidth) * viewport.width) / 2 -
       viewport.width / 2 +
       (pvAtom?.left / window.innerWidth) * viewport.width,
-      -s(11, viewport.width / 1.35, 14) -
+      (router.pathname === "/business/brainbackgrounds" ?
+        -s(11, viewport.width / 1.35, 19)
+        : -s(11, viewport.width / 1.35, 14)) -
       ((pvAtom?.height / window.innerHeight) * viewport.height) / 2 +
       viewport.height / 2 -
       (pvAtom?.top / window.innerHeight) * viewport.height,
@@ -310,11 +313,16 @@ export function NewHead4(props: HeadHandsProps) {
         brain_material_controls.start("enter");
       }
     } else if (router.pathname === "/business/brainbackgrounds") {
-      setDisposed(false);
-      setIsInPage(true);
-      brain_mesh_controls.start("enter");
-      brain_material_controls.start("enter");
-
+      if (props.scroll.current > 0.015) {
+        brain_material_controls.start("hidden").then(() => {
+          setIsInPage(false), setDisposed(true);
+        });
+      } else {
+        setDisposed(false);
+        setIsInPage(true);
+        brain_mesh_controls.start("enter");
+        brain_material_controls.start("enter");
+      }
     } else {
       brain_material_controls.start("hidden").then(() => {
         setIsInPage(false), setDisposed(true);
@@ -346,12 +354,14 @@ export function NewHead4(props: HeadHandsProps) {
       ref={group}
       position={pos}
       dispose={null}
-      scale={s(7, scl[0] * s(0.5, viewport.width / 30, 0.8), 10)}
+      scale={router.pathname === "/business/brainbackgrounds" ?
+        s(9, scl[0] * s(0.5, viewport.width / 20, 1.5), 14) :
+        s(7, scl[0] * s(0.5, viewport.width / 30, 0.8), 10)}
       rotation={[0, -Math.PI / 1.15, 0]}
     >
       <group rotation={[0, -0.3, 0]} scale={1}>
         {/* <Model scroll={props.scroll} /> */}
-        <LRBrain position={[1, 0, 0]} />
+        <LRBrain scroll={props.scroll} props={{ position: ([1, 0, 0]) }} />
         <ShaderHand scroll={props.scroll} />
         <TexturedHand />
         {/* <Camouflage colors={colors} /> */}
@@ -365,6 +375,7 @@ export function NewHead4(props: HeadHandsProps) {
           position={[0.075, -0.6, 0.1]}
         >
           <WordCloud
+            scroll={props.scroll}
             active={router.pathname === "/business/brainbackgrounds"}
             words={words}
             colors={colors}

@@ -17,7 +17,7 @@ const variants = {
 };
 
 const OldBrainModernWorld: FC<OldBrainModernWorldProps> = () => {
-    return (<Sec single left sectionName="science">
+    return (<Sec single left sectionName="slider">
         <motion.div
             className="landing__wrapper py-6"
             viewport={{ amount: 0.25, once: false, margin: "0px" }}

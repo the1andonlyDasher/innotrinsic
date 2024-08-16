@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useRef, useState } from "react";
+import { FC, MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float, Text, useCursor } from "@react-three/drei";
 import { motion as motion3d } from "framer-motion-3d";
@@ -8,7 +8,6 @@ import { size, useCustomCursor } from "../utils";
 import AutoSizedText from "./AutoSizedText";
 import { useAnimation } from "framer-motion";
 
-// Word Component
 interface WordProps {
     children: string;
     position: [number, number, number];
@@ -18,11 +17,12 @@ interface WordProps {
     heightDifference: number;
     maxWidth: number;
     minFontSize?: number;
+    scroll: MutableRefObject<number>
 }
 
 
 const Word: FC<WordProps> = ({ maxWidth,
-    minFontSize = 3, children, color, active, isCenter, position, heightDifference, ...props }) => {
+    minFontSize = 3, children, color, active, isCenter, position, heightDifference, scroll, ...props }) => {
     const [fontSize, setFontSize] = useState<number>(1);
     const { viewport } = useThree()
     const [ready, setReady] = useState<boolean>(false);
@@ -113,9 +113,7 @@ const Word: FC<WordProps> = ({ maxWidth,
             const textWidth = size.x;
 
             if (textWidth > maxWidth) {
-                // Calculate the necessary scale to fit within maxWidth
                 const newFontSize = (maxWidth / textWidth) * fontSize;
-                // Apply the new font size, respecting the minFontSize
                 setFontSize(Math.max(newFontSize, minFontSize));
             }
             setReady(true);
@@ -143,16 +141,15 @@ const Word: FC<WordProps> = ({ maxWidth,
 
 
     useEffect(() => {
-        if (active) {
+        if (active && scroll.current < 0.015) {
             setDisposed(false), setInPage(true)
         } else {
-            controls.start("exit").then(() => {
-                setTimeout(() => {
-                    setDisposed(true), setInPage(false)
-                }, 1500)
-            })
+
+            setInPage(false)
+            controls.start("exit").then(() => setDisposed(true))
+
         }
-    }, [active]);
+    }, [active, scroll.current]);
 
     useEffect(() => {
         if (inPage) {
@@ -161,8 +158,6 @@ const Word: FC<WordProps> = ({ maxWidth,
             } else if (active && !isCenter) {
                 controls.start("floating")
             }
-
-
         }
     }, [inPage, active, isCenter])
 
@@ -209,9 +204,11 @@ interface WordCloudProps {
     words: string[];
     colors: string[];
     active: boolean;
+    scroll: MutableRefObject<number>
+
 }
 
-const WordCloud: FC<WordCloudProps> = ({ words, colors, active }) => {
+const WordCloud: FC<WordCloudProps> = ({ words, colors, active, scroll }) => {
     const { viewport } = useThree();
     const [centerWordIndex, setCenterWordIndex] = useState<number | null>(null);
     const [isCenter, setIsCenter] = useState<boolean>(false);
@@ -222,10 +219,10 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors, active }) => {
 
     // Wörter über die Ringe gleichmäßig verteilen
     const desiredCount = 18;
-    const firstRingCount = Math.min(6, desiredCount); // Max 6 for first ring
+    const firstRingCount = Math.min(6, desiredCount); // Max 6 für den ersten ring
     const remainingCount = desiredCount - firstRingCount;
-    const secondRingCount = Math.min(remainingCount, 8); // Max 8 for second ring
-    const thirdRingCount = remainingCount - secondRingCount; // The rest for third ring
+    const secondRingCount = Math.min(remainingCount, 8); // Max 8 für den zweiten
+    const thirdRingCount = remainingCount - secondRingCount; // alle anderen für den dritten
     const [currentWords, setCurrentWords] = useState<string[]>([]);
 
     // Wörter so oft wiederholen, dass sie der angegebenen anzahl entsprechen + Farben
@@ -260,12 +257,12 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors, active }) => {
         return () => clearTimeout(timeout);
     }, [repeatedWords.length]);
 
-    // Initialize words when component mounts
+    // Wörter initialisieren wenn die Komponent mounted
     useEffect(() => {
         setCurrentWords(Array.from({ length: desiredCount }, (_, index) => words[index % words.length]));
     }, [words, desiredCount]);
 
-    // Handle word swapping
+    // tauschmechanik
     useEffect(() => {
         const swapWords = () => {
             setCurrentWords((prevWords) =>
@@ -273,9 +270,9 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors, active }) => {
             );
         };
 
-        const interval = setInterval(swapWords, 5000); // Swap every 5 seconds
+        const interval = setInterval(swapWords, 5000); // alle 5 sek tauschen
 
-        return () => clearInterval(interval); // Clean up on unmount
+        return () => clearInterval(interval); // bei unmount aufräumen
     }, [words]);
 
     return (
@@ -303,6 +300,7 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors, active }) => {
                         active={active}
                         color={repeatedColors[index]}
                         key={index}
+                        scroll={scroll}
                         position={[
                             (Math.sin(r(firstRingCount, index)) * radius) / 2,
                             0,
@@ -322,6 +320,7 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors, active }) => {
                     <Word
                         maxWidth={15}
                         heightDifference={0}
+                        scroll={scroll}
                         active={active}
                         color={repeatedColors[firstRingCount + index]}
                         key={firstRingCount + index}
@@ -343,6 +342,7 @@ const WordCloud: FC<WordCloudProps> = ({ words, colors, active }) => {
                 {Array.from({ length: thirdRingCount }).map((_, index) => (
                     <Word
                         maxWidth={15}
+                        scroll={scroll}
                         heightDifference={2}
                         active={active}
                         color={repeatedColors[firstRingCount + secondRingCount + index]}

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { AdditiveBlending, MathUtils, Mesh, MultiplyBlending, Points } from 'three'
 import { useFrame } from '@react-three/fiber'
@@ -16,6 +16,10 @@ type GLTFResult = {
   materials: {}
 }
 
+type LRBrainProps = {
+  scroll: MutableRefObject<number>;
+  props?: JSX.IntrinsicElements["group"];
+};
 
 const variants = {
   initial: { scale: 0 },
@@ -23,15 +27,15 @@ const variants = {
   exit: { scale: 0 }
 }
 
-export function LRBrain(props: JSX.IntrinsicElements['group']) {
+export function LRBrain(props: LRBrainProps) {
   const { nodes, materials }: any = useGLTF('/lowrez_brain.glb')
 
   const router = useRouter()
-  // Reference for points
+
   const pointsRef: any = useRef<Points>(null);
 
-  // Determine the number of particles and create a buffer for positions
-  const particleCount = 200; // Increase this number for more particles
+
+  const particleCount = 200;
   const particlePositions = useMemo(() => {
     const positions = new Float32Array(particleCount * 3);
     const originalVertices = nodes.cerebellum.geometry.attributes.position.array;
@@ -42,7 +46,7 @@ export function LRBrain(props: JSX.IntrinsicElements['group']) {
       const oy = originalVertices[originalVertexIndex * 3 + 1];
       const oz = originalVertices[originalVertexIndex * 3 + 2];
 
-      // Randomly distribute particles around original vertices
+      // Partikel zufällig um Vertices verteilen
       positions[i * 3] = ox + MathUtils.randFloatSpread(0.1);
       positions[i * 3 + 1] = oy + MathUtils.randFloatSpread(0.1);
       positions[i * 3 + 2] = oz + MathUtils.randFloatSpread(0.1);
@@ -71,32 +75,28 @@ export function LRBrain(props: JSX.IntrinsicElements['group']) {
 
   useEffect(() => {
     if (router.pathname === "/business/brainbackgrounds") {
-      setTimeout(() => {
-        setDisposed(false), setInPage(true)
+      if (props.scroll.current > 0.015) {
+        setInPage(false)
+        controls.start("exit").then(() => setDisposed(true))
 
-      }, 1000)
+      } else {
+        setDisposed(false), setInPage(true)
+      }
     } else {
-      controls.start("exit").then(() => {
-        setTimeout(() => {
-          setDisposed(true), setInPage(false)
-        }, 1500)
-      })
+      setInPage(false)
+      controls.start("exit").then(() => setDisposed(true))
     }
-  }, [router.pathname]);
+  }, [router.pathname, props.scroll.current]);
 
   useEffect(() => {
     if (inPage) {
-
       controls.start("enter")
     }
   }, [inPage])
 
 
   return (<>
-    {/* <mesh rotation={[0, -Math.PI / 0.85, 0]}
-      position={[0.075, 1.09, 0.075]} geometry={nodes.cerebellum.geometry}>
-      <meshStandardMaterial toneMapped={false} wireframe color="navy" />
-    </mesh> */}
+
     <motion.points
       visible={!disposed}
       variants={variants}

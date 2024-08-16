@@ -131,7 +131,6 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
             0,
         ];
         setPos(position);
-        console.log(position)
     }, [pvAtom]);
 
     function setTarget() {

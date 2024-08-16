@@ -27,7 +27,7 @@ export const targetColorsNavTitle: any = {
     business: "#32689C",
     "/": "#ffffff",
     science: "#506c00",
-    slider: "#006d8b",
+    slider: "#32689C",
     symbols: "#506c00",
     perspective: "#506c00",
     braincare: "#506c00",

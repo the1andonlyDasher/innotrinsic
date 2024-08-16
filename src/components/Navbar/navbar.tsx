@@ -47,7 +47,8 @@ const Navbar = ({ contentContainer, navbar, legals }: any) => {
 
   const variants = {
     closed: {},
-    open: {}
+    open: {},
+
   };
 
   const image_variants = {
@@ -99,7 +100,6 @@ const Navbar = ({ contentContainer, navbar, legals }: any) => {
 
   return (
     <motion.nav
-      // className={isShrunk ? "navbar shrunk" : "navbar"}
       className={`navbar`}
       variants={variants}
       ref={navbarMain}

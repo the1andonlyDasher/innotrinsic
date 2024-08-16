@@ -20,9 +20,8 @@ const variants = {
 
 const BBLanding: FunctionComponent<BBLandingProps> = () => {
     const searchParams = useSearchParams();
-    const [, setPVAtom] = useAtom(productViewer);
+    const [pvAtom, setPVAtom] = useAtom(productViewer);
     const lpViewer = useRef<any>(!null);
-
 
     const setCoords = () => {
         const { width, height, left, top } =
@@ -110,8 +109,6 @@ const BBLanding: FunctionComponent<BBLandingProps> = () => {
                         </Link>
                     </motion.div>
                 </motion.div>
-
-                {/* HERO SECTION ENDE */}
             </motion.div>
         </Sec>
     );
