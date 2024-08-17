@@ -100,17 +100,14 @@ const Navbar = ({ contentContainer, navbar, legals }: any) => {
 
   return (
     <motion.nav
-      className={isShrunk ? "navbar shrunk" : "navbar"}
+
       // className={`navbar`}
       className={`navbar`}
-      variants={variants}
-      ref={navbarMain}
-      initial={false}
-      animate={isOpen ? "open" : "closed"}
+
     >
       <div className="navbar__container" aria-haspopup="menu" >
         <motion.div
-          variants={image_variants} initial="hidden" animate="enter" exit="exit"
+
         >
           <Link
             aria-label="Home"

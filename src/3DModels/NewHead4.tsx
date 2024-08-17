@@ -108,10 +108,15 @@ const brainVariants = {
 };
 
 const material2Variants = {
-  initial: { opacity: 0 },
-  hidden: { opacity: 0 },
-  hide: { opacity: 0.1 },
+  initial: { opacity: 0, color: "#f0c25e", },
+  hidden: { opacity: 0, color: "#f0c25e", },
+  hide: { opacity: 0.1, color: "#f0c25e", },
+  brainbackgrounds: {
+    opacity: 0.5,
+    color: "#5485d4"
+  },
   enter: {
+    color: "#f0c25e",
     opacity: 1,
     transition: {
       type: "spring",
@@ -122,7 +127,8 @@ const material2Variants = {
     },
   },
   exit: {
-    opacity: 0,
+    opacity: 0
+    , color: "#f0c25e",
     transition: {
       type: "spring",
       damping: 10,
@@ -195,19 +201,14 @@ export function NewHead4(props: HeadHandsProps) {
   //searchParams
   const searchParams = useSearchParams();
 
-  // refs
-  const brain = useRef<any>(!null);
+
 
   // animation controls
-  const controls = useAnimation();
-  const hand1_controls = useAnimation();
+
   const brain_material_controls = useAnimation();
 
   // states
-  const [brainDisposed, setBDisposed] = useState(false);
-  const [headDisposed, setHDisposed] = useState(false);
-  const [hand1Disposed, setH1Disposed] = useState(false);
-  const [hand2Disposed, setH2Disposed] = useState(false);
+
   const [isInPage, setIsInPage] = useState(false);
   const [disposed, setDisposed] = useState(false);
 
@@ -224,7 +225,7 @@ export function NewHead4(props: HeadHandsProps) {
       viewport.width / 2 +
       (pvAtom?.left / window.innerWidth) * viewport.width,
       (router.pathname === "/business/brainbackgrounds" ?
-        -s(11, viewport.width / 1.35, 19)
+        -s(15, viewport.width / 1.35, 19)
         : -s(11, viewport.width / 1.35, 14)) -
       ((pvAtom?.height / window.innerHeight) * viewport.height) / 2 +
       viewport.height / 2 -
@@ -236,65 +237,56 @@ export function NewHead4(props: HeadHandsProps) {
   }, [pvAtom]);
 
 
-  const hand2Material = (
-    <motion3d.meshStandardMaterial
-      color="#dfa286"
-      initial="initial"
-      animate={controls}
-      exit="exit"
-      variants={material2Variants}
-      transparent
-      toneMapped
-    />
-  );
+
 
   const bmRef = useRef<any>(!null);
   const glassRef = useRef<any>(!null);
 
-
-
-  const glass_material = (
-    <MeshTransmissionMaterial
-      ref={glassRef}
-      samples={8}
-      reflectivity={0}
+  const brain_material = (
+    <motion3d.meshPhysicalMaterial
+      ref={bmRef}
+      initial="initial"
+      transmission={0.5}
+      ior={1.32}
+      reflectivity={0.7}
+      thickness={0.5}
+      animate={brain_material_controls}
+      exit="exit"
+      variants={material2Variants}
+      metalness={1}
+      roughness={0.1}
+      toneMapped
+      transparent
+      sheen={0.25}
+      sheenColor={"#fff87b"}
       sheenRoughness={0}
-      ior={1}
       iridescence={0.2}
       iridescenceIOR={0.6}
-      resolution={512 * 2}
-      thickness={0.05}
-      anisotropy={0.5}
-      anisotropicBlur={0.4}
       clearcoat={1}
       clearcoatRoughness={0.1}
-      transparent
-      opacity={0.1}
-      color="#8fc8e6"
-      roughness={0}
-      chromaticAberration={0.1}
     />
   );
 
+
+
   const brain_mesh_controls = useAnimation();
 
-  useFrame(() => {
 
-    if (glassRef.current && router.pathname === "/business/brainbackgrounds") {
-      glassRef.current.opacity = lerp(glassRef.current.opacity, router.pathname === "/business/brainbackgrounds" ? 1 : 0, 0.15)
-    }
-  })
+
+
+
 
   // enter animations
 
   useEffect(() => {
     if (router.pathname === "/") {
+      setIsInPage(true);
       if (props.scroll.current > 0.015) {
         brain_material_controls.start("hidden").then(() => {
-          setIsInPage(false), setDisposed(true);
+          setIsInPage(false)
         });
       } else {
-        setDisposed(false);
+
         setIsInPage(true);
         brain_mesh_controls.start("enter");
         brain_material_controls.start("enter");
@@ -304,10 +296,10 @@ export function NewHead4(props: HeadHandsProps) {
         brain_material_controls.start("hide");
       } else if (searchParams.get("view") && searchParams.get("focusGroup")) {
         brain_material_controls.start("hidden").then(() => {
-          setIsInPage(false), setDisposed(true);
+          setIsInPage(false)
         });
       } else {
-        setDisposed(false);
+
         setIsInPage(true);
         brain_mesh_controls.start("enter");
         brain_material_controls.start("enter");
@@ -315,36 +307,31 @@ export function NewHead4(props: HeadHandsProps) {
     } else if (router.pathname === "/business/brainbackgrounds") {
       if (props.scroll.current > 0.015) {
         brain_material_controls.start("hidden").then(() => {
-          setIsInPage(false), setDisposed(true);
+
+          setIsInPage(false)
+
         });
       } else {
-        setDisposed(false);
+
         setIsInPage(true);
         brain_mesh_controls.start("enter");
-        brain_material_controls.start("enter");
+        brain_material_controls.start("brainbackgrounds");
       }
     } else {
       brain_material_controls.start("hidden").then(() => {
-        setIsInPage(false), setDisposed(true);
+        setIsInPage(false)
       });
     }
   }, [router.pathname, props.scroll.current, searchParams]);
 
-  const brain_material = (
-    <motion3d.meshStandardMaterial
-      ref={bmRef}
-      initial="initial"
-      animate={brain_material_controls}
-      exit="exit"
-      variants={material2Variants}
-      color="#ffe1a0"
-      metalness={1}
-      roughness={0.1}
-      toneMapped
-    />
-  );
 
-  const mat = router.pathname === "/business/brainbackgrounds" ? glass_material : brain_material;
+  useEffect(() => {
+    if (!isInPage) {
+      setTimeout(() => setDisposed(true), 0)
+    } else {
+      setDisposed(false)
+    }
+  }, [isInPage])
 
 
 
@@ -355,17 +342,14 @@ export function NewHead4(props: HeadHandsProps) {
       position={pos}
       dispose={null}
       scale={router.pathname === "/business/brainbackgrounds" ?
-        s(9, scl[0] * s(0.5, viewport.width / 20, 1.5), 14) :
+        s(11, scl[0] * s(0.5, viewport.width / 20, 1.5), 14) :
         s(7, scl[0] * s(0.5, viewport.width / 30, 0.8), 10)}
       rotation={[0, -Math.PI / 1.15, 0]}
     >
       <group rotation={[0, -0.3, 0]} scale={1}>
-        {/* <Model scroll={props.scroll} /> */}
-        <LRBrain scroll={props.scroll} props={{ position: ([1, 0, 0]) }} />
+        {/* <LRBrain scroll={props.scroll} props={{ position: ([1, 0, 0]) }} /> */}
         <ShaderHand scroll={props.scroll} />
         <TexturedHand />
-        {/* <Camouflage colors={colors} /> */}
-        {/* <skinnedMesh geometry={nodes.Shape_IndexedFaceSet001.geometry} material={nodes.Shape_IndexedFaceSet001.material} skeleton={nodes.Shape_IndexedFaceSet001.skeleton} >{MyShaderMaterial}</skinnedMesh> */}
       </group>
       <Float floatIntensity={0.1} rotationIntensity={0.1}>
 
@@ -374,12 +358,12 @@ export function NewHead4(props: HeadHandsProps) {
           rotation={[0, -Math.PI / 0.85, 0]}
           position={[0.075, -0.6, 0.1]}
         >
-          <WordCloud
+          {/* <WordCloud
             scroll={props.scroll}
             active={router.pathname === "/business/brainbackgrounds"}
             words={words}
             colors={colors}
-          />
+          /> */}
           <motion3d.group
             variants={brainVariants}
             initial="initial"
@@ -395,7 +379,7 @@ export function NewHead4(props: HeadHandsProps) {
               geometry={nodes.stem.geometry}
               position={[0, 1.7, -0.05]}
             >
-              {mat}
+              {brain_material}
             </mesh>
 
           </motion3d.group>

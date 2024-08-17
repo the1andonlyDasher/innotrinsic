@@ -192,13 +192,7 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
                 <motion3d.meshStandardMaterial
                     visible={false}
                     transparent
-                // initial="initial"
-                // animate={sphereMaterialControls}
-                // variants={{
-                //     intitial: { opacity: 0.1, color: "#ebfbca" },
-                //     hide: { opacity: 0.1, color: "#ebfbca" },
-                //     visible: { opacity: 1, color: "#ebfbca", transition: { delay: 0.5 } },
-                // }}
+
                 />
                 {numIdeas.map((data: any, i: number) =>
                     <group key={i}>

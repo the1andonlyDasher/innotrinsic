@@ -216,7 +216,6 @@ const GL = (props: glProps) => {
 
             >
                 <directionalLight intensity={2} />
-
                 {loaded &&
                     <CameraControls
                         infinityDolly={false}
@@ -233,7 +232,7 @@ const GL = (props: glProps) => {
                         minAzimuthAngle={-Math.PI / 2}
                         maxAzimuthAngle={Math.PI / 2}
                     />}
-                <Stats />
+                <Stats showPanel={0} />
                 <Game />
                 <GradientTexture
                     stops={[0, 0.5, 1]}

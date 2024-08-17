@@ -27,8 +27,7 @@ const parentVariants = {
 const IconsSection: FunctionComponent<IconsSectionProps> = () => {
     const [location, setLocation] = useAtom(loc);
     return (
-        <div className="background-wrapper"><motion.div
-            id="mehr"
+        <motion.div
             viewport={{ amount: 0.1, once: true, margin: "0px" }}
             initial="initial"
             whileInView="enter"
@@ -44,126 +43,127 @@ const IconsSection: FunctionComponent<IconsSectionProps> = () => {
             onViewportEnter={(entry) => {
                 entry?.isIntersecting && setLocation("science");
             }}
-            className="breakout icons__wrapper"
+            className="full-width icons__wrapper"
         >
-            <motion.div variants={variants} viewport={{ once: true }} className="icons__card-wrapper">
-                <Card header={`Neurowissen\n-schaftlich\nbasiert`}>
-                    <NeuroSVG />
-                </Card>
-                <Card header={`Besser mit\nBraincare`}>
-                    <BraincareSVG />
-                </Card>
-                <Card header={"Alltags-\nkompatibel"}>
-                    <JederSVG />
-                </Card>
-                <Card header={"Leicht zu \nlernen"}>
-                    <ManipulateSVG />
-                </Card>
-                <Card header={`Selbstbestimmt`}>
-                    <WomenSVG />
-                </Card>
-            </motion.div>
-            <motion.h3 variants={variants} className="icons__title">Das ist MY InnoTrinsic.</motion.h3>
-
-            <motion.div variants={variants} className="icons__text-section">
-                <motion.p className="w-full mb-16 text-center" variants={variants}>
-                    Unser Gehirn ist der Architekt unseres Alltags. Wenn wir aktiv mit
-                    unserem Gehirn zusammenarbeiten, seine Funktionsweise verstehen und es
-                    auf neuroloyal angepassten Wegen zu unserem besten Freund machen,
-                    schaffen wir Mehrwert - für uns und unser Umfeld. MY InnoTrinsic hört
-                    den Neurowissenschaften aufmerksam zu, übersetzt und analysiert,
-                    welche Erkenntnisse relevant für unseren Alltag sind. Auf dieser Basis
-                    entwickeln wir Wege und Instrumente, die Agieren mit BrainCare
-                    ermöglichen. Unsere Strukturen, Instrumente und Prozesse sind
-                    umsetzungsorientiert, leicht erlernbar und alltagspraktikabel - für
-                    Menschen, Unternehmen und Organisationen. MY InnoTrinsic öffnet so
-                    einen Raum für den neuroloyalen Perspektivwechsel auf das Gehirn und
-                    sein immenses Potenzial.
-                </motion.p>
-
-
-
-
-            </motion.div>
-            <motion.div variants={parentVariants} initial="initial" whileInView="enter" viewport={{ once: true }} className="icons__pictureSection">
-                <motion.div variants={variants} className="icons__picture">
-                    <Image width={500} height={300} alt="Neuroloyaler Perspektivenwechsel." src="/images/perspektivenwechsel.jpg" />
+            <motion.div variants={variants} className="content-grid">
+                <motion.div variants={variants} viewport={{ once: true }} className="icons__card-wrapper">
+                    <Card header={`Neurowissen\n-schaftlich\nbasiert`}>
+                        <NeuroSVG />
+                    </Card>
+                    <Card header={`Besser mit\nBraincare`}>
+                        <BraincareSVG />
+                    </Card>
+                    <Card header={"Alltags-\nkompatibel"}>
+                        <JederSVG />
+                    </Card>
+                    <Card header={"Leicht zu \nlernen"}>
+                        <ManipulateSVG />
+                    </Card>
+                    <Card header={`Selbstbestimmt`}>
+                        <WomenSVG />
+                    </Card>
                 </motion.div>
-                <motion.div variants={variants} className="icons__text-section_new">
-                    <motion.h4 variants={variants} className="section-description">
-                        Neuroloyaler Perspektiven-Wechsel
-                    </motion.h4>
-                    <motion.p variants={variants}>
-                        Wir verändern Perspektiven, basierend auf der Leitidee des
-                        &quot;Respekts vor dem Menschen&quot; und der Kooperation und
-                        Kollaboration mit der Natur des Menschen - konkret der
-                        neuropsychologischen Zusammenhänge - unserem Gehirn. Unser Ziel ist
-                        es, allseitigen und wechselseitigen Mehrwert zu schaffen, Wachstum zu
-                        fördern und Durchbrüche für Menschen, Organisationen, Umwelt und
-                        Gesellschaft zu erreichen.
+                <motion.h3 variants={variants} className="icons__title">Das ist MY InnoTrinsic.</motion.h3>
+
+                <motion.div variants={variants} className="icons__text-section">
+                    <motion.p className="w-full mb-16 text-center" variants={variants}>
+                        Unser Gehirn ist der Architekt unseres Alltags. Wenn wir aktiv mit
+                        unserem Gehirn zusammenarbeiten, seine Funktionsweise verstehen und es
+                        auf neuroloyal angepassten Wegen zu unserem besten Freund machen,
+                        schaffen wir Mehrwert - für uns und unser Umfeld. MY InnoTrinsic hört
+                        den Neurowissenschaften aufmerksam zu, übersetzt und analysiert,
+                        welche Erkenntnisse relevant für unseren Alltag sind. Auf dieser Basis
+                        entwickeln wir Wege und Instrumente, die Agieren mit BrainCare
+                        ermöglichen. Unsere Strukturen, Instrumente und Prozesse sind
+                        umsetzungsorientiert, leicht erlernbar und alltagspraktikabel - für
+                        Menschen, Unternehmen und Organisationen. MY InnoTrinsic öffnet so
+                        einen Raum für den neuroloyalen Perspektivwechsel auf das Gehirn und
+                        sein immenses Potenzial.
                     </motion.p>
-                </motion.div>
-            </motion.div>
-            <motion.div variants={parentVariants} initial="initial" whileInView="enter" viewport={{ once: true }} className="icons__pictureSection">
 
-                <motion.div variants={variants} className="icons__text-section_new">
-                    <motion.h4 variants={variants} className="section-description">
-                        Alltagsarchitekt Gehirn
-                    </motion.h4>
-                    <motion.p variants={variants}>
-                        MY InnoTrinsic konzentriert sich auf das Gehirn und seine enorme
-                        Komplexität, die einen entscheidenden Einfluss auf unser Handeln,
-                        unsere Leistungsfähigkeit, unser Wohlbefinden und das Wachstum von
-                        Organisationen und Gesellschaft hat. Wir schöpfen aus den
-                        Neurowissenschaften und der Neuropsychologie, um dieses Wissen in
-                        praktische Strukturen und Methoden zu überführen, die im
-                        Unternehmensalltag und im Leben jedes Menschen unterstützen können.
-                    </motion.p>
-                </motion.div>
-                <motion.div variants={variants} className="icons__picture">
-                    <Image width={500} height={300} alt="Alltagsarchitekt Gehirn." src="/images/alltagsarchitekt-gehirn.jpg" />
-                </motion.div>
-            </motion.div>
-            <motion.div variants={parentVariants} initial="initial" whileInView="enter" viewport={{ once: true }} className="icons__pictureSection">
-                <motion.div variants={variants} className="icons__picture">
-                    <Image width={500} height={300} alt="Neuroloyaler Perspektivenwechsel." src="/images/gehirn-besterfreund.jpg" />
-                </motion.div>
-                <motion.div variants={variants} className="icons__text-section_new">
-                    <motion.h4 variants={variants} className="section-description">
-                        Das Gehirn wird zum besten Freund.
-                    </motion.h4>
-                    <motion.p variants={variants}>
-                        Mit einem respektvollen Blick auf die Natur des Menschen gehen wir
-                        neue Wege der Kooperation und Kollaboration mit dem mächtigsten Organ
-                        des Körpers. Ähnlich wie wir für unsere physische Gesundheit sorgen,
-                        zeigen wir Wege auf, wie das hochkomplexe Gehirn optimal genutzt
-                        werden kann. Das Gehirn wird zum besten Freund, der uns unterstützt
-                        und begleitet.
-                    </motion.p>
-                </motion.div>
-            </motion.div>
-            <motion.div variants={parentVariants} initial="initial" whileInView="enter" viewport={{ once: true }} className="icons__pictureSection">
 
-                <motion.div variants={variants} className="icons__text-section_new">
-                    <motion.h4 variants={variants} className="section-description">
-                        BrainCare pragmatisch und mit Struktur
-                    </motion.h4>
-                    <motion.p variants={variants}>
-                        Als verlässlicher Partner von Menschen und Organisationen haben wir
-                        aus dem Wissen der Neurowissenschaften ein neuroloyales
-                        Strukturprinzip entwickelt, um Menschen und Organisationen für diese
-                        Komplexität zu sensibilisieren und neuroloyales Handeln mit BrainCare
-                        zu ermöglichen. Unsere pragmatischen Strukturen und Bausteine sind
-                        bedarfsgerecht, zielgenau, flexibel und leicht erlernbar - für jeden
-                        nutzbar und anwendbar.
-                    </motion.p>
+
+
                 </motion.div>
-                <motion.div variants={variants} className="icons__picture">
-                    <Image width={500} height={300} alt="Neuroloyaler Perspektivenwechsel." src="/images/braincare.jpg" />
+                <motion.div variants={parentVariants} initial="initial" whileInView="enter" viewport={{ once: true }} className="icons__pictureSection">
+                    <motion.div variants={variants} className="icons__picture">
+                        <Image width={500} height={300} alt="Neuroloyaler Perspektivenwechsel." src="/images/perspektivenwechsel.jpg" />
+                    </motion.div>
+                    <motion.div variants={variants} className="icons__text-section_new">
+                        <motion.h4 variants={variants} className="section-description">
+                            Neuroloyaler Perspektiven-Wechsel
+                        </motion.h4>
+                        <motion.p variants={variants}>
+                            Wir verändern Perspektiven, basierend auf der Leitidee des
+                            &quot;Respekts vor dem Menschen&quot; und der Kooperation und
+                            Kollaboration mit der Natur des Menschen - konkret der
+                            neuropsychologischen Zusammenhänge - unserem Gehirn. Unser Ziel ist
+                            es, allseitigen und wechselseitigen Mehrwert zu schaffen, Wachstum zu
+                            fördern und Durchbrüche für Menschen, Organisationen, Umwelt und
+                            Gesellschaft zu erreichen.
+                        </motion.p>
+                    </motion.div>
+                </motion.div>
+                <motion.div variants={parentVariants} initial="initial" whileInView="enter" viewport={{ once: true }} className="icons__pictureSection">
+
+                    <motion.div variants={variants} className="icons__text-section_new">
+                        <motion.h4 variants={variants} className="section-description">
+                            Alltagsarchitekt Gehirn
+                        </motion.h4>
+                        <motion.p variants={variants}>
+                            MY InnoTrinsic konzentriert sich auf das Gehirn und seine enorme
+                            Komplexität, die einen entscheidenden Einfluss auf unser Handeln,
+                            unsere Leistungsfähigkeit, unser Wohlbefinden und das Wachstum von
+                            Organisationen und Gesellschaft hat. Wir schöpfen aus den
+                            Neurowissenschaften und der Neuropsychologie, um dieses Wissen in
+                            praktische Strukturen und Methoden zu überführen, die im
+                            Unternehmensalltag und im Leben jedes Menschen unterstützen können.
+                        </motion.p>
+                    </motion.div>
+                    <motion.div variants={variants} className="icons__picture">
+                        <Image width={500} height={300} alt="Alltagsarchitekt Gehirn." src="/images/alltagsarchitekt-gehirn.jpg" />
+                    </motion.div>
+                </motion.div>
+                <motion.div variants={parentVariants} initial="initial" whileInView="enter" viewport={{ once: true }} className="icons__pictureSection">
+                    <motion.div variants={variants} className="icons__picture">
+                        <Image width={500} height={300} alt="Neuroloyaler Perspektivenwechsel." src="/images/gehirn-besterfreund.jpg" />
+                    </motion.div>
+                    <motion.div variants={variants} className="icons__text-section_new">
+                        <motion.h4 variants={variants} className="section-description">
+                            Das Gehirn wird zum besten Freund.
+                        </motion.h4>
+                        <motion.p variants={variants}>
+                            Mit einem respektvollen Blick auf die Natur des Menschen gehen wir
+                            neue Wege der Kooperation und Kollaboration mit dem mächtigsten Organ
+                            des Körpers. Ähnlich wie wir für unsere physische Gesundheit sorgen,
+                            zeigen wir Wege auf, wie das hochkomplexe Gehirn optimal genutzt
+                            werden kann. Das Gehirn wird zum besten Freund, der uns unterstützt
+                            und begleitet.
+                        </motion.p>
+                    </motion.div>
+                </motion.div>
+                <motion.div variants={parentVariants} initial="initial" whileInView="enter" viewport={{ once: true }} className="icons__pictureSection">
+
+                    <motion.div variants={variants} className="icons__text-section_new">
+                        <motion.h4 variants={variants} className="section-description">
+                            BrainCare pragmatisch und mit Struktur
+                        </motion.h4>
+                        <motion.p variants={variants}>
+                            Als verlässlicher Partner von Menschen und Organisationen haben wir
+                            aus dem Wissen der Neurowissenschaften ein neuroloyales
+                            Strukturprinzip entwickelt, um Menschen und Organisationen für diese
+                            Komplexität zu sensibilisieren und neuroloyales Handeln mit BrainCare
+                            zu ermöglichen. Unsere pragmatischen Strukturen und Bausteine sind
+                            bedarfsgerecht, zielgenau, flexibel und leicht erlernbar - für jeden
+                            nutzbar und anwendbar.
+                        </motion.p>
+                    </motion.div>
+                    <motion.div variants={variants} className="icons__picture">
+                        <Image width={500} height={300} alt="Neuroloyaler Perspektivenwechsel." src="/images/braincare.jpg" />
+                    </motion.div>
                 </motion.div>
             </motion.div>
-
-        </motion.div></div>
+        </motion.div>
     );
 };
 

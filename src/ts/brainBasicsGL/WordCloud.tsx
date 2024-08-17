@@ -142,24 +142,27 @@ const Word: FC<WordProps> = ({ maxWidth,
 
     useEffect(() => {
         if (active && scroll.current < 0.015) {
-            setDisposed(false), setInPage(true)
-        } else {
-
-            setInPage(false)
-            controls.start("exit").then(() => setDisposed(true))
-
-        }
-    }, [active, scroll.current]);
-
-    useEffect(() => {
-        if (inPage) {
+            setInPage(true)
             if (active && isCenter) {
                 controls.start("center")
             } else if (active && !isCenter) {
                 controls.start("floating")
             }
+        } else {
+
+            setInPage(false)
+            controls.start("exit")
+
         }
-    }, [inPage, active, isCenter])
+    }, [active, isCenter, scroll.current]);
+
+    useEffect(() => {
+        if (!inPage) {
+            setTimeout(() => setDisposed(true), 500)
+        } else {
+            setDisposed(false)
+        }
+    }, [inPage])
 
     return (
 

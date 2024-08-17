@@ -44,58 +44,12 @@
 
 /* base classes */
 
-.glInput {
-  font-family: "Inter";
-  width: 250px;
-  border: none;
-  background-image: none;
-  background-color: transparent;
-  color: transparent;
-  caret-color: #ffffff;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  font-weight: 400;
-  caret-color: transparent;
-  outline: 0;
-  &:focus {
-    outline: none;
-    box-shadow: none !important;
-  }
-}
-
-.invalid-feedback {
-  color: var(--clr-signal-red-200);
-  font-weight: 500;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.form-container {
-  max-width: 400px;
-  width: 100%;
-  margin: 1rem auto;
-  padding: 0;
-  background-color: transparent;
-  color: var(--clr-contrast-100);
-  border-radius: 2px;
-}
-
 .form-wrapper {
   width: 100%;
 }
 
-.form-group {
-  width: 100%;
-  margin-bottom: var(--space-s);
-  text-align: left;
-  min-height: 50px;
-  display: flex;
-  flex-direction: column;
-}
-
 form {
   @extend %flex-center;
-
   margin: 0 auto 0 0;
   padding: 1rem 0;
   flex-direction: column;
@@ -107,27 +61,26 @@ form {
 }
 
 form div {
+  position: relative;
   margin: 1rem auto;
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
+// Beudeutet, dass solange der user am tippen ist, orange angezeigt wird, sobald ein Wert erreicht wird,
+// der valide ist wechselt die border color zu green, ansonsten wird red angezeigt
 form :is(#name, #email) {
   max-width: 500px;
-}
-
-fieldset {
-  margin: 1rem auto;
-  padding: 1rem;
-  width: 50%;
-  border-radius: 2px;
-  border: none;
-  background-color: transparent;
-}
-
-legend {
-  padding: 0.5rem;
+  &:not(:placeholder-shown):valid {
+    border-color: rgb(0, 184, 31);
+  }
+  &:not(:placeholder-shown):invalid {
+    border-color: rgb(255, 0, 0);
+  }
+  &:focus:invalid {
+    border-color: rgb(255, 153, 0);
+  }
 }
 
 //Hintergrundbil für das K-Formular
@@ -162,10 +115,6 @@ textarea::placeholder {
   font-weight: 500;
 }
 
-form .input {
-  display: grid;
-}
-
 form label {
   padding-bottom: var(--space-xs);
   font-size: clamp(0.75rem, 10vw, 1.125rem);
@@ -177,14 +126,14 @@ form label {
 
 form :is(input, select, textarea) {
   @extend %trans;
+  display: grid;
   padding: var(--space-xs) var(--space-s);
   padding-left: 0;
   font-size: var(--fs-text);
   min-height: 3rem;
   background-color: hsl(0, 0%, 100%);
   border-bottom: 1px solid hsl(74, 13%, 31%);
-
-  color: var(--clr-contrast-400);
+  color: var(--clr-contrast-600);
   font-weight: 500;
   border-radius: 0;
 }
@@ -226,17 +175,6 @@ form button {
 
 form .btn-group .btn-group:nth-child(n + 2) {
   margin-left: 1rem;
-}
-
-.error {
-  border: 2px solid var(--clr-signal-red-100) !important;
-  color: var(--clr-signal-red-100);
-}
-
-.help-block {
-  border: none !important;
-  border-bottom: 2px dotted var(--clr-signal-red-100);
-  color: var(--clr-signal-red-100);
 }
 
 .thanks__message {

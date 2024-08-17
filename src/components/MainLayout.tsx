@@ -20,6 +20,7 @@ const innerWrapperVariants = {
     open: { opacity: 1, transition: { duration: 0.2, delay: 0.5 } }
 }
 
+
 export default function MainLayout({ children, navbar, legals }: any) {
     const [gScroll, setGScroll] = useAtom(globalScroll)
     const router = useRouter()
@@ -87,6 +88,7 @@ export default function MainLayout({ children, navbar, legals }: any) {
 
     const baseScale = useMotionValue(1);
     const controls = useAnimation()
+    const mainControls = useAnimation()
     const { scrollY } = useScroll({ container: ref })
     const scrollVelocity = useVelocity(scrollY);
     const smoothVelocity = useSpring(scrollVelocity, {
@@ -101,8 +103,10 @@ export default function MainLayout({ children, navbar, legals }: any) {
     useMotionValueEvent(scrollY, "change", () => {
         if (velocityFactor.get() < 0) {
             controls.start("open")
+            mainControls.start("open")
         } else if (velocityFactor.get() > 0) {
             controls.start("closed")
+            mainControls.start("closed")
         }
     })
 
@@ -132,6 +136,7 @@ export default function MainLayout({ children, navbar, legals }: any) {
             </motion.div>
         </motion.div>
         <div ref={ref} className="main"
+
             onScroll={handleScroll}
         >
             <AnimatePresence

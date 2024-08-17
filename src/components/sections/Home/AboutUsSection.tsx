@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { motion } from "framer-motion";
 import { FunctionComponent, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { transition, useMediaQuery } from "@/ts/utils";
@@ -200,7 +199,6 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                     <motion.img
                         className="avatar absolute top-0"
                         initial={{ opacity: 0 }}
-                        initial={{ opacity: 0 }}
                         whileInView={{
                             opacity: [0, 0.5, 0],
                             transition: {
@@ -277,7 +275,6 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                     />
                     <motion.img
                         className="avatar absolute top-0"
-                        initial={{ opacity: 0 }}
                         initial={{ opacity: 0 }}
                         whileInView={{
                             opacity: [0, 0.5, 0],

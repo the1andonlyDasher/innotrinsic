@@ -81,7 +81,7 @@ const Modals: FC<ModalsProps> = ({ modalContent }) => {
                             whileHover="hover"
                             whileTap="hover"
                             className="border border-[#32689C] aspect-square flex justify-center items-center p-2 rounded-md"
-                            onClick={(e) => {
+                            onClick={(e: any) => {
                                 e.stopPropagation(),
                                     setOpen(false);
                                 setCurrentModule("")

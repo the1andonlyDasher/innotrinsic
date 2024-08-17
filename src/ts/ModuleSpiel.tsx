@@ -187,7 +187,8 @@ const Base_Left: React.FC = () => {
     useCursor(hovered);
     return (
         <motion.mesh
-            onClick={() => {
+            onClick={(e) => {
+                e.stopPropagation()
                 setCurrentModule("BrainBasics");
             }}
             onPointerEnter={() => {
