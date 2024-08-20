@@ -41,7 +41,7 @@ export function CuppingHand({ scroll, ...groupProps }: HeadHandsProps) {
         materialControls.start({ opacity: 1 });
       }
     } else {
-      materialControls.start({ opacity: 0 }).then(() => setIsInPage(true))
+      materialControls.start({ opacity: 0 }).then(() => setIsInPage(false))
     }
   }, [router.pathname, scroll.current]);
 
