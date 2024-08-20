@@ -1,11 +1,11 @@
-import { FunctionComponent, MutableRefObject, useEffect, useRef } from "react";
+import { FunctionComponent, MutableRefObject, useEffect, useRef, useState } from "react";
 import Idea from "./Idea";
-import { Instances } from "@react-three/drei";
+import { Instances, useAspect } from "@react-three/drei";
 import { motion as motion3d } from "framer-motion-3d";
 import { useAnimation } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { useAtom } from "jotai";
-import { currentDistance, loc, globalTarget } from "../atoms";
+import { currentDistance, loc, globalTarget, orbitTarget, productViewer, imageViewer } from "../atoms";
 import { Vector3 as V3 } from "@/ts/threeExport/math/Vector3";
 import { Business } from "@/3DModels/Business";
 import { Private } from "@/3DModels/Private";
@@ -18,6 +18,8 @@ import BubbleShader from "./BubbleShader";
 import ReactNode from 'react';
 import MorphingMesh from "./Bubble";
 import BShader from "./BubbleShader";
+import { Group } from "three";
+import { size } from "../utils";
 
 interface IdeaCloudProps {
     centerPoint: [number, number, number];
@@ -82,6 +84,54 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
     const sphereMaterialControls = useAnimation();
     const p: any = new V3();
     const router = useRouter();
+    const [pvAtom, setPVAtom] = useAtom(productViewer);
+    const [ivAtom, setIVAtom] = useAtom(imageViewer);
+
+
+    const [pos, setPos] = useState<any>([]);
+    const [pos2, setPos2] = useState<any>([]);
+
+
+
+
+
+
+    // refs
+
+
+
+    useEffect(() => {
+
+        const position: any = [
+            ((ivAtom?.width / window.innerWidth) * viewport.width) / 2 -
+            viewport.width / 2 +
+            (ivAtom?.left / window.innerWidth) * viewport.width,
+            -size(11, viewport.width / 1.35, 14) -
+            ((ivAtom?.height / window.innerHeight) * viewport.height) / 2 +
+            viewport.height / 2 -
+            (ivAtom?.top / window.innerHeight) * viewport.height,
+            0,
+        ];
+        setPos2(position);
+        console.log(position)
+    }, [ivAtom]);
+
+
+
+    useEffect(() => {
+
+        const position: any = [
+            ((pvAtom?.width / window.innerWidth) * viewport.width) / 2 -
+            viewport.width / 2 +
+            (pvAtom?.left / window.innerWidth) * viewport.width,
+            -size(11, viewport.width / 1.35, 14) -
+            ((pvAtom?.height / window.innerHeight) * viewport.height) / 2 +
+            viewport.height / 2 -
+            (pvAtom?.top / window.innerHeight) * viewport.height,
+            0,
+        ];
+        setPos(position);
+    }, [pvAtom]);
 
     function setTarget() {
         searchParams.get("view")
@@ -125,7 +175,7 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
                 ? setOrbitTarget(
                     group.current
                         .getObjectByName(`${searchParams.get("neuron")}`)
-                        .localToWorld(p.set(0, 0.2, 0))
+                        .localToWorld(p.set(1, 0.65, 0))
                 ) : searchParams.get("neuron") && searchParams.get("focusGroup") ? setTimeout(() => { setOrbitTarget({ x: 0, y: -1, z: 0 }) }, 1300)
                     : setOrbitTarget({ x: 0, y: -1, z: 0 });
             sphereMaterialControls.start(searchParams.get("view") !== null || false ? "hide" : "visible");
@@ -142,13 +192,7 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
                 <motion3d.meshStandardMaterial
                     visible={false}
                     transparent
-                // initial="initial"
-                // animate={sphereMaterialControls}
-                // variants={{
-                //     intitial: { opacity: 0.1, color: "#ebfbca" },
-                //     hide: { opacity: 0.1, color: "#ebfbca" },
-                //     visible: { opacity: 1, color: "#ebfbca", transition: { delay: 0.5 } },
-                // }}
+
                 />
                 {numIdeas.map((data: any, i: number) =>
                     <group key={i}>

@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useAtom } from "jotai";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { FunctionComponent, useEffect, useRef } from "react";
 
 
@@ -19,11 +20,18 @@ const More = () => {
     const [scroll, setGSCroll] = useAtom(globalScroll);
     //ref
     const lpViewer = useRef<any>(!null);
+
+    //router
+    const router = useRouter();
     //set coordinates for head
     const setCoords = () => {
-        const { width, height, left, top } =
-            lpViewer?.current.getBoundingClientRect();
-        setPVAtom({ width, height, left, top });
+
+
+        if (router.pathname === "/einsatzgebiete" && searchParams.get("neuron") === null) {
+            const { width, height, left, top } =
+                lpViewer?.current.getBoundingClientRect();
+            setPVAtom({ width, height, left, top });
+        }
     };
 
 
@@ -31,6 +39,11 @@ const More = () => {
     useEffect(() => {
         setCoords();
     }, []);
+
+    useEffect(() => {
+        setCoords();
+    }, [searchParams]);
+
 
     useEffect(() => {
         setCoords();
@@ -46,8 +59,10 @@ const More = () => {
 
 
     return (
-        <Sec single left sectionName="landing" id="first">
-            <motion.div className="w-full h-full" ref={lpViewer}>
+        <Sec single left sectionName="landing" id="first" addClass="full-width">
+
+            <motion.div className="w-full h-full ">
+                {searchParams.get("neuron") === null && <div className="absolute top-0 left-0 w-full h-full" ref={lpViewer}></div>}
                 <AnimatePresence mode="wait" initial>
                     <Einsatzbereich keyProp={searchParams.get("neuron")} text={searchParams.get("neuron")} />
                 </AnimatePresence>

@@ -1,5 +1,4 @@
 
-import BrainBasics from '@/pages/business/brainbasics'
 import { Vector3 } from '@react-three/fiber'
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
@@ -9,6 +8,7 @@ export const currentDistance = atom<number>(1)
 export const globalScroll = atom<number>(0)
 export const loc = atom<string>("/")
 export const glReady = atom<boolean>(false)
+export const modulesInView = atom<boolean>(false)
 export const landingSection = atom<string>("/")
 export const scrollEnabled = atomWithStorage<any>("scroll", false)
 export const backgroundColors = atom<string[]>(["#f6fff0", "#e5fcfc"])
@@ -17,6 +17,7 @@ export const backgroundText = atom<string>("default");
 export const orbitTarget = atom<Vector3 | { x: number; y: number; z: number; }>({ x: 0, y: 0, z: 0 })
 export const load = atom(false)
 export const productViewer = atom<any>(null)
+export const imageViewer = atom<any>(null)
 export const mountainViewer = atom<any>(null)
 export const modulesViewer = atom<any>(null)
 export const globalTarget = atom<Vector3 | { x: number; y: number; z: number; }>({ x: 0, y: 0, z: 0 })
@@ -42,7 +43,7 @@ export interface ModuleSet {
     second: ModuleGroup;
     third: ModuleGroup;
     fourth: ModuleGroup;
-    fifth: ModuleGroup;
+    // fifth: ModuleGroup;
 }
 
 export const moduleSet = atom<ModuleSet>({
@@ -54,27 +55,27 @@ export const moduleSet = atom<ModuleSet>({
     },
     second: {
         NeuroloyalZumNeu: { label: "Neruoloyal zum Neu", size: [0, 0, 0], position: [-2, 0, 0], svgSrc: "/images/Rastergrafik4.png", textColor: "hsl(39, 66%, 57%)", color: "#f4e5ca", UID: 20 },
-        NeuroloyalPlanen: { label: "Neuroloyal Planen", size: [4.75, 2, 1], position: [0, -1.5, 0], svgSrc: "/images/Rastergrafik5.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 21 },
+        NeuroloyalPlanen: { label: "Neuroloyal Planen", size: [7.125, 2, 1], position: [0, -1.375, 0], svgSrc: "/images/Rastergrafik5.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 21 },
         FocusMe: { label: "Focus Me", size: [0, 0, 0], position: [4.75, -2.5, 0], svgSrc: "/images/Rastergrafik3.png", textColor: "hsl(210, 7%, 57%)", color: "#C0C4C8", UID: 22 },
         FocusOutside: { label: "Focus Outside", size: [0, 0, 0], position: [-2, -5, 0], svgSrc: "/images/Rastergrafik2.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 23 },
     },
     third: {
-        NeuroloyalZumNeu: { label: "Neruoloyal zum Neu", size: [2.25, 1.01, 1], position: [-2.5, -2.5, 0], svgSrc: "/images/Rastergrafik4.png", textColor: "hsl(39, 66%, 57%)", color: "#f4e5ca", UID: 31 },
-        NeuroloyalPlanen: { label: "Neuroloyal Planen", size: [2.25, 1.01, 1], position: [2.5, -0.25, 0], svgSrc: "/images/Rastergrafik5.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 32 },
-        FocusOutside: { label: "Focus Outside", size: [2.25, 1.01, 1], position: [-2.5, -0.25, 0], svgSrc: "/images/Rastergrafik2.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 33 },
+        NeuroloyalZumNeu: { label: "Neruoloyal zum Neu", size: [2.33, 2.01, 1], position: [-4.75, -1.375, 0], svgSrc: "/images/Rastergrafik4.png", textColor: "hsl(39, 66%, 57%)", color: "#f4e5ca", UID: 31 },
+        NeuroloyalPlanen: { label: "Neuroloyal Planen", size: [2.33, 2.01, 1], position: [0, -1.375, 0], svgSrc: "/images/Rastergrafik5.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 32 },
+        FocusOutside: { label: "Focus Outside", size: [2.33, 2.01, 1], position: [4.75, -1.375, 0], svgSrc: "/images/Rastergrafik2.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 33 },
     },
     fourth: {
-        FocusMe: { label: "Focus Me", size: [4.75, 0.666, 1], position: [0, 0, 0], svgSrc: "/images/Rastergrafik3.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 40 },
-        FocusOutside: { label: "Focus Outside", size: [4.75, 0.666, 1], position: [0, -1.5, 0], svgSrc: "/images/Rastergrafik2.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 41 },
-        NeuroloyalZumNeu: { label: "Neruoloyal zum Neu", size: [4.75, 0.666, 1], position: [0, -3, 0], svgSrc: "/images/Rastergrafik4.png", textColor: "hsl(39, 66%, 57%)", color: "#f4e5ca", UID: 42 },
+        FocusMe: { label: "Focus Me", size: [2.33, 2.01, 1], position: [-4.75, -1.375, 0], svgSrc: "/images/Rastergrafik3.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 40 },
+        FocusOutside: { label: "Focus Outside", size: [2.33, 2.01, 1], position: [0, -1.375, 0], svgSrc: "/images/Rastergrafik2.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 41 },
+        NeuroloyalZumNeu: { label: "Neruoloyal zum Neu", size: [2.33, 2.01, 1], position: [4.75, -1.375, 0], svgSrc: "/images/Rastergrafik4.png", textColor: "hsl(39, 66%, 57%)", color: "#f4e5ca", UID: 42 },
     },
-    fifth: {
-        NeuroloyalZumNeu: { label: "Neruoloyal zum Neu", size: [1.5, 1, 1], position: [-3.2, -2.5, 0], svgSrc: "/images/Rastergrafik4.png", textColor: "hsl(39, 66%, 57%)", color: "#f4e5ca", UID: 51 },
-        NeuroloyalPlanen: { label: "Neuroloyal Planen", size: [1.5, 1, 1], position: [0, -0.25, 0], svgSrc: "/images/Rastergrafik5.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 52 },
-        FocusOutside: { label: "Focus Outside", size: [1.5, 1, 1], position: [0, -2.5, 0], svgSrc: "/images/Rastergrafik2.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 53 },
-        WhyToGo: { label: "Let's go?! Why to go?", size: [1.5, 1, 1], position: [-3.2, -0.25, 0], svgSrc: "/images/Rastergrafik7.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 54 },
-        BrainBasics: { label: "BrainBasics - Know How to go", size: [1.5, 1, 1], position: [3.2, -0.25, 0], svgSrc: "/images/Rastergrafik7.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 55 },
-    }
+    // fifth: {
+    //     NeuroloyalZumNeu: { label: "Neruoloyal zum Neu", size: [2.33, 1, 1], position: [-4.75, -0.25, 0], svgSrc: "/images/Rastergrafik4.png", textColor: "hsl(39, 66%, 57%)", color: "#f4e5ca", UID: 51 },
+    //     NeuroloyalPlanen: { label: "Neuroloyal Planen", size: [2.33, 1, 1], position: [0, -0.25, 0], svgSrc: "/images/Rastergrafik5.png", textColor: "hsl(210, 45%, 54%)", color: "#9EBCDA", UID: 52 },
+    //     FocusOutside: { label: "Focus Outside", size: [2.33, 1, 1], position: [4.75, -0.25, 0], svgSrc: "/images/Rastergrafik2.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 53 },
+    //     WhyToGo: { label: "Let's go?! Why to go?", size: [3.5, 1.01, 1], position: [3.65, -2.5, 0], svgSrc: "/images/Rastergrafik7.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 54 },
+    //     BrainBasics: { label: "BrainBasics - Know How to go", size: [3.5, 1.01, 1], position: [-3.65, -2.5, 0], svgSrc: "/images/Rastergrafik7.png", textColor: "hsl(80, 17%, 53%)", color: "#bec6ae", UID: 55 },
+    // }
 });
 
 
@@ -271,6 +272,72 @@ export const textContent = atom<TextContent>({
         }
     }
 });
+
+export const content = atom<any>({
+    Business: {
+        1: {
+            title: "Neues mit BrainCare für Exzellenz-Ergebnisse",
+            text: "Starten - Umsetzen - Dranbleiben, Innovation, Entwicklung, Projektmanagement, kontinuierliche Verbesserung",
+        },
+        2: {
+            title: "Umbrüche zu Durchbrüchen mit ZufriedenheitsMehrwert",
+            text: "Transformation, ProcessShift, NewTech Adaptation, Adaptive Organisation"
+        },
+        3: {
+            title: "BrainCare-Excellence",
+            text: "Potentiale optimal einbringen und Ressourcen entfalten, High Quality Ideen & Lösungen, Performance Boost"
+        }
+    },
+
+    Gesellschaft: {
+        1: {
+            title: "Neues mit BrainCare für Exzellenz-Ergebnisse",
+            text: "Starten - Umsetzen - Dranbleiben, Innovation, Entwicklung, Projektmanagement, kontinuierliche Verbesserung",
+        },
+        2: {
+            title: "Umbrüche zu Durchbrüchen mit ZufriedenheitsMehrwert",
+            text: "Transformation, ProcessShift, NewTech Adaptation, Adaptive Organisation"
+        },
+        3: {
+            title: "BrainCare-Excellence",
+            text: "Potentiale optimal einbringen und Ressourcen entfalten, High Quality Ideen & Lösungen, Performance Boost"
+        }
+    },
+    Privat: {
+        1: {
+            title: "NeuZeitGestalter & NeuLandEntdecker",
+            text: null,
+        },
+        2: {
+            title: "KrisenWandler & ChancenNutzer",
+            text: null
+        },
+        3: {
+            title: "BerufserNeuerer & JobZufriedenheitsGestalter & RentenStarter",
+            text: null
+        },
+        4: {
+            title: "ZufriedenheitsMacher & AufSichAufpasser",
+            text: null
+        },
+        5: {
+            title: "SelbstWertEntdecker & SelbstbehauptungsErschaffer",
+            text: null
+        },
+        6: {
+            title: "HamsterradDurchbrecher & GewohnheitsVeränderer",
+            text: null
+        },
+        7: {
+            title: "PerspektivenFinder & ZufriedenheitsGestalter",
+            text: null
+        },
+        8: {
+            title: "Gold-im-Kopf-Schürfer & PotenzialNutzer",
+            text: null
+        }
+    }
+})
 
 
 export const openModule = atom<string>("")

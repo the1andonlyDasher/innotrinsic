@@ -40,6 +40,10 @@ import WordCloud from "./brainBasicsGL/WordCloud";
 
 import { AmbientLight } from "three";
 import { targetColors } from "./bgColors";
+import Camouflage from "./brainBasicsGL/Camouflage";
+import { CuppingHand } from "@/3DModels/CuppingHand";
+import { Mountain2 } from "@/3DModels/Mountain2";
+import { Mountain } from "@/3DModels/Mountain";
 
 
 
@@ -94,11 +98,14 @@ const GL = (props: glProps) => {
     const [nextColor3, setNextColor3] = useState(targetColors[`${location}`][2])
     const [loaded, setLoaded] = useState(false);
 
+
+
     useEffect(() => {
         setNextColor1(targetColors[`${location}`][0])
         setNextColor2(targetColors[`${location}`][1])
         setNextColor3(targetColors[`${location}`][2])
-    }, [location]);
+        console.log(`${location}`)
+    }, [location, router.pathname]);
 
     useEffect(() => {
         animate(currentColor1, nextColor1, {
@@ -122,6 +129,7 @@ const GL = (props: glProps) => {
             restDelta: 0.001,
             onUpdate: (latest) => setColor3(latest),
         });
+
     }, [nextColor1, nextColor2, nextColor3]);
 
     useEffect(() => {
@@ -199,7 +207,7 @@ const GL = (props: glProps) => {
 
 
     return (<>
-        {!shaderCompiled && <Loader />}
+        {/* {!shaderCompiled && <Loader />} */}
         <div className="canvas__wrapper">
 
             <Canvas
@@ -211,8 +219,6 @@ const GL = (props: glProps) => {
 
             >
                 <directionalLight intensity={2} />
-
-
                 {loaded &&
                     <CameraControls
                         infinityDolly={false}
@@ -229,8 +235,8 @@ const GL = (props: glProps) => {
                         minAzimuthAngle={-Math.PI / 2}
                         maxAzimuthAngle={Math.PI / 2}
                     />}
-                {/* <Stats showPanel={0} /> */}
-                {/* <Game /> */}
+                <Stats showPanel={0} />
+                <Game scroll={props.scroll} />
                 <GradientTexture
                     stops={[0, 0.5, 1]}
                     width={100}
@@ -242,7 +248,7 @@ const GL = (props: glProps) => {
                 <Suspense fallback={null}>
                     <NewHead4 scroll={props.scroll} />
                 </Suspense>
-
+                {/* <Mountain scroll={props.scroll} /> */}
                 <Environment background={false} preset="apartment" blur={0} />
 
 

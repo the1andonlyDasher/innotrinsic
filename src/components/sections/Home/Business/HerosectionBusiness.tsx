@@ -26,7 +26,7 @@ const HeroSectionBusiness: FunctionComponent<HeroSectionBusinessProps> = () => {
     const searchParams = useSearchParams();
     const [pvAtom, setPVAtom] = useAtom(productViewer);
     const lpViewer = useRef<any>(!null);
-    const inView = useInView(lpViewer, { margin: "0px", amount: 0.1 });
+
     const setCoords = () => {
         const { width, height, left, top } =
             lpViewer?.current.getBoundingClientRect();
@@ -85,7 +85,11 @@ const HeroSectionBusiness: FunctionComponent<HeroSectionBusinessProps> = () => {
 
 
     return (
-        <Sec single left sectionName="landingBusiness" id="first">
+        <Sec single left sectionName="landingBusiness" id="first"><>
+            <div className="flex flex-wrap w-full pt-[100px] gap-6">
+                <Link className="text-white text-xl" href="business/innotrinsic">Innotrinsic</Link>
+                <Link className="text-white text-xl" href="business/brainbackgrounds">Brainbackgrounds</Link>
+            </div>
             <motion.div
                 className="landing__wrapper reverse"
                 viewport={{ amount: 0.25, once: false, margin: "0px" }}
@@ -115,7 +119,7 @@ const HeroSectionBusiness: FunctionComponent<HeroSectionBusinessProps> = () => {
                 <motion.div className="left__wrapper">
                     <motion.header variants={variants} className="landing__header">
                         <strong className="business">Neuro</strong>loyal
-                        <AnimatePresence initial mode="popLayout">
+                        <AnimatePresence initial mode="wait">
                             <MotionConfig transition={{ type: "tween", ease: "easeInOut", duration: 0.5 }}>
                                 <motion.div
                                     key={header1}
@@ -152,6 +156,7 @@ const HeroSectionBusiness: FunctionComponent<HeroSectionBusinessProps> = () => {
                     className="right__wrapper viewer"
                 ></motion.div>
             </motion.div>
+        </>
         </Sec>
     );
 };

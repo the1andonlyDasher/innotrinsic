@@ -9,7 +9,7 @@ import {
 import Link from "next/link";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 import Sec from "@/components/Section";
-import { modulesViewer, mountainViewer, productViewer } from "@/ts/atoms";
+import { modulesInView, modulesViewer, mountainViewer, productViewer } from "@/ts/atoms";
 import { useAtom } from "jotai";
 import { useSearchParams } from "next/navigation";
 import { ModuleCarousel } from "@/components/ModuleCarousel";
@@ -21,6 +21,8 @@ interface ModulesProps { }
 
 
 const Modules: FunctionComponent<ModulesProps> = () => {
+    const [mInView, setMInView] = useAtom(modulesInView)
+
     const headers = ["wachsen", "verwalten", "umsetzen"];
 
     const texts = [
@@ -138,12 +140,19 @@ const Modules: FunctionComponent<ModulesProps> = () => {
         },
     ];
 
+    const ref = useRef(null)
+    const inView = useInView(ref, { once: false, margin: "0px", amount: 0.375 })
+    useEffect(() => {
+        setMInView(inView)
+    }, [inView]);
+
     return (
-        <Sec single left sectionName="business">
-            <>
+        // Hintergrundfarbe wird mit GL geregelt
+        <Sec single left sectionName="modules" >
+            <div className="w-full h-full py-16" ref={ref}>
                 <Modals modalContent={modalContent} />
                 <ModuleCarousel images={moduleVariants} />
-            </>
+            </div>
         </Sec>
     );
 };

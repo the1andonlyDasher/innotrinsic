@@ -1,13 +1,12 @@
-import React, { forwardRef, ReactElement, useEffect } from "react";
-import { motion, useAnimation } from "framer-motion";
+import React, { forwardRef, ReactElement } from "react";
+import { motion } from "framer-motion";
 import { useAtom } from "jotai";
 import { load, loc } from "@/ts/atoms";
-import { InView, useInView } from "react-intersection-observer";
-import { globalTarget } from '../ts/atoms';
+import { InView } from "react-intersection-observer";
 
 const variants = {
   initial: { y: 20, filter: "blur(20px)", opacity: 0 },
-  animate: { y: 0, filter: "blur(0px)", opacity: 1, },
+  animate: { y: 0, filter: "blur(0px)", opacity: 1 },
   exit: { y: 20, filter: "blur(20px)", opacity: 0 },
 };
 
@@ -28,7 +27,7 @@ const blurVariants = {
     transitionEnd: { display: "none" },
     transition: { staggerChildren: 0.1, when: "afterChildren" },
   },
-}
+};
 
 interface sectionProps {
   sectionName?: string;
@@ -50,27 +49,22 @@ interface sProps {
 function Section(props: sectionProps) {
   const [loaded, setLoaded] = useAtom(load);
   const [app, setApp] = useAtom(loc);
-  const margin = "-50px 0px 200px 0px"
+  const margin = "-50px 0px 200px 0px";
 
   return (
-    <InView as="div"
-      className={`${props.addClass} section__wrapper"`}
-      threshold={0.8}
+    <InView
+      as="div"
+      className={`${props.addClass} section__wrapper`}
+      threshold={0.5}
       rootMargin={margin}
+      triggerOnce={false}
       onChange={(inView, entry) => {
-        // inView && setApp(`${entry.target?.children.map((node:any)=>{})}`)
-        entry?.isIntersecting && entry?.isIntersecting && setApp(`${entry.target?.children[0].getAttribute("data-section-name")}`)
+        if (inView) {
+          setApp(entry.target?.children[0]?.getAttribute("data-section-name") || "");
+        }
       }}
     >
       <motion.section
-        viewport={{
-          margin: margin,
-          amount: 0.1,
-          once: false
-        }}
-        // onViewportEnter={(entry) => {
-        //   entry?.isIntersecting && setApp(`${entry.target?.getAttribute("data-section-name")}`)
-        // }}
         data-section-name={props.sectionName}
         initial="initial"
         whileInView="animate"
@@ -81,10 +75,11 @@ function Section(props: sectionProps) {
         className="overflow-hidden"
       >
         {props.single ? (
-
           <>
             {props.header ? (
-              <motion.h2 className="text-[#98d06d] font-bold" variants={variants}>{props.header}</motion.h2>
+              <motion.h2 className="text-[#98d06d] font-bold" variants={variants}>
+                {props.header}
+              </motion.h2>
             ) : null}
             {props.subheader ? (
               <motion.h3 variants={variants}>{props.subheader}</motion.h3>
@@ -96,41 +91,45 @@ function Section(props: sectionProps) {
           </>
         ) : (
           <motion.div variants={variants} className="lr__wrapper">
-            {props.left ? <>
-              <motion.div variants={variants} className="left-wrapper">
-                {props.header ? (
-                  <motion.h2 className="text-[#98d06d] font-bold" variants={variants}>{props.header}</motion.h2>
-                ) : null}
-                {props.subheader ? (
-                  <motion.h3 variants={variants}>
-                    {props.subheader}
-                  </motion.h3>
-                ) : null}
-                {props.text ? (
-                  <motion.p variants={variants}>{props.text}</motion.p>
-                ) : null}
-                <>{props.children}</>
-              </motion.div>
-              <motion.div className="right-wrapper"></motion.div> </> : <>
-              <motion.div variants={variants} className="left-wrapper">
-              </motion.div>
-              <motion.div className="right-wrapper">
-                {props.header ? (
-                  <motion.h2 className="text-[#98d06d] font-bold" variants={variants}>{props.header}</motion.h2>
-                ) : null}
-                {props.subheader ? (
-                  <motion.h3 variants={variants}>
-                    {props.subheader}
-                  </motion.h3>
-                ) : null}
-                {props.text ? (
-                  <motion.p variants={variants}>{props.text}</motion.p>
-                ) : null}
-                <>{props.children}</></motion.div></>}
-
+            {props.left ? (
+              <>
+                <motion.div variants={variants} className="left-wrapper">
+                  {props.header ? (
+                    <motion.h2 className="text-[#98d06d] font-bold" variants={variants}>
+                      {props.header}
+                    </motion.h2>
+                  ) : null}
+                  {props.subheader ? (
+                    <motion.h3 variants={variants}>{props.subheader}</motion.h3>
+                  ) : null}
+                  {props.text ? (
+                    <motion.p variants={variants}>{props.text}</motion.p>
+                  ) : null}
+                  <>{props.children}</>
+                </motion.div>
+                <motion.div className="right-wrapper"></motion.div>
+              </>
+            ) : (
+              <>
+                <motion.div variants={variants} className="left-wrapper"></motion.div>
+                <motion.div className="right-wrapper">
+                  {props.header ? (
+                    <motion.h2 className="text-[#98d06d] font-bold" variants={variants}>
+                      {props.header}
+                    </motion.h2>
+                  ) : null}
+                  {props.subheader ? (
+                    <motion.h3 variants={variants}>{props.subheader}</motion.h3>
+                  ) : null}
+                  {props.text ? (
+                    <motion.p variants={variants}>{props.text}</motion.p>
+                  ) : null}
+                  <>{props.children}</>
+                </motion.div>
+              </>
+            )}
           </motion.div>
         )}
-
       </motion.section>
     </InView>
   );

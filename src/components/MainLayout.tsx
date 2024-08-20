@@ -1,7 +1,7 @@
 
 import { useRouter } from "next/router";
-import { AnimatePresence, motion } from "framer-motion";
-import { useRef } from "react";
+import { AnimatePresence, motion, MotionValue, useAnimation, useAnimationFrame, useMotionValue, useMotionValueEvent, useScroll, useSpring, useTransform, useVelocity } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import WebGL from "@/ts/GL";
 import { useAtom } from "jotai";
 import { globalScroll } from "@/ts/atoms";
@@ -10,8 +10,18 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBuilding, faPersonDigging } from "@fortawesome/free-solid-svg-icons";
 
+const navbarVariants = {
+    hidden: { gridTemplateRows: "0fr", transition: { when: "afterChildren", type: "spring", damping: 20, stiffness: 100 } },
+    visible: { gridTemplateRows: "1fr", transition: { when: "beforeChildren", type: "spring", damping: 20, stiffness: 100 } }
+}
 
-export default function MainLayout({ preview, children, navbar, legals, t }: any) {
+const innerWrapperVariants = {
+    hidden: { opacity: 0, transition: { duration: 0.2 } },
+    visible: { opacity: 1, transition: { duration: 0.2, delay: 0.5 } }
+}
+
+
+export default function MainLayout({ children, navbar, legals }: any) {
     const [gScroll, setGScroll] = useAtom(globalScroll)
     const router = useRouter()
     const ref = useRef<any>(!null)
@@ -63,7 +73,7 @@ export default function MainLayout({ preview, children, navbar, legals, t }: any
                     // console.log("scrollTop")
                 }
             }
-        }, 200)
+        }, 0)
     };
 
     const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -76,8 +86,35 @@ export default function MainLayout({ preview, children, navbar, legals, t }: any
 
 
 
+    const baseScale = useMotionValue(1);
+    const controls = useAnimation()
+    const mainControls = useAnimation()
+    const { scrollY } = useScroll({ container: ref })
+    const scrollVelocity = useVelocity(scrollY);
+    const smoothVelocity = useSpring(scrollVelocity, {
+        damping: 50,
+        stiffness: 400
+    });
+    const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
+        clamp: false
+    });
+
+
+    useMotionValueEvent(scrollY, "change", () => {
+        if (velocityFactor.get() < 0) {
+            controls.start("visible")
+            mainControls.start("visible")
+        } else if (velocityFactor.get() > 0) {
+            controls.start("hidden")
+            mainControls.start("hidden")
+        }
+    })
+
+
+
+
     return (<>
-        <div className="content-grid bg-[#04070e] text-sm">
+        <div className="fixed top-0 left-0 content-grid bg-[#04070e] text-sm">
             <div className="hidden lg:flex flex-col lg:flex-row items-center justify-center h-auto p-6 w-full  text-white gap-2">
                 Unsere Webseite befindet sich im Aufbau <FontAwesomeIcon className="mx-4 text-[#e0dd70] h-full text-xl max-h-6" icon={faPersonDigging} />
                 Mehr Inormationen zu MY InnoTrinsic folgen in Kürze. Wer nicht warten möchte, kann uns gerne kontaktieren.
@@ -87,10 +124,23 @@ export default function MainLayout({ preview, children, navbar, legals, t }: any
 
             </div>
         </div>
-        <div className="top-0 left-0 h-[100px] content-grid">
-            <Navbar contentContainer={ref} className={`navbar`} navbar={navbar} legals={legals} />
-        </div>
+        <motion.div className="navbar__wrapper"
+            initial="visible"
+            variants={navbarVariants}
+            animate={controls}>
+            <motion.div
+                variants={innerWrapperVariants}
+                className="navbar__wrapper-inner content-grid"
+            >
+                <Navbar
+                    contentContainer={ref}
+                    className={`navbar`}
+                    navbar={navbar}
+                    legals={legals} />
+            </motion.div>
+        </motion.div>
         <div ref={ref} className="main"
+
             onScroll={handleScroll}
         >
             <AnimatePresence

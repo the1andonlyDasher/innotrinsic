@@ -155,7 +155,6 @@ h1 {
 
 h2 {
   font-size: var(--fs-sub-small);
-  font-family: var(--fonts-sub);
   position: relative;
   line-height: 1.5;
   strong {
@@ -455,7 +454,8 @@ a {
   overflow-y: auto;
   overflow-x: hidden;
   left: 0;
-  height: calc(100vh - 150px);
+  height: 100vh;
+  height: 100dvh;
   width: 100%;
   top: 100px;
 }
@@ -514,10 +514,10 @@ a {
 .content-grid {
   section {
     @extend %section-styles;
-    min-height: calc(100vh - 150px);
+    min-height: calc(100vh);
 
     &.section__wrapper {
-      min-height: calc(100vh - 150px); // Apply min-height to .section__wrapper
+      min-height: calc(100vh); // Apply min-height to .section__wrapper
     }
   }
 }
@@ -529,62 +529,6 @@ a {
   gap: 2rem;
   min-height: calc(100vh - 150px);
   padding: 1rem 0;
-}
-
-.T3__ordered-list,
-.T3__unordered-list {
-  @extend %flex-center;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 2rem;
-  align-items: flex-start;
-  flex-direction: column;
-  width: 100%;
-  margin: 0;
-  @include mq(medium) {
-    flex-direction: row;
-  }
-  li {
-    padding: var(--space-m) 0;
-  }
-}
-
-.T3_table {
-  display: grid;
-  // border-top: 1px solid white;
-  // border-right: 1px solid white;
-  background-color: hsl(222, 47%, 11%);
-  background-image: linear-gradient(
-    45deg,
-    hsl(222, 47%, 11%),
-    hsl(220, 60%, 4%)
-  );
-  border-radius: 3px;
-  gap: 0.2em;
-  @include mq(medium) {
-    width: 100%;
-  }
-  span {
-    padding: 1rem;
-    border-radius: 2px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    font-weight: 600;
-    text-transform: capitalize;
-    // border-left: 1px solid hsl(222, 47%, 15%);
-    // border-bottom: 1px solid hsl(222, 47%, 15%);
-  }
-}
-
-.T3_table-wrapper {
-  padding: 1rem;
-  margin: var(--space-m) 0;
-  overflow-x: auto;
-  position: relative;
-  min-height: 200px;
-  width: 100%;
-  height: 100%;
 }
 
 .bg {
@@ -717,11 +661,6 @@ header {
   width: 100%;
 
   padding: 0;
-  & > .btn__primary,
-  > .btn__alt,
-  > .btn__outline {
-    max-width: 100% !important;
-  }
 }
 
 .no-flex {
@@ -741,9 +680,3 @@ header {
   left: 0;
   pointer-events: none;
 }
-
-// *,
-// *::before,
-// *::after {
-//   cursor: none!important;
-// }

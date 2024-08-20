@@ -180,8 +180,8 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                             transition: transition({ delay: 2 }),
                         }}
                         viewport={{ once: true }}
-                        // src="/images/stoothtiger.jpeg"
-                        src="/images/karin-bild.jpg"
+                        src="/images/stoothtiger.jpeg"
+                        // src="/images/karin-bild.jpg"
                         width={709}
                         height={709}
                         alt="Bild von Dr. Karin Koert-Lehmann"
@@ -200,11 +200,10 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                         className="avatar absolute top-0"
                         initial={{ opacity: 0 }}
                         whileInView={{
-                            opacity: [0, 1, 1, 0],
+                            opacity: [0, 0.5, 0],
                             transition: {
-                                times: [0, 0.3, 0.8, 1],
-                                delay: 2,
-                                duration: 3,
+                                times: [0, 0.5, 1],
+                                delay: 2
                             },
                             transitionEnd: { display: "none" },
                         }}
@@ -214,6 +213,17 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                         height={709}
                         alt="Bild von Dr. Karin Koert-Lehmann"
                     />
+                    {variantsBrain && <motion.img
+                        className="avatar absolute top-0 "
+                        variants={variantsBrain}
+                        initial="initial"
+                        whileInView="enter"
+                        viewport={{ once: true }}
+                        src="/images/brain.webp"
+                        width={709}
+                        height={709}
+                        alt="Bild von Ulrike Corneliussen"
+                    />}
                     {variantsBrain && <motion.img
                         className="avatar absolute top-0 "
                         variants={variantsBrain}
@@ -247,8 +257,8 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                             transition: transition({ delay: 2 }),
                         }}
                         viewport={{ once: true }}
-                        // src="/images/stoothtiger.jpeg"
-                        src="/images/ulrike-bild.webp"
+                        src="/images/stoothtiger.jpeg"
+                        // src="/images/ulrike-bild.webp"
                         width={709}
                         height={709}
                         alt="Bild von Ulrike Corneliussen"
@@ -267,11 +277,10 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                         className="avatar absolute top-0"
                         initial={{ opacity: 0 }}
                         whileInView={{
-                            opacity: [0, 1, 1, 0],
+                            opacity: [0, 0.5, 0],
                             transition: {
-                                times: [0, 0.3, 0.8, 1],
-                                delay: 2,
-                                duration: 3,
+                                times: [0, 0.5, 1],
+                                delay: 2
                             },
                             transitionEnd: { display: "none" },
                         }
@@ -292,6 +301,7 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                         }}
                         viewport={{ once: true }}
                     />
+
 
                     {variantsBrain && <motion.img
                         className="avatar absolute top-0 "

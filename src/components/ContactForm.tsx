@@ -3,6 +3,8 @@ import { useAnimationControls, motion, useInView } from "framer-motion";
 import emailjs from "@emailjs/browser";
 import Cookies from 'js-cookie';
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 const userID = "zl8P8-ahkEcFjpsgG";
 emailjs.init(userID);

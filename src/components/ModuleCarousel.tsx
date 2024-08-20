@@ -6,45 +6,6 @@ import { globalModuleIndex, moduleSet, modulesViewer } from "@/ts/atoms";
 import { useAtom } from "jotai";
 import { useSearchParams } from "next/navigation";
 
-
-const variants = {
-    enter: (direction: number) => {
-        return {
-            x: direction > 0 ? 10 : -10,
-            opacity: 0
-        };
-    },
-    center: {
-        zIndex: 1,
-        x: 0,
-        opacity: 1
-    },
-    exit: (direction: number) => {
-        return {
-            zIndex: 0,
-            x: direction < 0 ? 10 : -10,
-            opacity: 0
-        };
-    }
-};
-
-const variants2 = {
-    initial: { filter: "blur(20px)", opacity: 0 },
-    center: { filter: "blur(0px)", opacity: 1, },
-    exit: { filter: "blur(20px)", opacity: 0 },
-};
-
-/**
- * Experimenting with distilling swipe offset and velocity into a single variable, so the
- * less distance a user has swiped, the more velocity they need to register as a swipe.
- * Should accomodate longer swipes and short flicks without having binary checks on
- * just distance thresholds and velocity > 0.
- */
-const swipeConfidenceThreshold = 10000;
-const swipePower = (offset: number, velocity: number) => {
-    return Math.abs(offset) * velocity;
-};
-
 interface textObject {
     title: string;
     text: string;
@@ -53,6 +14,8 @@ interface textObject {
 interface carouselProps {
     images: textObject[];
 }
+
+const num = ["Kombo 1", "Titel 2", "Kombination 3", "Variante 4"]
 
 export const ModuleCarousel = ({ images }: carouselProps) => {
     const searchParams = useSearchParams();
@@ -93,13 +56,8 @@ export const ModuleCarousel = ({ images }: carouselProps) => {
         };
     });
 
-    //carousel settings
     const [[page, direction], setPage] = useState([0, 0]);
     const [globalIndex, setGlobalIndex] = useAtom(globalModuleIndex)
-    // We only have 3 images, but we paginate them absolutely (ie 1, 2, 3, 4, 5...) and
-    // then wrap that within 0-2 to find our image ID in the array below. By passing an
-    // absolute page index as the `motion` component's `key` prop, `AnimatePresence` will
-    // detect it as an entirely new image. So you can infinitely paginate as few as 1 images.
     const imageIndex = wrap(0, images?.length, page);
     const paginate = (newDirection: number) => {
         setPage([page + newDirection, newDirection]);
@@ -109,11 +67,24 @@ export const ModuleCarousel = ({ images }: carouselProps) => {
         setGlobalIndex(imageIndex)
     }, [imageIndex])
 
+
+
     return (
         <>
             <div className="module_carousel-wrapper">
                 <motion.h3 className="modules__header">Modulprogramm für unsere Business-Kunden</motion.h3>
-
+                <motion.ul className="module__pills">
+                    {num.map((item: any, index: number) =>
+                        <motion.li
+                            key={index}
+                            animate={page === index ?
+                                { backgroundColor: "#165c8f" } :
+                                { backgroundColor: "#3285c0" }}
+                            onClick={() => setPage([index, index])}>
+                            {item}
+                        </motion.li>
+                    )}
+                </motion.ul>
                 <motion.div
                     className="landing__wrapper"
                     viewport={{ amount: 0.25, once: false, margin: "0px" }}

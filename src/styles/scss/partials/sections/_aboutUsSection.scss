@@ -103,6 +103,7 @@
     .avatar {
       border-radius: 9999px;
       width: 250px;
+      aspect-ratio: 1;
 
       @include mq(small) {
         width: 300px;

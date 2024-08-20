@@ -122,7 +122,7 @@ const Navbar = ({ contentContainer, navbar, legals }: any) => {
                 className="navbar__logo"
                 xmlns="http://www.w3.org/2000/svg"
                 xmlSpace="preserve"
-                width={324.962}
+                width={1138}
                 height={323}
                 viewBox="0 0 1138 323"
 
@@ -225,13 +225,13 @@ const Navbar = ({ contentContainer, navbar, legals }: any) => {
         <Navigation>
           <HomeBtn contentContainer={contentContainer} />
           {navbar.map((i: any, index: number) => (
-            <NavItem icon={i[1]} clickLink={null} key={i[0]} name={i[0]} href={i[2] === false ? `${i[0].toLowerCase()}` : `#${i[0].toLowerCase()}`} />
+            <NavItem icon={i[1]} clickLink={null} key={i[0]} name={i[0]} href={i[2] === false ? `/${i[0].toLowerCase()}` : `/#${i[0].toLowerCase()}`} />
           ))}
         </Navigation>
         <MobileNav>
           <Mnav toggle={() => toggleOpen()} icon={null} clickLink={null} name={"Home"} href={"/"} />
           {navbar.map((i: any, index: number) => (
-            <Mnav toggle={() => toggleOpen()} icon={i[1]} clickLink={null} key={i[0]} name={i[0]} href={i[2] === false ? `${i[0].toLowerCase()}` : `#${i[0].toLowerCase()}`} />
+            <Mnav toggle={() => toggleOpen()} icon={i[1]} clickLink={null} key={i[0]} name={i[0]} href={i[2] === false ? `/${i[0].toLowerCase()}` : `/#${i[0].toLowerCase()}`} />
           ))}
           {legals.map((i: any, index: number) => (
             <Mnav secondary toggle={() => toggleOpen()} key={i} name={i} href={`${i.toLowerCase()}`} />

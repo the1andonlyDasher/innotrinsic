@@ -1,4 +1,5 @@
-import { openModule } from "@/ts/atoms";
+import { globalModuleIndex, openModule } from "@/ts/atoms";
+import { transition } from "@/ts/utils";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, MotionConfig, motion } from "framer-motion";
@@ -52,58 +53,67 @@ const Modals: FC<ModalsProps> = ({ modalContent }) => {
         console.log(currentModule)
     }, [currentModule]);
 
+
+
+    const closeModal = () => {
+        setOpen(false);
+        setCurrentModule("")
+    };
+
+    const [globalIndex, setGlobalIndex] = useAtom(globalModuleIndex)
+
+
     return (
-        <><AnimatePresence initial mode="wait">
+        <>
+
             <MotionConfig
-                transition={{
-                    type: "spring",
-                    damping: 20,
-                    stiffness: 100
-                }}>
-                <motion.div
-                    key={currentModule}
-                    variants={wrapperVariants}
-                    initial="initial"
-                    animate={
-                        open &&
-                        "enter"
-                    }
-                    exit="exit"
-                    className="z-50 rounded-2xl fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center"
-                >
+                transition={transition({ delay: 0 })}>
+                <AnimatePresence>
 
-                    <motion.div
-                        variants={innerTextVariants}
-                        className="bg-[#F6F8FF] text-xl text-[#32689C] rounded-xl flex flex-col  justify-center items-end p-14 gap-6"
-                    >
+                    {open && (
                         <motion.div
-                            variants={innerTextVariants}
-                            whileHover="hover"
-                            whileTap="hover"
-                            className="border border-[#32689C] aspect-square flex justify-center items-center p-2 rounded-md"
-                            onClick={(e) => {
-                                e.stopPropagation(),
-                                    setOpen(false);
-                                setCurrentModule("")
-                            }}
+                            className="modalBackdrop"
+                            onClick={closeModal}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
                         >
-                            <FontAwesomeIcon icon={faClose} />
-                        </motion.div>
+                            <motion.div
+                                className="modalContent"
+                                onClick={(e) => e.stopPropagation()}
+                                initial={{ y: "-50%", opacity: 0 }}
+                                animate={{ y: "0%", opacity: 1 }}
+                                exit={{ y: "-50%", opacity: 0 }}
+                                transition={{ duration: 0.3 }}
 
-                        <motion.div className="flex flex-col gap-6">
-                            <h3 className="font-bold font-header">{currentContent?.title}</h3>
-                            <motion.ul className="flex gap-3 flex-col list-disc">
-                                {currentContent?.bulletPoints.map(
-                                    (point: string, index: number) => (
-                                        <li className="list-item" key={index}>{point}</li>
-                                    )
-                                )}
-                            </motion.ul>
+                            >
+                                <motion.div className="system__content">
+                                    <div className="flex justify-between items-center mb-4 gap-4">
+                                        <h3 className="font-bold font-header">{currentContent?.title}</h3>
+                                        <motion.div
+                                            variants={innerTextVariants}
+                                            whileHover="hover"
+                                            whileTap="hover"
+                                            className="modal__close"
+                                            onClick={closeModal}
+                                        >
+                                            <FontAwesomeIcon icon={faClose} />
+                                        </motion.div>
+                                    </div>
+                                    <motion.ul className="modal__list">
+                                        {currentContent?.bulletPoints.map(
+                                            (point: string, index: number) => (
+                                                <li className="list-item" key={index}>{point}</li>
+                                            )
+                                        )}
+                                    </motion.ul>
+                                </motion.div>
+                            </motion.div>
                         </motion.div>
-                    </motion.div>
-                </motion.div>
+                    )}
+
+                </AnimatePresence>
             </MotionConfig>
-        </AnimatePresence>
         </>
     );
 };
