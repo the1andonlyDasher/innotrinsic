@@ -1,11 +1,12 @@
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
-import { useFrame } from "@react-three/fiber";
-import { lerp } from "three/src/math/MathUtils.js";
+
 import { useRouter } from "next/router";
-import { AnimationClip, Group, Mesh, MeshStandardMaterial } from "three";
+import { AnimationClip, Color, Group, Mesh, MeshStandardMaterial } from "three";
+import { motion } from "framer-motion-3d";
+import { useAnimation } from "framer-motion";
 
 type ActionName = "Shape_IndexedFaceSet002";
 
@@ -24,41 +25,33 @@ type GLTFResult = GLTF & {
 };
 
 export function TexturedHand(props: JSX.IntrinsicElements["group"]) {
-  const group = React.useRef<Group>(null);
-  const mesh = React.useRef<Mesh>(null);
+  const group = useRef<Group>(null);
+  const mesh = useRef<Mesh>(null);
   const router = useRouter();
   const { nodes, materials, animations } = useGLTF(
     "/texturedHand2.glb"
   ) as GLTFResult;
   const { actions } = useAnimations(animations, group);
-  const [disposed, setDisposed] = React.useState(true);
+  const [disposed, setDisposed] = useState(true);
+  const [isInPage, setIsInPage] = useState(false);
+  const materialControls = useAnimation()
 
-  React.useEffect(() => {
+  useEffect(() => {
+    console.log(materials)
     router.pathname === "/einsatzgebiete"
-      ? setDisposed(false)
-      : setTimeout(() => {
-        setDisposed(true);
-      }, 200);
+      ? setIsInPage(true)
+      : setIsInPage(false);
   }, [router.pathname]);
 
-  React.useEffect(() => {
-    // Ensure the material is set to transparent so opacity changes are visible
-    if (materials && materials.Arms__Standard_) {
-      materials.Arms__Standard_.transparent = true;
-      materials.Arms__Standard_.needsUpdate = true;
+  useEffect(() => {
+    if (!isInPage) {
+      materialControls.start({ opacity: 0 }).then(() => setDisposed(true))
+    } else {
+      materialControls.start({ opacity: 1 }).then(() => setDisposed(false))
     }
-  }, [materials]);
+  }, [isInPage])
 
-  useFrame(() => {
-    if (materials && materials.Arms__Standard_ && !disposed) {
-      materials.Arms__Standard_.opacity = lerp(
-        materials.Arms__Standard_.opacity,
-        router.pathname === "/" ? 0 : 1,
-        0.15
-      );
-      materials.Arms__Standard_.needsUpdate = true;
-    }
-  });
+
 
   return (
     <group
@@ -73,8 +66,16 @@ export function TexturedHand(props: JSX.IntrinsicElements["group"]) {
       <mesh
         ref={mesh}
         geometry={nodes.Shape_IndexedFaceSet001.geometry}
-        material={materials.Arms__Standard_}
-      />
+      // material={materials.Arms__Standard_}
+      >
+        <motion.meshStandardMaterial
+          initial="initial"
+          animate={materialControls}
+          {...materials.Arms__Standard_}
+          transparent
+          needsUpdate
+        />
+      </mesh>
     </group>
   );
 }

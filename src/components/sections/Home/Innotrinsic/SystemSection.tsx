@@ -1,6 +1,6 @@
 import Sec from "@/components/Section";
 import { FC, useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useAnimate } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight, faClose } from "@fortawesome/free-solid-svg-icons";
 import { backgroundColors } from '../../../../ts/atoms';
@@ -11,6 +11,15 @@ interface CircleProps {
     letter: string;
     index: number;
     onClick: (index: number) => void;
+
+}
+
+const content = {
+    1: { title: "C. Neuroloyale Umsetzungsstruktur", text: "MY InnoTrinsic Modulprogramm" },
+    2: { title: "C. Neuroloyale Umsetzungsstruktur", text: "MY InnoTrinsic Modulprogramm" },
+    3: { title: "B. Neuroloyales Leitprinzip", text: "Bereitschaft: Neuroloyaler Handlungswille & Handlungsbilligung:" },
+    4: { title: "A. Neuroloyaler Kern & Mindset", text: "Mindset, BrainCare-Bewusstsein, Wissen" },
+
 }
 
 const Circle: FC<CircleProps> = ({ size, shade, letter, index, onClick }) => {
@@ -23,7 +32,6 @@ const Circle: FC<CircleProps> = ({ size, shade, letter, index, onClick }) => {
                 scale: 1, opacity: 1
             },
             hover: {
-                scale: 1.05,
                 backgroundColor: "#B38224"
             },
         };
@@ -39,6 +47,7 @@ const Circle: FC<CircleProps> = ({ size, shade, letter, index, onClick }) => {
             whileTap={"hover"}
             transition={{ duration: 0.3, ease: "easeInOut" }}
             onClick={() => onClick(index)}
+
             style={{
                 width: size,
                 height: size,
@@ -49,9 +58,11 @@ const Circle: FC<CircleProps> = ({ size, shade, letter, index, onClick }) => {
     );
 };
 
+
+
 function CircleAnimation() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalContent, setModalContent] = useState({ title: "Dummy Header", text: "Dummy Text" });
+    const [modalContent, setModalContent]: any = useState({});
 
     const circles = useMemo(() => {
         const sizeFactor = 2;
@@ -63,11 +74,12 @@ function CircleAnimation() {
         ];
     }, []);
 
+    const [legend, animateLegend] = useAnimate()
+
+
+
     const handleCircleClick = (index: number) => {
-        setModalContent({
-            title: `Modal Title ${index + 1}`,
-            text: "This is some dummy text for the modal.",
-        });
+        setModalContent(Object.values(content)[index]);
         setIsModalOpen(true);
     };
 
@@ -76,39 +88,37 @@ function CircleAnimation() {
     };
 
     return (
-        <div className="flex justify-center items-center w-full h-full">
+        <div className="system__outer-wrapper">
             <div className="system__container">
-                <div className="system__legend relative">
-                    <div className="absolute z-40 top-0 border-l border-r pointer-events-none border-black border-dashed w-1/2 h-1/2">
-                        <div className="w-full flex gap-4 flex-row  items-center justify-center text-gray-700">
+                <motion.div
+                    ref={legend}
+                    className="system__legend ">
+                    <div className="left__legend">
+                        <div className="legend__description">
                             <FontAwesomeIcon icon={faArrowLeft} />
-                            <label className="text-2xl font-semibold ">InnoTrinsic</label>
+                            <label>InnoTrinsic</label>
                             <FontAwesomeIcon icon={faArrowRight} />
                         </div>
                     </div>
-                    <div className="absolute z-40 top-0 right-0 pointer-events-none border-r border-black 
-                    border-dashed w-1/2 h-1/2">
-                        <div className="w-full flex gap-4 flex-row items-center justify-center text-gray-700">
+                    <div className="right__legend">
+                        <div className="legend__description">
                             <FontAwesomeIcon icon={faArrowLeft} />
-                            <label className="text-2xl font-semibold ">My InnoTrinsic</label>
+                            <label>My InnoTrinsic</label>
                             <FontAwesomeIcon icon={faArrowRight} />
                         </div>
                     </div>
-                    <div
-                        style={{ width: 600, height: 600 }}
-                        className="system__circle">
-                        {circles.map((circle, index) => (
-                            <Circle
-                                key={index}
-                                size={circle.size}
-                                shade={circle.shade}
-                                index={index}
-                                letter={circle.letter}
-                                onClick={handleCircleClick}
-                            />
-                        ))}
-                    </div>
-                </div>
+                </motion.div>
+                {circles.map((circle, index) => (
+                    <Circle
+                        key={index}
+                        size={circle.size}
+                        shade={circle.shade}
+                        index={index}
+                        letter={circle.letter}
+                        onClick={handleCircleClick}
+
+                    />
+                ))}
             </div>
             <AnimatePresence>
                 {isModalOpen && (
@@ -130,18 +140,18 @@ function CircleAnimation() {
                             transition={{ duration: 0.3 }}
 
                         >
-                            <div className="flex justify-between items-center mb-4">
-                                <h2 className="text-lg font-semibold">{modalContent.title}</h2>
-                                <button className="text-xl" onClick={closeModal}>
+                            <div className="flex justify-center items-center mb-4">
+                                <h2 className="text-2xl font-semibold text-center">{modalContent.title}</h2>
+                                <button className="modal__close" onClick={closeModal}>
                                     <FontAwesomeIcon icon={faClose} />
                                 </button>
                             </div>
-                            <p>{modalContent.text}</p>
+                            <p> {modalContent.text}</p>
                             <button
-                                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                                className="modal__cta"
                                 onClick={closeModal}
                             >
-                                More
+                                Mehr erfahren
                             </button>
                         </motion.div>
                     </motion.div>
@@ -155,7 +165,7 @@ interface SystemSectionProps { }
 
 const SystemSection: FC<SystemSectionProps> = () => {
     return (
-        <Sec single left sectionName="mountain">
+        <Sec single left sectionName="mountain" addClass="py-16">
             <>
                 <div className="system__content">
                     <h2 className="system__header">Mit System zur InnoTrinsic Economy</h2>

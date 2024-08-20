@@ -41,6 +41,9 @@ import WordCloud from "./brainBasicsGL/WordCloud";
 import { AmbientLight } from "three";
 import { targetColors } from "./bgColors";
 import Camouflage from "./brainBasicsGL/Camouflage";
+import { CuppingHand } from "@/3DModels/CuppingHand";
+import { Mountain2 } from "@/3DModels/Mountain2";
+import { Mountain } from "@/3DModels/Mountain";
 
 
 
@@ -233,7 +236,7 @@ const GL = (props: glProps) => {
                         maxAzimuthAngle={Math.PI / 2}
                     />}
                 <Stats showPanel={0} />
-                <Game />
+                <Game scroll={props.scroll} />
                 <GradientTexture
                     stops={[0, 0.5, 1]}
                     width={100}
@@ -245,7 +248,7 @@ const GL = (props: glProps) => {
                 <Suspense fallback={null}>
                     <NewHead4 scroll={props.scroll} />
                 </Suspense>
-
+                {/* <Mountain scroll={props.scroll} /> */}
                 <Environment background={false} preset="apartment" blur={0} />
 
 

@@ -1,16 +1,14 @@
-import React, { useState, useEffect, FC, useRef } from "react";
+import React, { useState, useEffect, FC, useRef, MutableRefObject } from "react";
 import {
-    Canvas,
+
     Color,
     MeshProps,
     extend,
-    useFrame,
+
     useThree,
 } from "@react-three/fiber";
 import {
-    Html,
-    Instances,
-    Instance,
+
     useGLTF,
     useTexture,
     Svg,
@@ -25,17 +23,15 @@ import { useAtom } from "jotai";
 import {
     globalModuleIndex,
     moduleSet,
+    modulesInView,
     modulesViewer,
     openModule,
 } from "./atoms";
-import { globalAgent } from "http";
 import { MeshStandardMaterial } from "three/src/materials/MeshStandardMaterial.js";
-import Image from "next/image";
 import { size } from "./utils";
 import { motion as motion3d } from "framer-motion-3d";
 import { useRouter } from "next/router";
-import { Group } from "three";
-import { lerp } from "./threeExport/math/MathUtils";
+
 
 interface ModuleProps {
     position: [number, number, number];
@@ -43,6 +39,7 @@ interface ModuleProps {
     size: [number, number, number];
     svgSrc: string;
     color: string;
+    scroll: MutableRefObject<number>
     textColor: string;
     UID: number;
     name: string;
@@ -61,10 +58,12 @@ const TextMaterial = (props: TextMatProps) => (
 );
 
 const Mat: FC<CustomMeshProps> = ({ color, active, ...props }) => {
+    const [areModulesInView, setModulesInView] = useAtom(modulesInView)
+
     return (
         <motion3d.meshStandardMaterial
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={areModulesInView ? { opacity: 1 } : { opacity: 0 }}
             exit={{ opacity: 0 }}
             roughness={0.3}
             transparent
@@ -75,22 +74,27 @@ const Mat: FC<CustomMeshProps> = ({ color, active, ...props }) => {
     );
 };
 
-const Base: React.FC = () => {
+interface BaseProps {
+    scroll: MutableRefObject<number>
+}
+
+const Base: React.FC<BaseProps> = ({ scroll }) => {
+    const [areModulesInView, setModulesInView] = useAtom(modulesInView)
     const { nodes }: any = useGLTF("/HTG.glb");
     const texture = useTexture("/images/Rastergrafik.png");
     // set ready state
     const [ready, setReady] = useState(false);
     // uef ready
     useEffect(() => {
-        setTimeout(() => {
-            setReady(true);
-        }, 2000);
+
+        setReady(true);
+
     }, []);
     //animation controls
     const controls = useAnimation();
     //animation trigger -> position
     useEffect(() => {
-        ready &&
+        areModulesInView &&
             controls.start({
                 x: -0.15,
                 y: -5,
@@ -99,7 +103,7 @@ const Base: React.FC = () => {
                 rotateY: 0,
                 rotateZ: 0,
             });
-    }, [ready]);
+    }, [areModulesInView]);
     //atoms
     const [currentModule, setCurrentModule] = useAtom(openModule);
     const [hovered, setHover] = useState(false);
@@ -128,7 +132,7 @@ const Base: React.FC = () => {
             animate={controls}
             transition={{ type: "spring", damping: 20, stiffness: 75 }}
         >
-            <Mat active={true} color="#e7bf74" />
+            <Mat active={areModulesInView} color="#e7bf74" />
             <Outlines
                 toneMapped={false}
                 thickness={0.1}
@@ -156,7 +160,8 @@ const Base: React.FC = () => {
     );
 };
 
-const Base_Left: React.FC = () => {
+const Base_Left: React.FC<BaseProps> = ({ scroll }) => {
+    const [areModulesInView, setModulesInView] = useAtom(modulesInView)
     const { nodes }: any = useGLTF("/BB.glb");
     const texture = useTexture("/images/Rastergrafik7.png");
     // set ready state
@@ -171,7 +176,7 @@ const Base_Left: React.FC = () => {
     const controls = useAnimation();
     //animation trigger -> position
     useEffect(() => {
-        ready &&
+        areModulesInView &&
             controls.start({
                 x: -0.15,
                 y: -5,
@@ -180,7 +185,7 @@ const Base_Left: React.FC = () => {
                 rotateY: 0,
                 rotateZ: 0,
             });
-    }, [ready]);
+    }, [areModulesInView]);
     //atoms
     const [currentModule, setCurrentModule] = useAtom(openModule);
     const [hovered, setHover] = useState(false);
@@ -210,7 +215,7 @@ const Base_Left: React.FC = () => {
             animate={controls}
             transition={{ type: "spring", damping: 20, stiffness: 75 }}
         >
-            <Mat active={true} color="#5784a9" />
+            <Mat active={areModulesInView} color="#5784a9" />
             <Outlines
                 toneMapped={false}
                 thickness={0.1}
@@ -237,7 +242,8 @@ const Base_Left: React.FC = () => {
     );
 };
 
-const Top: React.FC = () => {
+const Top: React.FC<BaseProps> = ({ scroll }) => {
+    const [areModulesInView, setModulesInView] = useAtom(modulesInView)
     const { nodes }: any = useGLTF("/module_top.glb");
     const texture = useTexture("/images/Rastergrafik6.png");
     const texture2 = useTexture("/images/exMark.png");
@@ -281,7 +287,7 @@ const Top: React.FC = () => {
                 z: 0 + Math.random() * 10,
             }}
             animate={
-                ready && {
+                areModulesInView && {
                     x: 0,
                     y: 2.25,
                     z: 0,
@@ -292,7 +298,7 @@ const Top: React.FC = () => {
             }
             transition={{ type: "spring", damping: 20, stiffness: 75 }}
         >
-            <Mat active={true} color={"hsl(201, 50%, 55%)"} />
+            <Mat active={areModulesInView} color={"hsl(201, 50%, 55%)"} />
             <Outlines
                 toneMapped={false}
                 thickness={0.1}
@@ -332,6 +338,7 @@ const Module: React.FC<ModuleProps> = ({
     name,
 }) => {
     // const { nodes }: any = useGLTF("/roundedCube.glb");
+    const [areModulesInView, setModulesInView] = useAtom(modulesInView)
     const texture = useTexture(svgSrc);
     const [active, setActive] = useState(true);
     const [clicked, setClick] = useState(false);
@@ -385,7 +392,7 @@ const Module: React.FC<ModuleProps> = ({
                 >
                     <RoundedBox scale={2} args={[size[0], size[1]]}>
 
-                        <Mat active={active} color={color} />
+                        <Mat active={areModulesInView} color={color} />
                         <Outlines
                             scale={[0.95, 1, 1]}
                             toneMapped={false}
@@ -437,7 +444,11 @@ const Module: React.FC<ModuleProps> = ({
     );
 };
 
-const Game: React.FC = () => {
+interface GameProps {
+    scroll: MutableRefObject<number>
+}
+
+const Game: React.FC<GameProps> = ({ scroll }) => {
     const [currentModuleSet, setModuleSet] = useAtom(moduleSet);
     const [globalIndex, setGlobalIndex] = useAtom(globalModuleIndex);
     const [pvAtom, setPVAtom] = useAtom(modulesViewer);
@@ -457,7 +468,7 @@ const Game: React.FC = () => {
             ((pvAtom?.width / window.innerWidth) * viewport.width) / 2 -
             viewport.width / 2 +
             (pvAtom?.left / window.innerWidth) * viewport.width,
-            size(0.5, viewport.width / 5, 1.5) -
+            size(0, viewport.width / 5, 1) -
             ((pvAtom?.height / window.innerHeight) * viewport.height) / 2 +
             viewport.height / 2 -
             (pvAtom?.top / window.innerHeight) * viewport.height,
@@ -484,14 +495,27 @@ const Game: React.FC = () => {
         // }
     }, [globalIndex]);
 
+
+    const [disposed, setDisposed] = useState(true)
+    const [areModulesInView, setModulesInView] = useAtom(modulesInView)
+    useEffect(() => {
+        if (areModulesInView) {
+            setDisposed(false)
+
+        } else {
+            setTimeout(() => setDisposed(true), 300)
+
+        }
+    }, [areModulesInView]);
+
     return (
         <group
             ref={group}
             position={pos}
-            visible={router.pathname === "/business"}
-            scale={size(0.5, viewport.width / 12, 1.5)}
+            visible={!disposed}
+            scale={size(0.65, viewport.width / 20, 1.35)}
         >
-            <Top />
+            <Top scroll={scroll} />
             <AnimatePresence initial mode="wait">
                 <MotionConfig
                     transition={{
@@ -505,6 +529,7 @@ const Game: React.FC = () => {
                         <Module
                             name={item}
                             key={UID}
+                            scroll={scroll}
                             UID={UID}
                             position={position}
                             color={color}
@@ -516,8 +541,8 @@ const Game: React.FC = () => {
                     ))}
                 </MotionConfig>
             </AnimatePresence>
-            <Base />
-            <Base_Left />
+            <Base scroll={scroll} />
+            <Base_Left scroll={scroll} />
         </group>
     );
 };

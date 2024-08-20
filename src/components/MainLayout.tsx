@@ -11,13 +11,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBuilding, faPersonDigging } from "@fortawesome/free-solid-svg-icons";
 
 const navbarVariants = {
-    closed: { gridTemplateRows: "0fr", transition: { when: "afterChildren", type: "spring", damping: 20, stiffness: 100 } },
-    open: { gridTemplateRows: "1fr", transition: { when: "beforeChildren", type: "spring", damping: 20, stiffness: 100 } }
+    hidden: { gridTemplateRows: "0fr", transition: { when: "afterChildren", type: "spring", damping: 20, stiffness: 100 } },
+    visible: { gridTemplateRows: "1fr", transition: { when: "beforeChildren", type: "spring", damping: 20, stiffness: 100 } }
 }
 
 const innerWrapperVariants = {
-    closed: { opacity: 0, transition: { duration: 0.2 } },
-    open: { opacity: 1, transition: { duration: 0.2, delay: 0.5 } }
+    hidden: { opacity: 0, transition: { duration: 0.2 } },
+    visible: { opacity: 1, transition: { duration: 0.2, delay: 0.5 } }
 }
 
 
@@ -73,7 +73,7 @@ export default function MainLayout({ children, navbar, legals }: any) {
                     // console.log("scrollTop")
                 }
             }
-        }, 200)
+        }, 0)
     };
 
     const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -102,11 +102,11 @@ export default function MainLayout({ children, navbar, legals }: any) {
 
     useMotionValueEvent(scrollY, "change", () => {
         if (velocityFactor.get() < 0) {
-            controls.start("open")
-            mainControls.start("open")
+            controls.start("visible")
+            mainControls.start("visible")
         } else if (velocityFactor.get() > 0) {
-            controls.start("closed")
-            mainControls.start("closed")
+            controls.start("hidden")
+            mainControls.start("hidden")
         }
     })
 
@@ -114,7 +114,7 @@ export default function MainLayout({ children, navbar, legals }: any) {
 
 
     return (<>
-        <div className="content-grid bg-[#04070e] text-sm">
+        <div className="fixed top-0 left-0 content-grid bg-[#04070e] text-sm">
             <div className="hidden lg:flex flex-col lg:flex-row items-center justify-center h-auto p-6 w-full  text-white gap-2">
                 Unsere Webseite befindet sich im Aufbau <FontAwesomeIcon className="mx-4 text-[#e0dd70] h-full text-xl max-h-6" icon={faPersonDigging} />
                 Mehr Inormationen zu MY InnoTrinsic folgen in Kürze. Wer nicht warten möchte, kann uns gerne kontaktieren.
@@ -125,14 +125,18 @@ export default function MainLayout({ children, navbar, legals }: any) {
             </div>
         </div>
         <motion.div className="navbar__wrapper"
-            initial="open"
+            initial="visible"
             variants={navbarVariants}
             animate={controls}>
             <motion.div
                 variants={innerWrapperVariants}
                 className="navbar__wrapper-inner content-grid"
             >
-                <Navbar contentContainer={ref} className={`navbar`} navbar={navbar} legals={legals} />
+                <Navbar
+                    contentContainer={ref}
+                    className={`navbar`}
+                    navbar={navbar}
+                    legals={legals} />
             </motion.div>
         </motion.div>
         <div ref={ref} className="main"

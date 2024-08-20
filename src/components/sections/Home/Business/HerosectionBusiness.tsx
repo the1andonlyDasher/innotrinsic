@@ -85,7 +85,11 @@ const HeroSectionBusiness: FunctionComponent<HeroSectionBusinessProps> = () => {
 
 
     return (
-        <Sec single left sectionName="landingBusiness" id="first">
+        <Sec single left sectionName="landingBusiness" id="first"><>
+            <div className="flex flex-wrap w-full pt-[100px] gap-6">
+                <Link className="text-white text-xl" href="business/innotrinsic">Innotrinsic</Link>
+                <Link className="text-white text-xl" href="business/brainbackgrounds">Brainbackgrounds</Link>
+            </div>
             <motion.div
                 className="landing__wrapper reverse"
                 viewport={{ amount: 0.25, once: false, margin: "0px" }}
@@ -152,6 +156,7 @@ const HeroSectionBusiness: FunctionComponent<HeroSectionBusinessProps> = () => {
                     className="right__wrapper viewer"
                 ></motion.div>
             </motion.div>
+        </>
         </Sec>
     );
 };

@@ -174,10 +174,7 @@ export function Mountain(props: MountainType) {
   const { viewport } = useThree()
 
 
-  //uefs
-  useEffect(() => {
-    console.log(viewport.width)
-  }, [viewport.width])
+
   return (
     <group visible={!disposed} ref={group} rotation={[0, -1.5, 0]} scale={2} {...props} position={[size(0, viewport.width / 5, 10), -7, 0]} dispose={null}>
       <group name="Scene">

@@ -28,9 +28,15 @@ import { SkinnedMesh } from "three/src/objects/SkinnedMesh.js";
 import { Bone } from "three/src/objects/Bone.js";
 import { Model } from "./GhostHand";
 import { Mesh } from "three/src/objects/Mesh.js";
-import { size as s } from "../ts/utils";
+import { size as s, transition } from "../ts/utils";
 import { extend } from "@react-three/fiber";
-import { productViewer, globalTarget, orbitTarget, loc, imageViewer } from "@/ts/atoms";
+import {
+  productViewer,
+  globalTarget,
+  orbitTarget,
+  loc,
+  imageViewer,
+} from "@/ts/atoms";
 import IdeaCloud from "@/ts/landingGL/IdeaCloud";
 import { ShaderHand } from "./texHand";
 import { TexturedHand } from "./texHand2";
@@ -39,11 +45,11 @@ import Camouflage, {
   CamouflageShaderMaterial,
 } from "@/ts/brainBasicsGL/Camouflage";
 import { AdditiveBlending, Group, MathUtils, Vector2, Vector3 } from "three";
-import * as BufferGeometryUtils from "@/ts/threeExport/BufferGeometryUtils"
+import * as BufferGeometryUtils from "@/ts/threeExport/BufferGeometryUtils";
 
 import { lerp } from "three/src/math/MathUtils.js";
 import { LRBrain } from "./LRBrain";
-
+import { CuppingHand } from "./CuppingHand";
 
 const GoldShader = (
   <shaderMaterial
@@ -87,9 +93,7 @@ export default GoldShader;
 
 type GLTFResult = GLTF & {
   nodes: {
-
     stem: Mesh;
-
   };
   materials: {};
   animations: any[];
@@ -101,23 +105,64 @@ type HeadHandsProps = {
 };
 
 const brainVariants = {
-  initial: { scale: 0 },
-  focus: { scale: 0.1 },
-  enter: { scale: 1 },
-  exit: { scale: 0 },
+  initial: { scale: 0, rotateX: 0, rotateY: 0, x: 0, y: 1.65, z: 0 },
+  focus: { scale: 0.1, rotateX: 0, rotateY: 0, x: 0, y: 1.65, z: 0 },
+  innotrinsic: { scale: 1, rotateY: 1.54, rotateX: 1, x: 0.15, y: 1.925, z: 0.1, transition: transition({ delay: 0 }) },
+  enter: { scale: 1, rotateX: 0, rotateY: 0, x: 0, y: 1.65, z: 0, transition: transition({ delay: 0.5 }) },
+  exit: { scale: 0, rotateX: 0, rotateY: 0, x: 0, y: 1.65, z: 0 },
 };
 
 const material2Variants = {
-  initial: { opacity: 0, color: "#f0c25e", },
-  hidden: { opacity: 0, color: "#f0c25e", },
-  hide: { opacity: 0.1, color: "#f0c25e", },
+  initial: {
+    opacity: 0,
+    reflectivity: 0.7,
+    color: "#f0c25e",
+    metalness: 1,
+  },
+  hidden: {
+    opacity: 0,
+    reflectivity: 0.7,
+    color: "#f0c25e",
+    metalness: 1,
+  },
+  hide: {
+    opacity: 0.1,
+    reflectivity: 0.7,
+    color: "#f0c25e",
+    metalness: 1,
+  },
   brainbackgrounds: {
     opacity: 0.5,
-    color: "#5485d4"
+    color: "#5485d4",
+    reflectivity: 0.7,
+    metalness: 1,
+    sheenRoughness: 0.2,
+    iridescence: 0.0,
+    iridescenceIOR: 0.2,
+    clearcoat: 1,
+    clearcoatRoughness: 0.2,
+  },
+  innotrinsic: {
+    opacity: 1,
+    color: "#1b4a74",
+    reflectivity: 0,
+    metalness: 0,
+    sheenRoughness: 0.2,
+    iridescence: 0,
+    iridescenceIOR: 0,
+    clearcoat: 1,
+    clearcoatRoughness: 0.2,
   },
   enter: {
     color: "#f0c25e",
     opacity: 1,
+    reflectivity: 0.7,
+    metalness: 1,
+    sheenRoughness: 0.2,
+    iridescence: 0.5,
+    iridescenceIOR: 0.85,
+    clearcoat: 1,
+    clearcoatRoughness: 0,
     transition: {
       type: "spring",
       damping: 10,
@@ -127,8 +172,10 @@ const material2Variants = {
     },
   },
   exit: {
-    opacity: 0
-    , color: "#f0c25e",
+    opacity: 0,
+    color: "#f0c25e",
+    reflectivity: 0.7,
+    metalness: 1,
     transition: {
       type: "spring",
       damping: 10,
@@ -178,8 +225,6 @@ const colors = [
   "#cfdff0",
 ];
 
-
-
 export function NewHead4(props: HeadHandsProps) {
   const { nodes, materials } = useGLTF("/highrez_brain.glb") as GLTFResult;
   const [pvAtom, setPVAtom] = useAtom(productViewer);
@@ -201,8 +246,6 @@ export function NewHead4(props: HeadHandsProps) {
   //searchParams
   const searchParams = useSearchParams();
 
-
-
   // animation controls
 
   const brain_material_controls = useAnimation();
@@ -211,8 +254,6 @@ export function NewHead4(props: HeadHandsProps) {
 
   const [isInPage, setIsInPage] = useState(false);
   const [disposed, setDisposed] = useState(false);
-
-
 
   useEffect(() => {
     const scale: any = [
@@ -224,8 +265,8 @@ export function NewHead4(props: HeadHandsProps) {
       ((pvAtom?.width / window.innerWidth) * viewport.width) / 2 -
       viewport.width / 2 +
       (pvAtom?.left / window.innerWidth) * viewport.width,
-      (router.pathname === "/business/brainbackgrounds" ?
-        -s(15, viewport.width / 1.35, 19)
+      (router.pathname === "/business/brainbackgrounds"
+        ? -s(15, viewport.width / 1.35, 19)
         : -s(11, viewport.width / 1.35, 14)) -
       ((pvAtom?.height / window.innerHeight) * viewport.height) / 2 +
       viewport.height / 2 -
@@ -236,9 +277,6 @@ export function NewHead4(props: HeadHandsProps) {
     setScale(scale);
   }, [pvAtom]);
 
-
-
-
   const bmRef = useRef<any>(!null);
   const glassRef = useRef<any>(!null);
 
@@ -246,35 +284,24 @@ export function NewHead4(props: HeadHandsProps) {
     <motion3d.meshPhysicalMaterial
       ref={bmRef}
       initial="initial"
+      color={"#f0c25e"}
       transmission={0.5}
       ior={1.32}
-      reflectivity={0.7}
       thickness={0.5}
       animate={brain_material_controls}
       exit="exit"
       variants={material2Variants}
-      metalness={1}
-      roughness={0.1}
+      roughness={0.2}
+      reflectivity={0}
       toneMapped
       transparent
-      sheen={0.25}
+      sheen={0.2}
       sheenColor={"#fff87b"}
-      sheenRoughness={0}
-      iridescence={0.2}
-      iridescenceIOR={0.6}
-      clearcoat={1}
-      clearcoatRoughness={0.1}
+
     />
   );
 
-
-
   const brain_mesh_controls = useAnimation();
-
-
-
-
-
 
   // enter animations
 
@@ -283,10 +310,9 @@ export function NewHead4(props: HeadHandsProps) {
       setIsInPage(true);
       if (props.scroll.current > 0.015) {
         brain_material_controls.start("hidden").then(() => {
-          setIsInPage(false)
+          setIsInPage(false);
         });
       } else {
-
         setIsInPage(true);
         brain_mesh_controls.start("enter");
         brain_material_controls.start("enter");
@@ -296,10 +322,9 @@ export function NewHead4(props: HeadHandsProps) {
         brain_material_controls.start("hide");
       } else if (searchParams.get("view") && searchParams.get("focusGroup")) {
         brain_material_controls.start("hidden").then(() => {
-          setIsInPage(false)
+          setIsInPage(false);
         });
       } else {
-
         setIsInPage(true);
         brain_mesh_controls.start("enter");
         brain_material_controls.start("enter");
@@ -307,33 +332,39 @@ export function NewHead4(props: HeadHandsProps) {
     } else if (router.pathname === "/business/brainbackgrounds") {
       if (props.scroll.current > 0.015) {
         brain_material_controls.start("hidden").then(() => {
-
-          setIsInPage(false)
-
+          setIsInPage(false);
         });
       } else {
-
         setIsInPage(true);
         brain_mesh_controls.start("enter");
         brain_material_controls.start("brainbackgrounds");
       }
+    } else if (router.pathname === "/business/innotrinsic") {
+      if (props.scroll.current > 0.015) {
+        brain_material_controls.start("hidden").then(() => {
+          setIsInPage(false);
+        });
+      } else {
+        setIsInPage(true);
+        brain_mesh_controls.start("innotrinsic");
+        brain_material_controls.start("innotrinsic");
+      }
     } else {
       brain_material_controls.start("hidden").then(() => {
-        setIsInPage(false)
+        setIsInPage(false);
       });
     }
   }, [router.pathname, props.scroll.current, searchParams]);
 
-
   useEffect(() => {
     if (!isInPage) {
-      setTimeout(() => setDisposed(true), 0)
+      setTimeout(() => setDisposed(true), 0);
     } else {
-      setDisposed(false)
+      setDisposed(false);
     }
-  }, [isInPage])
+  }, [isInPage]);
 
-
+  const light = useRef(null)
 
   return (
     <group
@@ -341,54 +372,65 @@ export function NewHead4(props: HeadHandsProps) {
       ref={group}
       position={pos}
       dispose={null}
-      scale={router.pathname === "/business/brainbackgrounds" ?
-        s(11, scl[0] * s(0.5, viewport.width / 20, 1.5), 14) :
-        s(7, scl[0] * s(0.5, viewport.width / 30, 0.8), 10)}
+      scale={
+        router.pathname === "/business/brainbackgrounds"
+          ? s(11, scl[0] * s(0.5, viewport.width / 20, 1.5), 14)
+          : s(7, scl[0] * s(0.5, viewport.width / 30, 0.8), 10)
+      }
       rotation={[0, -Math.PI / 1.15, 0]}
     >
+      <CuppingHand
+        scroll={props.scroll}
+        rotation={[2, 0.274, -2.84]}
+        position={[0.175, 0.9, 0]}
+        scale={1}
+      />
+
       <group rotation={[0, -0.3, 0]} scale={1}>
-        {/* <LRBrain scroll={props.scroll} props={{ position: ([1, 0, 0]) }} /> */}
+        <LRBrain scroll={props.scroll} props={{ position: ([1, 0, 0]) }} />
         <ShaderHand scroll={props.scroll} />
         <TexturedHand />
       </group>
-      <Float floatIntensity={0.1} rotationIntensity={0.1}>
+      <Float
+        floatIntensity={router.pathname !== "business/innotrinsic" ? 0 : 0.1}
+        rotationIntensity={router.pathname !== "business/innotrinsic" ? 0 : 0.1}
+      >
 
-        <group
-          scale={1}
+        <motion3d.group
+          visible={!disposed}
           rotation={[0, -Math.PI / 0.85, 0]}
           position={[0.075, -0.6, 0.1]}
         >
-          {/* <WordCloud
+          <WordCloud
             scroll={props.scroll}
             active={router.pathname === "/business/brainbackgrounds"}
             words={words}
             colors={colors}
-          /> */}
-          <motion3d.group
-            variants={brainVariants}
-            initial="initial"
-            animate={brain_mesh_controls}
-            visible={!disposed}
-          >
+          />
+          <motion3d.group>
             <pointLight
               intensity={15}
               color={"#ffde5b"}
               position={[0.2, 1.5, 0]}
             />
-            <mesh
+            <motion3d.mesh
+              scale={1}
+              variants={brainVariants}
+              initial="initial"
+              animate={brain_mesh_controls}
+
               geometry={nodes.stem.geometry}
               position={[0, 1.7, -0.05]}
             >
               {brain_material}
-            </mesh>
-
+            </motion3d.mesh>
           </motion3d.group>
           <Suspense fallback={null}>
             <group position={[0.115, 1.9, 0]} scale={0.25}>
               <IdeaCloud scroll={props.scroll} centerPoint={[0, 0, 0]} />
             </group>
           </Suspense>
-        </group>
+        </motion3d.group>
       </Float>
     </group>
   );

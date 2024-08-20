@@ -59,8 +59,6 @@
 
 /* base classes */
 .management__wrapper {
-  @extend %col, %flex;
-  width: 100%;
   gap: 2rem;
   color: #32689c;
 }
