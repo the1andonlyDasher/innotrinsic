@@ -76,6 +76,7 @@ export const ModuleCarousel = ({ images }: carouselProps) => {
                 <motion.ul className="module__pills">
                     {num.map((item: any, index: number) =>
                         <motion.li
+                            key={index}
                             animate={page === index ?
                                 { backgroundColor: "#165c8f" } :
                                 { backgroundColor: "#3285c0" }}
