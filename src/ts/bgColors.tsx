@@ -6,7 +6,7 @@ export const targetColors: any = {
     "/business/brainbackgrounds": ["#ccf1fa", "#97b9c1", "#6790a5"],
     "/": ["#c5cf8f", "#89B069", "#699051"],
     science: ["#ffffff", "#fffffe", "#fffffa"],
-    modules: ["#F7F3E3]", "#F7F3E3", "#F7F3E3"],
+    modules: ["#F7F3E3", "#F7F3E3", "#F7F3E3"],
     slider: ["#ffffff", "#fffffe", "#fffffa"],
     symbols: ["#ffffff", "#fffffe", "#fffffa"],
     perspective: ["#ffffff", "#fffffe", "#fffffa"],

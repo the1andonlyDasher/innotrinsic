@@ -241,7 +241,7 @@ const ContactForm = ({ props }: ContactProps) => {
                                     onChange={e => setMessage(e.target.value)}
                                     name="message"
                                     id="message"
-                                    required
+                                    // required
                                     rows={5}
                                 />
                             </motion.div>

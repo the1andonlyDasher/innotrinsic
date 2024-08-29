@@ -15,7 +15,7 @@ interface CircleProps {
 }
 
 const content = {
-    1: { title: "C. Neuroloyale Umsetzungsstruktur", text: "MY InnoTrinsic Modulprogramm" },
+    1: { title: "D. Neuroloyale Umsetzungsstruktur", text: "MY InnoTrinsic Modulprogramm" },
     2: { title: "C. Neuroloyale Umsetzungsstruktur", text: "MY InnoTrinsic Modulprogramm" },
     3: { title: "B. Neuroloyales Leitprinzip", text: "Bereitschaft: Neuroloyaler Handlungswille & Handlungsbilligung:" },
     4: { title: "A. Neuroloyaler Kern & Mindset", text: "Mindset, BrainCare-Bewusstsein, Wissen" },

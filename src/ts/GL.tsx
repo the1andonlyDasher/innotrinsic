@@ -207,7 +207,7 @@ const GL = (props: glProps) => {
 
 
     return (<>
-        {/* {!shaderCompiled && <Loader />} */}
+        {!shaderCompiled && <Loader />}
         <div className="canvas__wrapper">
 
             <Canvas
@@ -235,7 +235,7 @@ const GL = (props: glProps) => {
                         minAzimuthAngle={-Math.PI / 2}
                         maxAzimuthAngle={Math.PI / 2}
                     />}
-                <Stats showPanel={0} />
+                {/* <Stats showPanel={0} /> */}
                 <Game scroll={props.scroll} />
                 <GradientTexture
                     stops={[0, 0.5, 1]}

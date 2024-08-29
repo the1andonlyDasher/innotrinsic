@@ -180,8 +180,8 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                             transition: transition({ delay: 2 }),
                         }}
                         viewport={{ once: true }}
-                        src="/images/stoothtiger.jpeg"
-                        // src="/images/karin-bild.jpg"
+                        // src="/images/stoothtiger.jpeg"
+                        src="/images/karin-bild.jpg"
                         width={709}
                         height={709}
                         alt="Bild von Dr. Karin Koert-Lehmann"
@@ -257,8 +257,8 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
                             transition: transition({ delay: 2 }),
                         }}
                         viewport={{ once: true }}
-                        src="/images/stoothtiger.jpeg"
-                        // src="/images/ulrike-bild.webp"
+                        // src="/images/stoothtiger.jpeg"
+                        src="/images/ulrike-bild.webp"
                         width={709}
                         height={709}
                         alt="Bild von Ulrike Corneliussen"
