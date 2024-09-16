@@ -481,7 +481,7 @@ a {
     minmax(var(--padding-inline), 1fr) [full-width-end];
   width: 100vw;
   width: 100dvw;
-  margin: 0 auto;
+  margin: 0;
   // scroll-snap-type: y mandatory;
 }
 
