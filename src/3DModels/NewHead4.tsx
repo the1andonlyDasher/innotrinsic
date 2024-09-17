@@ -168,8 +168,7 @@ const material2Variants = {
     sheenRoughness: 0.2,
     iridescence: 0.5,
     iridescenceIOR: 0.85,
-    clearcoat: 1,
-    clearcoatRoughness: 0,
+
     transition: {
       type: "spring",
       damping: 10,
