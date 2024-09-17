@@ -26,6 +26,7 @@
   @extend %trans;
   font-size: 1.5rem;
   color: var(--p-color);
+
   width: 100%;
   height: 100px;
   margin: 0 auto;
@@ -81,6 +82,7 @@
 
 .navbar__container {
   @extend %flex-center;
+
   height: 100%;
   justify-content: space-between;
   width: 100%;
@@ -126,7 +128,7 @@
 .navbar__wrapper {
   position: fixed;
   display: grid;
-  backdrop-filter: blur(5px);
+
   z-index: 20;
   grid-template-columns: repeat(1, minmax(0, 1fr));
   grid-template-rows: repeat(1, minmax(0, 1fr));
@@ -135,6 +137,8 @@
   height: auto;
   transform-origin: right;
   .navbar__wrapper-inner {
+    backdrop-filter: blur(5px);
+    background-color: #ffffffd8;
     display: grid;
     overflow: hidden;
     grid-column: span 1 / span 1;

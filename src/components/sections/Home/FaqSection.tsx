@@ -55,7 +55,7 @@ mehr - kooperativ, respektvoll und achtsam. Es bedeutet, die Rolle des Gehirns a
 Alltagsarchitekt zu respektieren und - basierend auf der einzigartigen Neurophysis -
 zielgenau mit dem Gehirn zu kollaborieren. So fällt es leichter zu starten und
 durchzuhalten."/>
-                <FAQuestion borderBottom title="Was ist BrainCare?" description="Nicht ohne Grund verwenden wir das Bild vom Gehirn, dem eine schützende Hand
+                <FAQuestion borderBottom title='Was ist "BrainCare"?' description="Nicht ohne Grund verwenden wir das Bild vom Gehirn, dem eine schützende Hand
 hinzugefügt ist. Unser Ziel ist es, das Gehirn als Freund zu verstehen, das
 entsprechend gepflegt werden muss, um sein optimales Potenzial zu entfalten.
 Daher helfen wir, Brain-Brakes zu erkennen und zu umgehen sowie Brain-Booster zu

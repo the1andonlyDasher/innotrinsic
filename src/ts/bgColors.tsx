@@ -23,10 +23,10 @@ export const targetColors: any = {
 
 // diese Farben ändern den ersten teil des Navigationstitels
 export const targetColorsNavTitle: any = {
-    landing: "#ffffff",
+    landing: "#506c00",
     landingBusiness: "#32689C",
     business: "#32689C",
-    "/": "#ffffff",
+    "/": "#506c00",
     science: "#506c00",
     slider: "#32689C",
     symbols: "#506c00",
@@ -44,9 +44,9 @@ export const targetColorsNavTitle: any = {
 
 // diese Farben ändern den zweiten Teil des Navigationstitels (also Business, Dashboard etc)
 export const addColors: any = {
-    landing: "#ffffff",
+    landing: "#506c00",
     landingBusiness: "#B38224",
-    "/": "#ffffff",
+    "/": "#506c00",
     business: "#B38224",
     science: "#7e9b2e",
     symbols: "#506c00",

@@ -1,4 +1,3 @@
-import { ReactThreeFiber } from "@react-three/fiber";
 import { ShaderMaterial, ShaderMaterialParameters } from "three";
 
 

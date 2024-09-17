@@ -187,13 +187,14 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
 
     return (
         <group ref={group} position={props.centerPoint}>
-            <Instances >
-                <sphereGeometry args={[0.35, 30, 30]} />
+            <Instances renderOrder={2}>
+                <sphereGeometry args={[0.315, 20, 20]} />
                 <motion3d.meshStandardMaterial
-                    visible={false}
                     transparent
-
+                    roughness={0.1}
+                    color={"white"}
                 />
+
                 {numIdeas.map((data: any, i: number) =>
                     <group key={i}>
                         <Idea

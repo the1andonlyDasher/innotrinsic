@@ -56,9 +56,6 @@ const Navbar = ({ contentContainer, navbar, legals }: any) => {
     exit: { scale: 0, opacity: 0 },
   }
 
-
-
-
   const [isOpen, toggleOpen] = useCycle(false, true);
   const [location, setLocation] = useAtom(loc);
   const [nextColor1, setNextColor1] = useState(targetColorsNavTitle[`${location}`])

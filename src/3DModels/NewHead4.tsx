@@ -116,8 +116,14 @@ const material2Variants = {
   initial: {
     opacity: 0,
     reflectivity: 0.7,
+    roughness: 0.125,
     color: "#f0c25e",
     metalness: 1,
+    sheenRoughness: 0.2,
+    iridescence: 0.5,
+    iridescenceIOR: 0.85,
+    clearcoat: 1,
+    clearcoatRoughness: 0,
   },
   hidden: {
     opacity: 0,
@@ -158,6 +164,7 @@ const material2Variants = {
     opacity: 1,
     reflectivity: 0.7,
     metalness: 1,
+    roughness: 0.125,
     sheenRoughness: 0.2,
     iridescence: 0.5,
     iridescenceIOR: 0.85,

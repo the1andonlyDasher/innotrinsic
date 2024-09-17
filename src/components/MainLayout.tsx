@@ -11,8 +11,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBuilding, faPersonDigging } from "@fortawesome/free-solid-svg-icons";
 
 const navbarVariants = {
-    hidden: { gridTemplateRows: "0fr", transition: { when: "afterChildren", type: "spring", damping: 20, stiffness: 100 } },
-    visible: { gridTemplateRows: "1fr", transition: { when: "beforeChildren", type: "spring", damping: 20, stiffness: 100 } }
+    hidden: { gridTemplateRows: "0fr", opacity: 0, transition: { when: "afterChildren", duration: 0.2 } },
+    visible: { gridTemplateRows: "1fr", opacity: 1, transition: { when: "beforeChildren", duration: 0.2 } }
 }
 
 const innerWrapperVariants = {
@@ -91,11 +91,8 @@ export default function MainLayout({ children, navbar, legals }: any) {
     const mainControls = useAnimation()
     const { scrollY } = useScroll({ container: ref })
     const scrollVelocity = useVelocity(scrollY);
-    const smoothVelocity = useSpring(scrollVelocity, {
-        damping: 50,
-        stiffness: 400
-    });
-    const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
+    const smoothVelocity = useSpring(scrollVelocity);
+    const velocityFactor = useTransform(scrollVelocity, [0, 1000], [0, 5], {
         clamp: false
     });
 
@@ -114,24 +111,26 @@ export default function MainLayout({ children, navbar, legals }: any) {
 
 
     return (<>
-        <div className="fixed top-0 left-0 content-grid bg-[#04070e] text-sm">
-            <div className="hidden lg:flex flex-col lg:flex-row items-center justify-center h-auto p-6 w-full  text-white gap-2">
-                Unsere Webseite befindet sich im Aufbau <FontAwesomeIcon className="mx-4 text-[#e0dd70] h-full text-xl max-h-6" icon={faPersonDigging} />
-                Mehr Inormationen zu MY InnoTrinsic folgen in Kürze. Wer nicht warten möchte, kann uns gerne kontaktieren.
-            </div>
-            <div className="flex lg:hidden flex-row lg:flex-row items-center justify-center h-auto p-6 w-full  text-white gap-2">
-                Unsere Webseite befindet sich im Aufbau <FontAwesomeIcon className="mx-4 text-[#e0dd70] h-full text-xl max-h-6" icon={faPersonDigging} />
-
-            </div>
-        </div>
         <motion.div className="navbar__wrapper"
             initial="visible"
-            variants={navbarVariants}
-            animate={controls}>
+        >
+            <div className="  bg-[#04070e] text-sm">
+                <div className="hidden lg:flex flex-col lg:flex-row items-center justify-center h-auto p-6 w-full  text-white gap-2">
+                    Unsere Webseite befindet sich im Aufbau <FontAwesomeIcon className="mx-4 text-[#e0dd70] h-full text-xl max-h-6" icon={faPersonDigging} />
+                    Mehr Inormationen zu MY InnoTrinsic folgen in Kürze. Wer nicht warten möchte, kann uns gerne kontaktieren.
+                </div>
+                <div className="flex lg:hidden flex-row lg:flex-row items-center justify-center h-auto p-6 w-full  text-white gap-2">
+                    Unsere Webseite befindet sich im Aufbau <FontAwesomeIcon className="mx-4 text-[#e0dd70] h-full text-xl max-h-6" icon={faPersonDigging} />
+
+                </div>
+            </div>
             <motion.div
-                variants={innerWrapperVariants}
-                className="navbar__wrapper-inner content-grid"
+                variants={navbarVariants}
+                animate={controls}
+
+                className="navbar__wrapper-inner content-grid "
             >
+
                 <Navbar
                     contentContainer={ref}
                     className={`navbar`}

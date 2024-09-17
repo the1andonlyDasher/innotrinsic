@@ -416,16 +416,20 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                         toneMapped={false}
                                     />
                                 ) : null}
-
+                                <mesh renderOrder={1}>
+                                    <sphereGeometry args={[0.15, 15, 15]} />
+                                    <meshBasicMaterial color="green" />
+                                </mesh>
                             </Instance>
-                            <MorphingMesh
+
+                            {/* <MorphingMesh
                                 position={[0, 0, 0]}
                                 clicked={clicked}
                                 focused={searchParams.get("focusGroup") !== null}
                                 inactive={searchParams.get("neuron") !== null && searchParams.get("neuron") !== props.text}
                                 textureUrl={"/images/business_img2.jpg"}
                                 count={1}
-                            />
+                            /> */}
 
 
                             <Suspense fallback={null}>
