@@ -63,7 +63,7 @@ const IconsSection: FunctionComponent<IconsSectionProps> = () => {
                         <WomenSVG />
                     </Card>
                 </motion.div>
-                <motion.h3 variants={variants} className="icons__title">Das ist MY InnoTrinsic.</motion.h3>
+                <motion.h3 variants={variants} className="icons__title">Das ist MY InnoTrinsic</motion.h3>
 
                 <motion.div variants={variants} className="icons__text-section">
                     <motion.p className="w-full mb-16 text-center" variants={variants}>

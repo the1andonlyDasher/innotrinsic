@@ -23,7 +23,7 @@ import { useSearchParams } from "next/navigation";
 import MorphingMesh from "./Bubble";
 import { transition as t, transition } from '../utils';
 import CustomBillboard from "../CustomBillboard";
-import { ShaderMaterial } from "three";
+import { BackSide, ShaderMaterial } from "three";
 import BShader from "./BubbleShader";
 
 const materialVariants = {
@@ -69,7 +69,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
 
     //three helper
     const { viewport } = useThree();
-    const radius = Math.max(2.25, Math.min(viewport.width / 10, 2.5));
+    const radius = Math.max(2, Math.min(viewport.width / 10, 2.375));
 
     // states
     const [hovered, setHover] = useState(false);
@@ -365,6 +365,7 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                             </motion3d.mesh>
                         </Billboard> */}
                             <Instance
+                                renderOrder={1}
                                 name={props.text}
                                 ref={instance}
                                 onClick={(e) => (
@@ -416,12 +417,11 @@ const Idea: FunctionComponent<IdeaProps> = (props) => {
                                         toneMapped={false}
                                     />
                                 ) : null}
-                                <mesh renderOrder={1}>
-                                    <sphereGeometry args={[0.15, 15, 15]} />
-                                    <meshBasicMaterial color="green" />
-                                </mesh>
                             </Instance>
-
+                            <mesh >
+                                <sphereGeometry args={[0.1, 15, 15]} />
+                                <meshStandardMaterial toneMapped={false} roughness={0.5} color="#5d8e35" />
+                            </mesh>
                             {/* <MorphingMesh
                                 position={[0, 0, 0]}
                                 clicked={clicked}

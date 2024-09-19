@@ -36,7 +36,7 @@ const MountainSection: FunctionComponent<MountainSectionProps> = () => {
             className="mountain__wrapper"
         >
             <motion.div className="inner__wrapper">
-                <motion.h4 >Ein Gehirn, das Berge versetzen kann.</motion.h4>
+                <motion.h4 >Ein Gehirn, das Berge versetzen kann</motion.h4>
                 <motion.ul >
                     <motion.li ><p className="check"><FontAwesomeIcon icon={faCheck} /></p><p className="check__text">Neues & Veränderung: Starten - Machen - Dranbleiben</p></motion.li>
                     <motion.li ><p className="check"><FontAwesomeIcon icon={faCheck} /></p><p className="check__text">Motivationsboost: Umbrüche zu Durchbrüchen machen</p></motion.li>

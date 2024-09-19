@@ -18,7 +18,7 @@ import BubbleShader from "./BubbleShader";
 import ReactNode from 'react';
 import MorphingMesh from "./Bubble";
 import BShader from "./BubbleShader";
-import { Group } from "three";
+import { BackSide, Group } from "three";
 import { size } from "../utils";
 
 interface IdeaCloudProps {
@@ -187,10 +187,11 @@ const IdeaCloud: FunctionComponent<IdeaCloudProps> = (props) => {
 
     return (
         <group ref={group} position={props.centerPoint}>
-            <Instances renderOrder={2}>
-                <sphereGeometry args={[0.315, 20, 20]} />
+
+            <Instances >
+                <sphereGeometry args={[0.3, 20, 20]} />
                 <motion3d.meshStandardMaterial
-                    transparent
+                    side={BackSide}
                     roughness={0.1}
                     color={"white"}
                 />

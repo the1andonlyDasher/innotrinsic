@@ -274,7 +274,7 @@ export function NewHead4(props: HeadHandsProps) {
       (pvAtom?.left / window.innerWidth) * viewport.width,
       (router.pathname === "/business/brainbackgrounds"
         ? -s(15, viewport.width / 1.35, 19)
-        : -s(11, viewport.width / 1.35, 14)) -
+        : -s(9, viewport.width / 1.35, 16)) -
       ((pvAtom?.height / window.innerHeight) * viewport.height) / 2 +
       viewport.height / 2 -
       (pvAtom?.top / window.innerHeight) * viewport.height,
@@ -382,7 +382,7 @@ export function NewHead4(props: HeadHandsProps) {
       scale={
         router.pathname === "/business/brainbackgrounds"
           ? s(11, scl[0] * s(0.5, viewport.width / 20, 1.5), 14)
-          : s(7, scl[0] * s(0.5, viewport.width / 30, 0.8), 10)
+          : s(4, scl[0] * s(0.5, viewport.width / 30, 0.8), 10)
       }
       rotation={[0, -Math.PI / 1.15, 0]}
     >

@@ -137,7 +137,7 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
 
     return (
         <motion.div variants={variants} className="science__wrapper">
-            <motion.h4>Menschen bewegen uns. Wir sind MY InnoTrinsic.</motion.h4>
+            <motion.h4>Menschen bewegen uns. Wir sind MY InnoTrinsic</motion.h4>
             <motion.div
                 className="science__img-wrapper"
                 viewport={{ amount: 0.25, once: false, margin: "0px" }}
